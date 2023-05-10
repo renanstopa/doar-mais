@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "tab_anuncio")
 public class AnuncioModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "cd_anuncio")
@@ -25,4 +26,5 @@ public class AnuncioModel {
 
     @Column(name = "desc_anuncio")
     private String descAnuncio;
+
 }

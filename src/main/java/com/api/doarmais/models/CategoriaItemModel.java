@@ -10,10 +10,12 @@ import lombok.Data;
 @Data
 @Table(name = "tab_categoria_item")
 public class CategoriaItemModel {
+
     @Id
     @Column(name = "cd_categoria_item")
     private Integer cdCategoriaItem;
 
     @Column(name = "tx_categoria_item")
     private String txCategoriaItem;
+
 }

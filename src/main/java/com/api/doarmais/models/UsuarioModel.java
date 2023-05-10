@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Table(name = "tab_usuario")
 public class UsuarioModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "cd_usuario")
@@ -34,4 +35,5 @@ public class UsuarioModel {
 
     @Column(name = "img_comprovante_residencia")
     private String imgComprovanteResidencia;
+
 }

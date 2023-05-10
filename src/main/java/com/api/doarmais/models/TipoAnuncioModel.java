@@ -10,10 +10,12 @@ import lombok.Data;
 @Data
 @Table(name = "tab_tipo_anuncio")
 public class TipoAnuncioModel {
+
     @Id
     @Column(name = "cd_tipo_anuncio")
     private Integer cdTipoAnuncio;
 
     @Column(name = "tx_tipo_anuncio")
     private String txTipoAnuncio;
+
 }

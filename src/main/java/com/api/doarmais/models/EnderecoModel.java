@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Table(name = "tab_endereco")
 public class EnderecoModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "cd_endereco")
@@ -34,4 +35,5 @@ public class EnderecoModel {
 
     @Column(name = "tx_complemento")
     private String txComplemento;
+
 }

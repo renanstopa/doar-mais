@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class EnderecoDto {
+
     @NotNull(message = "Usuário não pode ser nulo!")
     private UsuarioModel usuarioModel;
 
@@ -21,4 +22,5 @@ public class EnderecoDto {
     @NotNull(message = "Complemento não pode ser nulo!")
     @Size(max = 100, message = "Compelemento deve conter no máximo 100 caracteres!")
     private String txComplemento;
+
 }

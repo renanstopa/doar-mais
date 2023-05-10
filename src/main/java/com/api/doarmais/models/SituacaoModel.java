@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Table(name = "tab_situacao")
 public class SituacaoModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "cd_situacao")
@@ -14,4 +15,5 @@ public class SituacaoModel {
 
     @Column(name = "tx_situacao")
     private String txSituacao;
+
 }

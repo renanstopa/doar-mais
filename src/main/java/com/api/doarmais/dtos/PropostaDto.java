@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Data
 public class PropostaDto {
+
     //TALVEZ EXCLUA ESSE DTO
     @NotNull(message = "Usuário não pode ser nulo!")
     private UsuarioModel usuarioModel;
@@ -20,4 +21,5 @@ public class PropostaDto {
 
     @NotNull(message = "Situação não pode ser nulo!")
     private SituacaoModel situacaoModel;
+
 }

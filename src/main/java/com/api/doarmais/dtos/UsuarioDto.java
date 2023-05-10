@@ -9,6 +9,7 @@ import lombok.Data;
 
 @Data
 public class UsuarioDto {
+
     @NotNull(message = "Usuário não pode ser nulo!")
     private TipoUsuarioModel tipoUsuarioModel;
 
@@ -32,4 +33,5 @@ public class UsuarioDto {
     @NotNull(message = "CNPJ não pode ser nulo!")
     @Size(min = 14, max = 14, message = "CNPJ deve conter exatamente 14 números!")
     private String txCnpj;
+
 }

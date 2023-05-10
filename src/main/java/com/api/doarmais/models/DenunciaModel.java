@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "tab_denuncia")
 public class DenunciaModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "cd_denuncia")

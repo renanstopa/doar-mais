@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @Table(name = "tab_proposta")
 public class PropostaModel {
+
     @Id
     @ManyToOne
     @JoinColumn(name = "cd_usuario")
@@ -33,4 +34,5 @@ public class PropostaModel {
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     @Column(name = "dt_validade")
     private LocalDateTime dtValidade;
+
 }

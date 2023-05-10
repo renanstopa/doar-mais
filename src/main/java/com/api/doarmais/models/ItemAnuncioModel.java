@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Table(name = "tab_item_anuncio")
 public class ItemAnuncioModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "cd_item")
@@ -24,4 +25,5 @@ public class ItemAnuncioModel {
 
     @Column(name = "quantidade_item")
     private Integer quantidadeItem;
+
 }
