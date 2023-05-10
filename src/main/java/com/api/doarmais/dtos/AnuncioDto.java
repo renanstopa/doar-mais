@@ -8,10 +8,11 @@ import lombok.Data;
 
 @Data
 public class AnuncioDto {
-    @NotNull
+    @NotNull(message = "Tipo Anúncio não pode ser nulo!")
     private TipoAnuncioModel tipoAnuncioModel;
 
-    @NotBlank
-    @Size(max = 400)
+    @NotBlank(message = "Descrição do Anúncio deve ser preenchida!")
+    @NotNull(message = "Descrição do Anúncio não pode ser nulo!")
+    @Size(max = 400, message = "Descrição do Anúncio deve conter no máximo 400 caracteres!")
     private String descAnuncio;
 }

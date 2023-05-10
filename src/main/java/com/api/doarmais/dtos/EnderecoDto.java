@@ -6,17 +6,19 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class EnderecoDto {
-    @NotNull
+    @NotNull(message = "Usuário não pode ser nulo!")
     private UsuarioModel usuarioModel;
 
-    @NotBlank
-    @Size(min = 9, max = 9)
+    @NotBlank(message = "Cep deve ser preenchido!")
+    @NotNull(message = "Cep não pode ser nulo")
+    @Size(min = 9, max = 9, message = "Cep deve conter exatamente 9 caracteres!")
     private String txCep;
 
-    @NotNull
+    @NotNull(message = "Número não pode ser nulo!")
     private Integer cdNumero;
 
-    @NotBlank
-    @Size(max = 100)
+    @NotBlank(message = "Complemente deve ser preenchido!")
+    @NotNull(message = "Complemento não pode ser nulo!")
+    @Size(max = 100, message = "Compelemento deve conter no máximo 100 caracteres!")
     private String txComplemento;
 }

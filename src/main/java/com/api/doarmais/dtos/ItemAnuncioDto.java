@@ -7,12 +7,12 @@ import lombok.Data;
 
 @Data
 public class ItemAnuncioDto {
-    @NotNull
+    @NotNull(message = "Anúncio não pode ser nulo!")
     private AnuncioModel anuncioModel;
 
-    @NotNull
+    @NotNull(message = "Categoria do item não pode ser nula!")
     private CategoriaItemModel categoriaItemModel;
 
-    @NotNull
+    @NotNull(message = "Quantidade do Item não pode ser nula!")
     private Integer quantidadeItem;
 }

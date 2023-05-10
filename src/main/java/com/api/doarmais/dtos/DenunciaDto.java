@@ -9,13 +9,10 @@ import lombok.Data;
 
 @Data
 public class DenunciaDto {
-    @NotNull
+    @NotNull(message = "Denúncia não pode ser nula!")
     private UsuarioModel usuarioModel;
 
-    @NotNull
-    private SituacaoModel situacaoModel;
-
-    @NotBlank
-    @Size(max = 400)
+    @NotBlank(message = "Descrição da Denúncia deve ser preenchida!")
+    @Size(max = 400, message = "Descrição da Denúncia deve conter no máximo 400 caracteres!")
     private String descDenuncia;
 }

@@ -8,15 +8,16 @@ import lombok.Data;
 
 @Data
 public class PropostaDto {
-    @NotNull
+    //TALVEZ EXCLUA ESSE DTO
+    @NotNull(message = "Usuário não pode ser nulo!")
     private UsuarioModel usuarioModel;
 
-    @NotNull
+    @NotNull(message = "Anúncio não pode ser nulo!")
     private AnuncioModel anuncioModel;
 
-    @NotNull
+    @NotNull(message = "Usuário Aceito não pode ser nulo!")
     private UsuarioModel usuarioAceitoModel;
 
-    @NotNull
+    @NotNull(message = "Situação não pode ser nulo!")
     private SituacaoModel situacaoModel;
 }

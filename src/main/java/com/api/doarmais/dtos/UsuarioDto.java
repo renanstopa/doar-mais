@@ -9,26 +9,27 @@ import lombok.Data;
 
 @Data
 public class UsuarioDto {
-    @NotNull
+    @NotNull(message = "Usuário não pode ser nulo!")
     private TipoUsuarioModel tipoUsuarioModel;
 
-    @NotNull
-    private SituacaoModel situacaoModel;
-
-    @NotBlank
-    @Size(max = 200)
+    @NotBlank(message = "Nome do Usuário deve ser preenchido!")
+    @NotNull(message = "Nome do Usuário não pode ser nulo!")
+    @Size(max = 200, message = "Nome do Usuário deve conter no máximo 200 caracteres!")
     private String txUsuario;
 
-    @NotBlank
-    @Size(min = 11, max = 11)
+    @NotBlank(message = "Telefone deve ser preenchido!")
+    @NotNull(message = "Telefone não pode ser nulo!")
+    @Size(min = 11, max = 11, message = "Telefone deve conter exatamente 11 números!")
     private String txTelefone;
 
-    @Size(max = 11)
+
+    @NotBlank(message = "CPF deve ser preenchido!")
+    @NotNull(message = "CPF não pode ser nulo!")
+    @Size(min = 11, max = 11, message = "CPF deve conter exatamente 11 números!")
     private String txCpf;
 
-    @Size(max = 14)
+    @NotBlank(message = "CNPJ deve ser preenchido!")
+    @NotNull(message = "CNPJ não pode ser nulo!")
+    @Size(min = 14, max = 14, message = "CNPJ deve conter exatamente 14 números!")
     private String txCnpj;
-
-    @NotBlank
-    private String imgComprovanteResidencia;
 }
