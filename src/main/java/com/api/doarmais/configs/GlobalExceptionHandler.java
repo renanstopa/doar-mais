@@ -1,52 +1,50 @@
 package com.api.doarmais.configs;
 
 import com.api.doarmais.exceptions.UsuarioNotFound;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
+import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, List<String>>> handleValidationErrors(MethodArgumentNotValidException ex) {
-        List<String> errors = ex.getBindingResult().getFieldErrors()
-                .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(UsuarioNotFound.class)
-    public ResponseEntity<Map<String, List<String>>> handleNotFoundException(UsuarioNotFound ex) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
+    ProblemDetail handleValidationErrors(MethodArgumentNotValidException e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+        problemDetail.setType(e.getBody().getType());
+        problemDetail.setTitle("Dado não informado corretamente");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setProperty("Stacktrace: ", e.getStackTrace());
+        return problemDetail;
     }
 
     @ExceptionHandler(Exception.class)
-    public final ResponseEntity<Map<String, List<String>>> handleGeneralExceptions(Exception ex) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    ProblemDetail handleGeneralExceptions(Exception e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro interno do servidor");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setProperty("Stacktrace: ", e.getStackTrace());
+        return problemDetail;
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public final ResponseEntity<Map<String, List<String>>> handleRuntimeExceptions(RuntimeException ex) {
-        List<String> errors = Collections.singletonList(ex.getMessage());
-        return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    ProblemDetail handleRuntimeExceptions(RuntimeException e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro interno do servidor");
+        problemDetail.setDetail(e.getMessage());
+        problemDetail.setProperty("Stacktrace: ", e.getStackTrace());
+        return problemDetail;
     }
 
-    private Map<String, List<String>> getErrorsMap(List<String> errors) {
-        Map<String, List<String>> errorResponse = new HashMap<>();
-        errorResponse.put("errors", errors);
-        return errorResponse;
+    @ExceptionHandler(UsuarioNotFound.class)
+    ProblemDetail handleUsuarioNotFoundException(UsuarioNotFound e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
+        problemDetail.setTitle("Usuário não encontrado");
+        problemDetail.setDetail("Informe um usuário válido!");
+        problemDetail.setProperty("Stacktrace: ", e.getStackTrace());
+        return problemDetail;
     }
 
 }

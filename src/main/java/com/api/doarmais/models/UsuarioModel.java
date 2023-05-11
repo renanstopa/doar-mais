@@ -1,10 +1,16 @@
 package com.api.doarmais.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tab_usuario")
 public class UsuarioModel {
 
@@ -27,11 +33,11 @@ public class UsuarioModel {
     @Column(name = "tx_telefone")
     private String txTelefone;
 
-    @Column(name = "tx_cpf")
-    private String txCpf;
+    @Column(name = "fl_tipo_documento")
+    private char flTipoDocumento;
 
-    @Column(name = "txCnpj")
-    private String txCnpj;
+    @Column(name = "tx_documento")
+    private String txDocumento;
 
     @Column(name = "img_comprovante_residencia")
     private String imgComprovanteResidencia;

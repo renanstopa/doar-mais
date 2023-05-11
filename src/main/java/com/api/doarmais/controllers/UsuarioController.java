@@ -17,7 +17,7 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    UsuarioService usuarioService;
+    private UsuarioService usuarioService;
 
     @PostMapping("/criarUsuario")
     public ResponseEntity<UsuarioModel> criarUsuario(@RequestBody @Valid UsuarioDto usuarioDto){
