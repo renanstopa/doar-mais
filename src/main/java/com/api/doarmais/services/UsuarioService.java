@@ -11,7 +11,7 @@ import java.util.List;
 public class UsuarioService {
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
 
     public UsuarioModel criarUsuario(UsuarioModel usuarioModel) {
         return usuarioRepository.save(usuarioModel);

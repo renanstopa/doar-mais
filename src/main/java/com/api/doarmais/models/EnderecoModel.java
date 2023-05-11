@@ -1,10 +1,16 @@
 package com.api.doarmais.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "tab_endereco")
 public class EnderecoModel {
 
@@ -21,8 +27,8 @@ public class EnderecoModel {
     @Column(name = "tx_cep")
     private String txCep;
 
-    @Column(name = "tx_estado")
-    private String txEstado;
+    @Column(name = "txUf")
+    private String txUf;
 
     @Column(name = "tx_cidade")
     private String txCidade;

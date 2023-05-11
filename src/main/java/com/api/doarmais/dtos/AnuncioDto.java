@@ -17,4 +17,9 @@ public class AnuncioDto {
     @Size(max = 400, message = "Descrição do Anúncio deve conter no máximo 400 caracteres!")
     private String descAnuncio;
 
+    @NotBlank(message = "CEP deve ser preenchido!")
+    @NotNull(message = "CEP não pode ser nulo!")
+    @Size(min = 9, max = 9, message = "CEP deve conter exatamente 9 caracteres!")
+    private String txCep;
 }
+
