@@ -25,4 +25,7 @@ public class UsuarioDto {
     @Size(min = 14, max = 14, message = "Documento deve conter exatamente 14 números!")
     private String txDocumento;
 
+    private String txSenha;
+    private String txEmail;
+
 }
