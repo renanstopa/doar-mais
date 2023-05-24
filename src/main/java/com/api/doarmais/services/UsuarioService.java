@@ -20,4 +20,8 @@ public class UsuarioService {
     public List<UsuarioModel> listarUsuarios() {
         return usuarioRepository.findAll();
     }
+
+    public UsuarioModel getUserByEmail(String email){
+        return usuarioRepository.findByTxEmail(email);
+    }
 }
