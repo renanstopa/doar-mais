@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class DenunciaModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cd_denuncia")
     private Integer cdDenuncia;
 

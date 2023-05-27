@@ -20,4 +20,9 @@ public class TipoUsuarioService {
     public void saveAllTipoUsuarios(List<TipoUsuarioModel> tipoUsuarioModels) {
         tipoUsuarioRepository.saveAll(tipoUsuarioModels);
     }
+
+    public TipoUsuarioModel buscarTipoUsuario(Integer cdTipoUsuario) {
+        return tipoUsuarioRepository.findByCdTipoUsuario(cdTipoUsuario);
+    }
+
 }

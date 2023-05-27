@@ -21,7 +21,7 @@ import java.util.List;
 public class UsuarioModel implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cd_usuario")
     private Integer cdUsuario;
 

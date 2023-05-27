@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class SituacaoModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cd_situacao")
     private Integer cdSituacao;
 
