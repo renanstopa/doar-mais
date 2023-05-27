@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class AnuncioModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cd_anuncio")
     private Integer cdAnuncio;
 

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class ItemAnuncioModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     @Column(name = "cd_item")
     private Integer cdItem;
 
@@ -29,7 +29,7 @@ public class ItemAnuncioModel {
     @JoinColumn(name = "cd_categoria_item")
     private CategoriaItemModel categoriaItemModel;
 
-    @Column(name = "quantidade_item")
-    private Integer quantidadeItem;
+    @Column(name = "qtd_item")
+    private Integer qtdItem;
 
 }

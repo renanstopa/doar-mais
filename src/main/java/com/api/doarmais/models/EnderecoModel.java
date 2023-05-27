@@ -15,11 +15,10 @@ import lombok.NoArgsConstructor;
 public class EnderecoModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cd_endereco")
     private Integer cdEndereco;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "cd_usuario")
     private UsuarioModel usuarioModel;
@@ -29,6 +28,9 @@ public class EnderecoModel {
 
     @Column(name = "txUf")
     private String txUf;
+
+    @Column(name = "tx_bairro")
+    private String txBairro;
 
     @Column(name = "tx_cidade")
     private String txCidade;

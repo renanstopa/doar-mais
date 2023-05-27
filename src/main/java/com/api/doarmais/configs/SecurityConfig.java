@@ -24,7 +24,6 @@ public class SecurityConfig {
     private AuthenticationProvider authenticationProvider;
 
     private static final String[] AUTH_WHITELIST = {
-            "/usuario/criarUsuario",
             "/auth/**"
     };
 
@@ -44,8 +43,6 @@ public class SecurityConfig {
                 .and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-
 
         return http.build();
     }

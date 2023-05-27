@@ -38,7 +38,7 @@ public class PropostaModel {
     private SituacaoModel situacaoModel;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-    @Column(name = "dt_validade")
-    private LocalDateTime dtValidade;
+    @Column(name = "dt_proposta")
+    private LocalDateTime dtProposta;
 
 }

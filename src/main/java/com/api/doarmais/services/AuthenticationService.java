@@ -2,7 +2,7 @@ package com.api.doarmais.services;
 
 import com.api.doarmais.dtos.RequestDto;
 import com.api.doarmais.dtos.ResponseDto;
-import com.api.doarmais.dtos.UsuarioDto;
+import com.api.doarmais.dtos.CriarUsuarioDto;
 import com.api.doarmais.models.UsuarioModel;
 import com.api.doarmais.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +26,13 @@ public class AuthenticationService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public ResponseDto register(UsuarioDto request) {
+    public ResponseDto register(CriarUsuarioDto request) {
         var user = UsuarioModel.builder()
                 .txUsuario(request.getTxUsuario())
                 .txTelefone(request.getTxTelefone())
                 .txDocumento(request.getTxDocumento())
                 .txEmail(request.getTxEmail())
                 .txSenha(passwordEncoder.encode(request.getTxSenha()))
-                .tipoUsuarioModel(request.getTipoUsuarioModel())
                 .txRole("USER")
                 .build();
         usuarioRepository.save(user);
