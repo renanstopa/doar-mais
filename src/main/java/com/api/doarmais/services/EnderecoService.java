@@ -24,13 +24,13 @@ public class EnderecoService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
-    public void armazenarEndereco(UsuarioModel usuarioModel, EnderecoModel enderecoModel, CepDto retorno, CriarUsuarioDto criarUsuarioDto) {
+    public void armazenarEndereco(UsuarioModel usuarioModel, EnderecoModel enderecoModel, CriarUsuarioDto criarUsuarioDto) {
         enderecoModel.setUsuarioModel(usuarioModel);
-        enderecoModel.setTxCep(retorno.getCep());
-        enderecoModel.setTxUf(retorno.getState());
-        enderecoModel.setTxBairro(retorno.getNeighborhood());
-        enderecoModel.setTxCidade(retorno.getCity());
-        enderecoModel.setTxLogradouro(retorno.getStreet());
+        enderecoModel.setTxCep(criarUsuarioDto.getTxCep());
+        enderecoModel.setTxUf(criarUsuarioDto.getTxUf());
+        enderecoModel.setTxBairro(criarUsuarioDto.getTxBairro());
+        enderecoModel.setTxCidade(criarUsuarioDto.getTxCidade());
+        enderecoModel.setTxLogradouro(criarUsuarioDto.getTxLogradouro());
         enderecoModel.setCdNumero(criarUsuarioDto.getCdNumero());
         enderecoModel.setTxComplemento(criarUsuarioDto.getTxComplemento());
     }

@@ -24,7 +24,8 @@ public class SecurityConfig {
     private AuthenticationProvider authenticationProvider;
 
     private static final String[] AUTH_WHITELIST = {
-            "/auth/**"
+            "/auth/**",
+            "/brasilapi/**"
     };
 
     @Bean
