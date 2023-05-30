@@ -1,6 +1,5 @@
 package com.api.doarmais.configs;
 
-import com.api.doarmais.exceptions.CepNotFound;
 import com.api.doarmais.exceptions.UsuarioNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -41,14 +40,6 @@ public class GlobalExceptionHandler {
     ProblemDetail handleUsuarioNotFoundException(UsuarioNotFound e){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
         problemDetail.setTitle("Usuário não encontrado");
-        problemDetail.setDetail(e.getMessage());
-        return problemDetail;
-    }
-
-    @ExceptionHandler(CepNotFound.class)
-    ProblemDetail handleCepNotFoundException(CepNotFound e){
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
-        problemDetail.setTitle("CEP não encontrado");
         problemDetail.setDetail(e.getMessage());
         return problemDetail;
     }

@@ -1,11 +1,6 @@
 package com.api.doarmais.controllers;
 
-import com.api.doarmais.clients.BrasilApiClient;
-import com.api.doarmais.dtos.CepDto;
-import com.api.doarmais.dtos.RequestDto;
-import com.api.doarmais.dtos.ResponseDto;
-import com.api.doarmais.dtos.CriarUsuarioDto;
-import com.api.doarmais.exceptions.CepNotFound;
+import com.api.doarmais.dtos.*;
 import com.api.doarmais.models.EnderecoModel;
 import com.api.doarmais.models.UsuarioModel;
 import com.api.doarmais.services.AuthenticationService;
@@ -18,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -38,17 +30,10 @@ public class AuthController {
     private EnderecoService enderecoService;
 
     @Autowired
-    private BrasilApiClient brasilApiClient;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/registrarUsuario")
     public ResponseEntity<UsuarioModel> registrarUsuario(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto){
-        CepDto retorno = brasilApiClient.buscarCep(criarUsuarioDto.getTxCep());
-        if(retorno.getCep() == null){
-            throw new CepNotFound(criarUsuarioDto.getTxCep() + " é um cep inválido");
-        }
 
         var usuarioModel = new UsuarioModel();
         BeanUtils.copyProperties(criarUsuarioDto, usuarioModel);
@@ -56,7 +41,7 @@ public class AuthController {
         usuarioModel = usuarioService.criarUsuario(usuarioModel);
 
         var enderecoModel = new EnderecoModel();
-        enderecoService.armazenarEndereco(usuarioModel, enderecoModel, retorno, criarUsuarioDto);
+        enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioDto);
         enderecoService.criarEndereco(enderecoModel);
 
         return new ResponseEntity<UsuarioModel>(usuarioService.buscarUsuario(usuarioModel).get(), HttpStatus.CREATED);
@@ -64,10 +49,6 @@ public class AuthController {
 
     @PostMapping("/registrarOng")
     public ResponseEntity<UsuarioModel> registrarOng(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto){
-        CepDto retorno = brasilApiClient.buscarCep(criarUsuarioDto.getTxCep());
-        if(retorno.getCep() == null){
-            throw new CepNotFound(criarUsuarioDto.getTxCep() + " é um cep inválido");
-        }
 
         var usuarioModel = new UsuarioModel();
         BeanUtils.copyProperties(criarUsuarioDto, usuarioModel);
@@ -75,16 +56,14 @@ public class AuthController {
         usuarioModel = usuarioService.criarUsuario(usuarioModel);
 
         var enderecoModel = new EnderecoModel();
-        enderecoService.armazenarEndereco(usuarioModel, enderecoModel, retorno, criarUsuarioDto);
+        enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioDto);
         enderecoService.criarEndereco(enderecoModel);
 
         return new ResponseEntity<UsuarioModel>(usuarioService.buscarUsuario(usuarioModel).get(), HttpStatus.CREATED);
     }
 
     @PostMapping("/autenticar")
-    public ResponseEntity<ResponseDto> authenticate(
-            @RequestBody RequestDto request
-    ){
+    public ResponseEntity<ResponseDto> authenticate(@RequestBody RequestDto request){
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }
 
