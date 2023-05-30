@@ -1,44 +1,19 @@
 package com.api.doarmais.clients;
 
 import com.api.doarmais.dtos.CepDto;
-import com.google.gson.Gson;
-import org.springframework.stereotype.Service;
+import com.api.doarmais.dtos.CnpjDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.Duration;
+@FeignClient(value = "brasilapi", url = "https://brasilapi.com.br/api/")
+public interface BrasilApiClient {
 
-import static java.time.temporal.ChronoUnit.MINUTES;
+    @RequestMapping(method = RequestMethod.GET, value = "cep/v2/{cep}")
+    CepDto infoCep(@PathVariable("cep") String cep);
 
-@Service
-public class BrasilApiClient {
-
-    private final String baseUrl = "https://brasilapi.com.br/api/";
-    private final Gson gson = new Gson();
-
-    public CepDto buscarCep(String cep) {
-
-        String cepUrl = "cep/v2/";
-
-        try {
-            HttpClient httpClient = HttpClient.newBuilder().connectTimeout(Duration.of(1, MINUTES)).build();
-
-            HttpRequest httpRequest = HttpRequest.newBuilder().GET().uri(URI.create(baseUrl + cepUrl + cep)).build();
-
-            HttpResponse<String> httpResponse = httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-
-            return gson.fromJson(httpResponse.body(), CepDto.class);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        }
-    }
+    @RequestMapping(method = RequestMethod.GET, value = "cnpj/v1/{cnpj}")
+    CnpjDto infoCnpj(@PathVariable("cnpj") String cnpj);
 
 }
