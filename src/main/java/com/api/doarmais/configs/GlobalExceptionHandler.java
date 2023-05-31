@@ -1,5 +1,6 @@
 package com.api.doarmais.configs;
 
+import com.api.doarmais.exceptions.UserAlreadyExists;
 import com.api.doarmais.exceptions.UsuarioNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -49,6 +50,14 @@ public class GlobalExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, e.getLocalizedMessage());
         problemDetail.setTitle("Credenciais inválidas");
         problemDetail.setDetail("Usuário ou senha inválidos");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(UserAlreadyExists.class)
+    ProblemDetail handleUserAlreadyExistsException(UserAlreadyExists e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro na criação de conta");
+        problemDetail.setDetail(e.getMessage());
         return problemDetail;
     }
 

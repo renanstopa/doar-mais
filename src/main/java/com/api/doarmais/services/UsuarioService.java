@@ -27,6 +27,14 @@ public class UsuarioService {
         return usuarioRepository.findById(usuarioModel.getCdUsuario());
     }
 
+    public boolean buscarUsuarioPorEmail(String email){
+        return usuarioRepository.existsByTxEmail(email);
+    }
+
+    public boolean buscarUsuarioPorDocumento(String documento){
+        return usuarioRepository.existsByTxDocumento(documento);
+    }
+
     public List<UsuarioModel> listarUsuarios() {
         return usuarioRepository.findAll();
     }

@@ -1,6 +1,7 @@
 package com.api.doarmais.controllers;
 
 import com.api.doarmais.dtos.*;
+import com.api.doarmais.exceptions.UserAlreadyExists;
 import com.api.doarmais.models.EnderecoModel;
 import com.api.doarmais.models.UsuarioModel;
 import com.api.doarmais.services.AuthenticationService;
@@ -35,6 +36,12 @@ public class AuthController {
     @PostMapping("/registrarUsuario")
     public ResponseEntity<UsuarioModel> registrarUsuario(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto){
 
+        if (usuarioService.buscarUsuarioPorEmail(criarUsuarioDto.getTxEmail()))
+            throw new UserAlreadyExists("Email já cadastrado");
+
+        if (usuarioService.buscarUsuarioPorDocumento(criarUsuarioDto.getTxDocumento()))
+            throw new UserAlreadyExists("CPF já cadastrado");
+
         var usuarioModel = new UsuarioModel();
         BeanUtils.copyProperties(criarUsuarioDto, usuarioModel);
         usuarioService.completarInfoUsuario(usuarioModel, passwordEncoder, 1);
@@ -49,6 +56,12 @@ public class AuthController {
 
     @PostMapping("/registrarOng")
     public ResponseEntity<UsuarioModel> registrarOng(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto){
+
+        if (usuarioService.buscarUsuarioPorEmail(criarUsuarioDto.getTxEmail()))
+            throw new UserAlreadyExists("Email já cadastrado");
+
+        if (usuarioService.buscarUsuarioPorDocumento(criarUsuarioDto.getTxDocumento()))
+            throw new UserAlreadyExists("CNPJ já cadastrado");
 
         var usuarioModel = new UsuarioModel();
         BeanUtils.copyProperties(criarUsuarioDto, usuarioModel);
