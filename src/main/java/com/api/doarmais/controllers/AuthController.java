@@ -33,19 +33,19 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostMapping("/registrarUsuario")
+    @PostMapping("/registrarusuario")
     public ResponseEntity<UsuarioModel> registrarUsuario(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto){
 
-        if (usuarioService.buscarUsuarioPorEmail(criarUsuarioDto.getTxEmail()))
+        if (usuarioService.verificarUsuarioPorEmail(criarUsuarioDto.getTxEmail()))
             throw new UserAlreadyExists("Email já cadastrado");
 
-        if (usuarioService.buscarUsuarioPorDocumento(criarUsuarioDto.getTxDocumento()))
+        if (usuarioService.verificarUsuarioPorDocumento(criarUsuarioDto.getTxDocumento()))
             throw new UserAlreadyExists("CPF já cadastrado");
 
         var usuarioModel = new UsuarioModel();
         BeanUtils.copyProperties(criarUsuarioDto, usuarioModel);
         usuarioService.completarInfoUsuario(usuarioModel, passwordEncoder, 1);
-        usuarioModel = usuarioService.criarUsuario(usuarioModel);
+        usuarioModel = usuarioService.gravar(usuarioModel);
 
         var enderecoModel = new EnderecoModel();
         enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioDto);
@@ -54,19 +54,19 @@ public class AuthController {
         return new ResponseEntity<UsuarioModel>(usuarioService.buscarUsuario(usuarioModel).get(), HttpStatus.CREATED);
     }
 
-    @PostMapping("/registrarOng")
+    @PostMapping("/registrarong")
     public ResponseEntity<UsuarioModel> registrarOng(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto){
 
-        if (usuarioService.buscarUsuarioPorEmail(criarUsuarioDto.getTxEmail()))
+        if (usuarioService.verificarUsuarioPorEmail(criarUsuarioDto.getTxEmail()))
             throw new UserAlreadyExists("Email já cadastrado");
 
-        if (usuarioService.buscarUsuarioPorDocumento(criarUsuarioDto.getTxDocumento()))
+        if (usuarioService.verificarUsuarioPorDocumento(criarUsuarioDto.getTxDocumento()))
             throw new UserAlreadyExists("CNPJ já cadastrado");
 
         var usuarioModel = new UsuarioModel();
         BeanUtils.copyProperties(criarUsuarioDto, usuarioModel);
         usuarioService.completarInfoUsuario(usuarioModel, passwordEncoder, 2);
-        usuarioModel = usuarioService.criarUsuario(usuarioModel);
+        usuarioModel = usuarioService.gravar(usuarioModel);
 
         var enderecoModel = new EnderecoModel();
         enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioDto);

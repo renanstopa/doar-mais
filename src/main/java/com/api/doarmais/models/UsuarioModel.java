@@ -45,9 +45,6 @@ public class UsuarioModel implements UserDetails {
     @Column(name = "tx_telefone")
     private String txTelefone;
 
-    @Column(name = "fl_tipo_documento")
-    private char flTipoDocumento;
-
     @Column(name = "tx_documento")
     private String txDocumento;
 

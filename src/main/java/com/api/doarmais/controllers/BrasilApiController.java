@@ -17,12 +17,12 @@ public class BrasilApiController {
     @Autowired
     private BrasilApiClient brasilApiClient;
 
-    @GetMapping("/infoCep/{cep}")
+    @GetMapping("/infocep/{cep}")
     public ResponseEntity<CepDto> infoCep(@PathVariable("cep") String cep){
         return ResponseEntity.ok(brasilApiClient.infoCep(cep));
     }
 
-    @GetMapping("/infoCnpj/{cnpj}")
+    @GetMapping("/infocnpj/{cnpj}")
     public ResponseEntity<CnpjDto> infoCnpj(@PathVariable("cnpj") String cnpj){
         return ResponseEntity.ok(brasilApiClient.infoCnpj(cnpj));
     }
