@@ -61,8 +61,6 @@ public class CriarUsuarioDto {
     @NotNull(message = "Número não pode ser nulo!")
     private Integer cdNumero;
 
-    @NotBlank(message = "Complemente deve ser preenchido!")
-    @NotNull(message = "Complemento não pode ser nulo!")
     @Size(max = 100, message = "Compelemento deve conter no máximo 100 caracteres!")
     private String txComplemento;
 
