@@ -65,7 +65,6 @@ create table tab_anuncio(
 	cd_anuncio int not null auto_increment,
     cd_tipo_anuncio int,
     dt_criacao_anuncio date,
-    desc_anuncio text,
     tx_cep varchar(8),
     tx_cidade varchar(150),
     tx_uf char(2),
@@ -97,7 +96,17 @@ create table tab_item_anuncio(
     cd_anuncio int,
     cd_categoria_item int,
     qtd_item int,
+    desc_anuncio text,
     primary key (cd_item, cd_anuncio, cd_categoria_item),
     foreign key (cd_anuncio) references tab_anuncio (cd_anuncio),
     foreign key (cd_categoria_item) references tab_categoria_item (cd_categoria_item)
+);
+
+create table tab_reset_senha(
+	cd_reset_senha int not null auto_increment,
+    tx_email_usuario varchar(200),
+    cd_situacao int,
+    tx_token varchar(200),
+    dt_validade_token datetime,
+    primary key (cd_reset_senha)
 );

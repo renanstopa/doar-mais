@@ -1,6 +1,6 @@
 package com.api.doarmais.configs;
 
-import com.api.doarmais.exceptions.UsuarioNotFound;
+import com.api.doarmais.exceptions.UserNotFound;
 import com.api.doarmais.repositories.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,8 @@ public class ApplicationConfig {
     public UserDetailsService userDetailsService() {
         try{
             return username -> usuarioRepository.findByTxEmail(username);
-        }catch (UsuarioNotFound e){
-            throw new UsuarioNotFound("Usuário não encontrado");
+        }catch (UserNotFound e){
+            throw new UserNotFound("Usuário não encontrado");
         }
     }
 

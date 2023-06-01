@@ -19,7 +19,7 @@ public class UsuarioService {
     @Autowired
     private TipoUsuarioService tipoUsuarioService;
 
-    public UsuarioModel criarUsuario(UsuarioModel usuarioModel) {
+    public UsuarioModel gravar(UsuarioModel usuarioModel) {
         return usuarioRepository.save(usuarioModel);
     }
 
@@ -27,11 +27,11 @@ public class UsuarioService {
         return usuarioRepository.findById(usuarioModel.getCdUsuario());
     }
 
-    public boolean buscarUsuarioPorEmail(String email){
+    public boolean verificarUsuarioPorEmail(String email){
         return usuarioRepository.existsByTxEmail(email);
     }
 
-    public boolean buscarUsuarioPorDocumento(String documento){
+    public boolean verificarUsuarioPorDocumento(String documento){
         return usuarioRepository.existsByTxDocumento(documento);
     }
 
@@ -39,7 +39,7 @@ public class UsuarioService {
         return usuarioRepository.findAll();
     }
 
-    public UsuarioModel getUserByEmail(String email){
+    public UsuarioModel buscarUsuarioPorEmail(String email){
         return usuarioRepository.findByTxEmail(email);
     }
 
@@ -50,4 +50,5 @@ public class UsuarioService {
         TipoUsuarioModel tipoUsuarioModel = tipoUsuarioService.buscarTipoUsuario(cdTipoUsuario);
         usuarioModel.setTipoUsuarioModel(tipoUsuarioModel);
     }
+
 }

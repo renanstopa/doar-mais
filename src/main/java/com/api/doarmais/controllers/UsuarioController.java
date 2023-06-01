@@ -15,7 +15,7 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping("/listarUsuarios")
+    @GetMapping("/listarusuarios")
     public ResponseEntity<List<UsuarioModel>> listarUsuarios(){
         return ResponseEntity.ok().body(usuarioService.listarUsuarios());
     }

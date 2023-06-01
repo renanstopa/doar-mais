@@ -1,9 +1,9 @@
 package com.api.doarmais.configs;
 
-import com.api.doarmais.exceptions.UserAlreadyExists;
-import com.api.doarmais.exceptions.UsuarioNotFound;
+import com.api.doarmais.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.mail.MailSendException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,8 +37,8 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-    @ExceptionHandler(UsuarioNotFound.class)
-    ProblemDetail handleUsuarioNotFoundException(UsuarioNotFound e){
+    @ExceptionHandler(UserNotFound.class)
+    ProblemDetail handleUsuarioNotFoundException(UserNotFound e){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
         problemDetail.setTitle("Usuário não encontrado");
         problemDetail.setDetail(e.getMessage());
@@ -57,6 +57,54 @@ public class GlobalExceptionHandler {
     ProblemDetail handleUserAlreadyExistsException(UserAlreadyExists e){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, e.getLocalizedMessage());
         problemDetail.setTitle("Erro na criação de conta");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(ResetNotFound.class)
+    ProblemDetail handleResetNotFound(ResetNotFound e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro no reset de senha");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(ResetAlreadyExists.class)
+    ProblemDetail handleResetAlreadyExists(ResetAlreadyExists e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNPROCESSABLE_ENTITY, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro no reset de senha");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(MailSendException.class)
+    ProblemDetail handleMailSendException(MailSendException e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro no envio do email");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(PasswordNotEqual.class)
+    ProblemDetail handlePasswordNotEqual(PasswordNotEqual e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro na troca de senha");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(ResetExpired.class)
+    ProblemDetail handleResetExpired(ResetExpired e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro na troca de senha");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(ResetAlreadyUsed.class)
+    ProblemDetail handleResetAlreadyUsed(ResetAlreadyUsed e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro na troca de senha");
         problemDetail.setDetail(e.getMessage());
         return problemDetail;
     }
