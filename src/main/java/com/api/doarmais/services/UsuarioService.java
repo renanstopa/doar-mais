@@ -1,14 +1,15 @@
 package com.api.doarmais.services;
 
-import com.api.doarmais.models.TipoUsuarioModel;
-import com.api.doarmais.models.UsuarioModel;
+import com.api.doarmais.models.*;
 import com.api.doarmais.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UsuarioService {
@@ -49,6 +50,8 @@ public class UsuarioService {
 
         TipoUsuarioModel tipoUsuarioModel = tipoUsuarioService.buscarTipoUsuario(cdTipoUsuario);
         usuarioModel.setTipoUsuarioModel(tipoUsuarioModel);
+
+        usuarioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.CONTA_SEM_EMAIL_VERIFICADO));
     }
 
 }

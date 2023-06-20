@@ -13,10 +13,6 @@ public class TipoUsuarioService {
     @Autowired
     private TipoUsuarioRepository tipoUsuarioRepository;
 
-    public void deleteAllTipoUsuarios() {
-        tipoUsuarioRepository.deleteAll();
-    }
-
     public void saveAllTipoUsuarios(List<TipoUsuarioModel> tipoUsuarioModels) {
         tipoUsuarioRepository.saveAll(tipoUsuarioModels);
     }
@@ -25,4 +21,7 @@ public class TipoUsuarioService {
         return tipoUsuarioRepository.findByCdTipoUsuario(cdTipoUsuario);
     }
 
+    public boolean verificarExistencia() {
+        return tipoUsuarioRepository.existsById(1);
+    }
 }

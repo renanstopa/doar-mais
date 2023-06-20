@@ -65,6 +65,7 @@ create table tab_anuncio(
 	cd_anuncio int not null auto_increment,
     cd_tipo_anuncio int,
     dt_criacao_anuncio date,
+    tx_titulo_anuncio varchar(100),
     tx_cep varchar(8),
     tx_cidade varchar(150),
     tx_uf char(2),
@@ -73,15 +74,14 @@ create table tab_anuncio(
 );
 
 create table tab_proposta(
+	cd_proposta int not null auto_increment,
 	cd_usuario int,
-    cd_anuncio int,
     cd_usuario_aceito int,
     cd_situacao int,
-    dt_proposta date,
-    primary key (cd_usuario, cd_anuncio, cd_usuario_aceito, cd_situacao),
+    dt_agendada date,
+    primary key (cd_proposta, cd_usuario, cd_usuario_aceito, cd_situacao),
     foreign key (cd_usuario) references tab_usuario (cd_usuario),
     foreign key (cd_usuario_aceito) references tab_usuario (cd_usuario),
-    foreign key (cd_anuncio) references tab_anuncio (cd_anuncio),
     foreign key (cd_situacao) references tab_situacao (cd_situacao)
 );
 
@@ -96,10 +96,19 @@ create table tab_item_anuncio(
     cd_anuncio int,
     cd_categoria_item int,
     qtd_item int,
-    desc_anuncio text,
-    primary key (cd_item, cd_anuncio, cd_categoria_item),
+    desc_item_anuncio text,
+    primary key (cd_item),
     foreign key (cd_anuncio) references tab_anuncio (cd_anuncio),
     foreign key (cd_categoria_item) references tab_categoria_item (cd_categoria_item)
+);
+
+create table tab_item_anuncio_proposta(
+	cd_proposta int,
+    cd_item int,
+    qtd_solicitada_item int,
+    primary key (cd_proposta, cd_item),
+    foreign key (cd_proposta) references tab_proposta (cd_proposta),
+    foreign key (cd_item) references tab_item_anuncio (cd_item)
 );
 
 create table tab_reset_senha(

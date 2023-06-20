@@ -2,8 +2,10 @@ package com.api.doarmais.controllers;
 
 import com.api.doarmais.dtos.*;
 import com.api.doarmais.exceptions.UserAlreadyExists;
+import com.api.doarmais.models.AutenticacaoEmailModel;
 import com.api.doarmais.models.EnderecoModel;
 import com.api.doarmais.models.UsuarioModel;
+import com.api.doarmais.services.AutenticacaoEmailService;
 import com.api.doarmais.services.AuthenticationService;
 import com.api.doarmais.services.EnderecoService;
 import com.api.doarmais.services.UsuarioService;
@@ -33,6 +35,9 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AutenticacaoEmailService autenticacaoEmailService;
+
     @PostMapping("/registrarusuario")
     public ResponseEntity<UsuarioModel> registrarUsuario(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto){
 
@@ -50,6 +55,10 @@ public class AuthController {
         var enderecoModel = new EnderecoModel();
         enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioDto);
         enderecoService.criarEndereco(enderecoModel);
+
+        AutenticacaoEmailModel autenticacaoGerada = autenticacaoEmailService.gerarAutenticacaoEmail(usuarioModel.getTxEmail());
+        autenticacaoEmailService.gravar(autenticacaoGerada);
+        autenticacaoEmailService.enviarEmail(autenticacaoGerada);
 
         return new ResponseEntity<UsuarioModel>(usuarioService.buscarUsuario(usuarioModel).get(), HttpStatus.CREATED);
     }
@@ -71,6 +80,10 @@ public class AuthController {
         var enderecoModel = new EnderecoModel();
         enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioDto);
         enderecoService.criarEndereco(enderecoModel);
+
+        AutenticacaoEmailModel autenticacaoGerada = autenticacaoEmailService.gerarAutenticacaoEmail(usuarioModel.getTxEmail());
+        autenticacaoEmailService.gravar(autenticacaoGerada);
+        autenticacaoEmailService.enviarEmail(autenticacaoGerada);
 
         return new ResponseEntity<UsuarioModel>(usuarioService.buscarUsuario(usuarioModel).get(), HttpStatus.CREATED);
     }

@@ -19,17 +19,18 @@ public class ItemAnuncioModel {
     @Column(name = "cd_item")
     private Integer cdItem;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "cd_anuncio")
     private AnuncioModel anuncioModel;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "cd_categoria_item")
     private CategoriaItemModel categoriaItemModel;
 
     @Column(name = "qtd_item")
     private Integer qtdItem;
+
+    @Column(name = "desc_item")
+    private String descItem;
 
 }

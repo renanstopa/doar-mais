@@ -30,8 +30,8 @@ public class AnuncioModel {
     @Column(name = "dt_criacao_anuncio")
     private LocalDateTime dtCriacaoAnuncio;
 
-    @Column(name = "desc_anuncio")
-    private String descAnuncio;
+    @Column(name = "tx_titulo_anuncio")
+    private String txTituloAnuncio;
 
     @Column(name = "tx_cep")
     private String txCep;

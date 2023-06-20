@@ -4,12 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class ResetAlreadyUsed extends RuntimeException{
+public class EmailAccountNotVerified extends RuntimeException{
 
-    public ResetAlreadyUsed(String message) {
+    public EmailAccountNotVerified(String message) {
         super(message);
     }
-    public ResetAlreadyUsed(String message, Throwable cause) {
+    public EmailAccountNotVerified(String message, Throwable cause) {
         super(message, cause);
     }
 
