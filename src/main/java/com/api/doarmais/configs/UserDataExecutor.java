@@ -1,7 +1,8 @@
 package com.api.doarmais.configs;
 
+import com.api.doarmais.models.SituacaoModel;
 import com.api.doarmais.models.TipoUsuarioModel;
-import com.api.doarmais.models.UsuarioModel;
+import com.api.doarmais.services.SituacaoService;
 import com.api.doarmais.services.TipoUsuarioService;
 import com.api.doarmais.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,12 @@ public class UserDataExecutor implements CommandLineRunner {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private SituacaoService situacaoService;
+
     @Override
     public void run(String... args) throws Exception {
-        List<UsuarioModel> listaUsuario = usuarioService.listarUsuarios();
-
-        if(listaUsuario.isEmpty()){
-            tipoUsuarioService.deleteAllTipoUsuarios();
+        if(!tipoUsuarioService.verificarExistencia()){
             List<TipoUsuarioModel> tipoUsuarioModels = Arrays.asList(
                     TipoUsuarioModel.builder().cdTipoUsuario(1).txTipoUsuario("Pessoa").build(),
                     TipoUsuarioModel.builder().cdTipoUsuario(2).txTipoUsuario("ONG").build(),
@@ -33,6 +34,35 @@ public class UserDataExecutor implements CommandLineRunner {
             );
             tipoUsuarioService.saveAllTipoUsuarios(tipoUsuarioModels);
         }
+
+        if(!situacaoService.verificarExistencia()){
+            List<SituacaoModel> situacaoModels = Arrays.asList(
+                    SituacaoModel.builder().cdSituacao(1).txSituacao("Token não utilizado").build(),
+                    SituacaoModel.builder().cdSituacao(2).txSituacao("Token expirado").build(),
+                    SituacaoModel.builder().cdSituacao(3).txSituacao("Token utilizado").build(),
+
+                    SituacaoModel.builder().cdSituacao(11).txSituacao("Conta sem email verificado").build(),
+                    SituacaoModel.builder().cdSituacao(12).txSituacao("Conta sem aprovação do admnistrador").build(),
+                    SituacaoModel.builder().cdSituacao(13).txSituacao("Conta apta para uso").build(),
+                    SituacaoModel.builder().cdSituacao(14).txSituacao("Conta suspensa").build(),
+                    SituacaoModel.builder().cdSituacao(15).txSituacao("Conta encerrada").build(),
+
+                    SituacaoModel.builder().cdSituacao(21).txSituacao("Anúncio criado").build(),
+                    SituacaoModel.builder().cdSituacao(22).txSituacao("Anúncio sem itens").build(),
+                    SituacaoModel.builder().cdSituacao(23).txSituacao("Anúncio cancelado").build(),
+                    SituacaoModel.builder().cdSituacao(24).txSituacao("Anúncio finalizado").build(),
+
+                    SituacaoModel.builder().cdSituacao(31).txSituacao("Proposta confirmada").build(),
+                    SituacaoModel.builder().cdSituacao(32).txSituacao("Proposta cancelada").build(),
+                    SituacaoModel.builder().cdSituacao(33).txSituacao("Encontro realizado").build(),
+                    SituacaoModel.builder().cdSituacao(34).txSituacao("Encontro não realizado").build(),
+
+                    SituacaoModel.builder().cdSituacao(41).txSituacao("Denúncia criada").build(),
+                    SituacaoModel.builder().cdSituacao(42).txSituacao("Denúncia gerenciada").build()
+            );
+            situacaoService.saveAllSituacoes(situacaoModels);
+        }
+
     }
 
 }

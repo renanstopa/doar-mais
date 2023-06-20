@@ -18,27 +18,28 @@ import java.time.LocalDateTime;
 public class PropostaModel {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cd_proposta")
+    private Integer cdProposta;
+
     @ManyToOne
     @JoinColumn(name = "cd_usuario")
     private UsuarioModel usuarioModel;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "cd_anuncio")
     private AnuncioModel anuncioModel;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "cd_usuario_aceito")
     private UsuarioModel usuarioAceitoModel;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "cd_situacao")
     private SituacaoModel situacaoModel;
 
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-    @Column(name = "dt_proposta")
-    private LocalDateTime dtProposta;
+    @Column(name = "dt_agendada")
+    private LocalDateTime dtAgendada;
 
 }

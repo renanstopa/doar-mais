@@ -101,10 +101,42 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-    @ExceptionHandler(ResetAlreadyUsed.class)
-    ProblemDetail handleResetAlreadyUsed(ResetAlreadyUsed e){
+    @ExceptionHandler(LinkAlreadyUsed.class)
+    ProblemDetail handleLinkAlreadyUsed(LinkAlreadyUsed e){
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
-        problemDetail.setTitle("Erro na troca de senha");
+        problemDetail.setTitle("Erro no link");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(AccountNotVerifiedByAdm.class)
+    ProblemDetail handleAccountNotVerifiedByAdm(AccountNotVerifiedByAdm e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro no login");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(BlockedAccount.class)
+    ProblemDetail handleBlockedAccount(BlockedAccount e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro no login");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(EmailAccountNotVerified.class)
+    ProblemDetail handleEmailAccountNotVerified(EmailAccountNotVerified e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro no login");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(SuspendedAccount.class)
+    ProblemDetail handleSuspendedAccount(SuspendedAccount e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro no login");
         problemDetail.setDetail(e.getMessage());
         return problemDetail;
     }
