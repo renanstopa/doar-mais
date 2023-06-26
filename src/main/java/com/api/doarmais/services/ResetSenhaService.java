@@ -46,7 +46,7 @@ public class ResetSenhaService {
 
     public ResetSenhaModel gerarPedido(String email) {
         String token = UUID.randomUUID().toString();
-        LocalDateTime validade = LocalDateTime.now().plusDays(1);
+        LocalDateTime validade = LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).plusDays(1);
 
         ResetSenhaModel resetSenhaModel = new ResetSenhaModel();
         resetSenhaModel.setCdSituacao(SituacaoModel.TOKEN_NAO_UTILIZADO);

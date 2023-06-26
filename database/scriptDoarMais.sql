@@ -3,7 +3,7 @@ create database doarmais;
 use doarmais;
 
 create table tab_situacao(
-	cd_situacao int not null auto_increment,
+	cd_situacao int not null,
     tx_situacao varchar(45),
     primary key (cd_situacao)
 );
@@ -44,13 +44,21 @@ create table tab_endereco(
     foreign key (cd_usuario) references tab_usuario (cd_usuario)
 );
 
+create table tab_tipo_denuncia(
+	cd_tipo_denuncia int not null,
+    tx_tipo_denuncia varchar(45),
+    primary key (cd_tipo_denuncia)
+);
+
 create table tab_denuncia(
 	cd_denuncia int not null auto_increment,
+    cd_tipo_denuncia int,
     cd_usuario int,
     cd_situacao int,
     desc_denuncia text,
-    dt_denuncia date,
-    primary key (cd_denuncia, cd_usuario),
+    dt_denuncia datetime,
+    primary key (cd_denuncia),
+    foreign key (cd_tipo_denuncia) references tab_tipo_denuncia (cd_tipo_denuncia),
     foreign key (cd_usuario) references tab_usuario (cd_usuario),
     foreign key (cd_situacao) references tab_situacao (cd_situacao)
 );
@@ -64,7 +72,7 @@ create table tab_tipo_anuncio(
 create table tab_anuncio(
 	cd_anuncio int not null auto_increment,
     cd_tipo_anuncio int,
-    dt_criacao_anuncio date,
+    dt_criacao_anuncio datetime,
     tx_titulo_anuncio varchar(100),
     tx_cep varchar(8),
     tx_cidade varchar(150),
@@ -78,7 +86,7 @@ create table tab_proposta(
 	cd_usuario int,
     cd_usuario_aceito int,
     cd_situacao int,
-    dt_agendada date,
+    dt_agendada datetime,
     primary key (cd_proposta, cd_usuario, cd_usuario_aceito, cd_situacao),
     foreign key (cd_usuario) references tab_usuario (cd_usuario),
     foreign key (cd_usuario_aceito) references tab_usuario (cd_usuario),
@@ -118,4 +126,12 @@ create table tab_reset_senha(
     tx_token varchar(200),
     dt_validade_token datetime,
     primary key (cd_reset_senha)
+);
+
+create table tab_autenticacao_email(
+	cd_autenticacao_email int not null auto_increment,
+    tx_email_usuario varchar(200),
+    cd_situacao int,
+    tx_token varchar(200),
+    primary key (cd_autenticacao_email)
 );
