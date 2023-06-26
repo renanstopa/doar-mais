@@ -1,8 +1,10 @@
 package com.api.doarmais.configs;
 
 import com.api.doarmais.models.SituacaoModel;
+import com.api.doarmais.models.TipoDenunciaModel;
 import com.api.doarmais.models.TipoUsuarioModel;
 import com.api.doarmais.services.SituacaoService;
+import com.api.doarmais.services.TipoDenunciaService;
 import com.api.doarmais.services.TipoUsuarioService;
 import com.api.doarmais.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class UserDataExecutor implements CommandLineRunner {
     @Autowired
     private SituacaoService situacaoService;
 
+    @Autowired
+    private TipoDenunciaService tipoDenunciaService;
+
     @Override
     public void run(String... args) throws Exception {
         if(!tipoUsuarioService.verificarExistencia()){
@@ -33,6 +38,15 @@ public class UserDataExecutor implements CommandLineRunner {
                     TipoUsuarioModel.builder().cdTipoUsuario(3).txTipoUsuario("Administrador").build()
             );
             tipoUsuarioService.saveAllTipoUsuarios(tipoUsuarioModels);
+        }
+
+        if(!tipoDenunciaService.verificarExistencia()){
+            List<TipoDenunciaModel> tipoDenunciaModels = Arrays.asList(
+                    TipoDenunciaModel.builder().cdTipoDenuncia(1).txTipoDenuncia("Melhoria").build(),
+                    TipoDenunciaModel.builder().cdTipoDenuncia(2).txTipoDenuncia("Bug").build(),
+                    TipoDenunciaModel.builder().cdTipoDenuncia(3).txTipoDenuncia("Denunciar usuário").build()
+            );
+            tipoDenunciaService.saveAllTipoDenuncias(tipoDenunciaModels);
         }
 
         if(!situacaoService.verificarExistencia()){

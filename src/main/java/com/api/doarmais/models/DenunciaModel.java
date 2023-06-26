@@ -22,7 +22,10 @@ public class DenunciaModel {
     @Column(name = "cd_denuncia")
     private Integer cdDenuncia;
 
-    @Id
+    @ManyToOne
+    @JoinColumn(name = "cd_tipo_denuncia")
+    private TipoDenunciaModel tipoDenunciaModel;
+
     @ManyToOne
     @JoinColumn(name = "cd_usuario")
     private UsuarioModel usuarioModel;
