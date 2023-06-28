@@ -1,10 +1,11 @@
 package com.api.doarmais.controllers;
 
 import com.api.doarmais.dtos.*;
+import com.api.doarmais.exceptions.InvalidDocument;
 import com.api.doarmais.exceptions.UserAlreadyExists;
-import com.api.doarmais.models.AutenticacaoEmailModel;
-import com.api.doarmais.models.EnderecoModel;
-import com.api.doarmais.models.UsuarioModel;
+import com.api.doarmais.models.tabelas.AutenticacaoEmailModel;
+import com.api.doarmais.models.tabelas.EnderecoModel;
+import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.services.AutenticacaoEmailService;
 import com.api.doarmais.services.AuthenticationService;
 import com.api.doarmais.services.EnderecoService;
@@ -47,6 +48,10 @@ public class AuthController {
         if (usuarioService.verificarUsuarioPorDocumento(criarUsuarioDto.getTxDocumento()))
             throw new UserAlreadyExists("CPF já cadastrado");
 
+        if(!usuarioService.validarCPF(criarUsuarioDto.getTxDocumento())){
+            throw new InvalidDocument("CPF inválido");
+        }
+
         var usuarioModel = new UsuarioModel();
         BeanUtils.copyProperties(criarUsuarioDto, usuarioModel);
         usuarioService.completarInfoUsuario(usuarioModel, passwordEncoder, 1);
@@ -54,7 +59,7 @@ public class AuthController {
 
         var enderecoModel = new EnderecoModel();
         enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioDto);
-        enderecoService.criarEndereco(enderecoModel);
+        enderecoService.gravar(enderecoModel);
 
         AutenticacaoEmailModel autenticacaoGerada = autenticacaoEmailService.gerarAutenticacaoEmail(usuarioModel.getTxEmail());
         autenticacaoEmailService.gravar(autenticacaoGerada);
@@ -79,7 +84,7 @@ public class AuthController {
 
         var enderecoModel = new EnderecoModel();
         enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioDto);
-        enderecoService.criarEndereco(enderecoModel);
+        enderecoService.gravar(enderecoModel);
 
         AutenticacaoEmailModel autenticacaoGerada = autenticacaoEmailService.gerarAutenticacaoEmail(usuarioModel.getTxEmail());
         autenticacaoEmailService.gravar(autenticacaoGerada);

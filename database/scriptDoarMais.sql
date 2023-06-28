@@ -2,6 +2,8 @@ drop database if exists doarmais;
 create database doarmais;
 use doarmais;
 
+-- CRIAÇÃO DO BANCO
+
 create table tab_situacao(
 	cd_situacao int not null,
     tx_situacao varchar(45),
@@ -40,6 +42,7 @@ create table tab_endereco(
     tx_logradouro varchar(200),
     cd_numero int,
     tx_complemento varchar(100),
+    ck_ativo int,
     primary key (cd_endereco, cd_usuario),
     foreign key (cd_usuario) references tab_usuario (cd_usuario)
 );
@@ -135,3 +138,37 @@ create table tab_autenticacao_email(
     tx_token varchar(200),
     primary key (cd_autenticacao_email)
 );
+
+-- FIM BANCO
+
+-- CRIAÇÃO DAS VIEWS
+
+-- drop view if exists vw_perfil_usuario;
+create view
+	vw_perfil_usuario
+as select
+	u.cd_usuario, upper(u.tx_usuario) as tx_usuario,
+    case
+        when length(u.tx_telefone) = 11 then concat('(', substring(u.tx_telefone, 1, 2), ') ', substring(u.tx_telefone, 3, 5), '-', substring(u.tx_telefone, 8, 4))
+        when length(u.tx_telefone) = 10 then concat('(', substring(u.tx_telefone, 1, 2), ') ', substring(u.tx_telefone, 3, 4), '-', substring(u.tx_telefone, 7, 4))
+        else u.tx_telefone
+    end as
+		tx_telefone,
+    case
+        when u.cd_tipo_usuario = 1 then concat(substring(u.tx_documento, 1, 3), '.', substring(u.tx_documento, 4, 3), '.', substring(u.tx_documento, 7, 3), '-', substring(u.tx_documento, 10, 2))
+        when u.cd_tipo_usuario = 2 then concat(substring(u.tx_documento, 1, 2), '.', substring(u.tx_documento, 3, 3), '.', substring(u.tx_documento, 6, 3), '/', substring(u.tx_documento, 9, 4), '-', substring(u.tx_documento, 13, 2))
+        else u.tx_documento
+    end as
+		tx_documento, concat(substring(e.tx_cep, 1, 5), '-', substring(e.tx_cep, 6, 8)) as tx_cep,
+        e.tx_uf, upper(e.tx_cidade) as tx_cidade, upper(e.tx_bairro) as tx_bairro, upper(e.tx_logradouro) as tx_logradouro,
+        e.cd_numero, upper(e.tx_complemento) as tx_complemento
+from
+	tab_usuario u
+join
+	tab_endereco e
+on
+	(u.cd_usuario = e.cd_usuario)
+where
+	e.ck_ativo = 1;
+
+-- FIM DAS VIEWS

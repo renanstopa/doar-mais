@@ -1,6 +1,6 @@
 package com.api.doarmais.repositories;
 
-import com.api.doarmais.models.ResetSenhaModel;
+import com.api.doarmais.models.tabelas.ResetSenhaModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

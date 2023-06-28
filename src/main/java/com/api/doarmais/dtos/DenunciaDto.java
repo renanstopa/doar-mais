@@ -1,7 +1,7 @@
 package com.api.doarmais.dtos;
 
-import com.api.doarmais.models.TipoDenunciaModel;
-import com.api.doarmais.models.UsuarioModel;
+import com.api.doarmais.models.tabelas.TipoDenunciaModel;
+import com.api.doarmais.models.tabelas.UsuarioModel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

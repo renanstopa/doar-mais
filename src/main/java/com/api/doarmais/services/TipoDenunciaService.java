@@ -1,6 +1,6 @@
 package com.api.doarmais.services;
 
-import com.api.doarmais.models.TipoDenunciaModel;
+import com.api.doarmais.models.tabelas.TipoDenunciaModel;
 import com.api.doarmais.repositories.TipoDenunciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,15 +1,16 @@
 package com.api.doarmais.services;
 
-import com.api.doarmais.models.*;
+import com.api.doarmais.models.tabelas.SituacaoModel;
+import com.api.doarmais.models.tabelas.TipoUsuarioModel;
+import com.api.doarmais.models.tabelas.UsuarioModel;
+import com.api.doarmais.models.views.PerfilUsuarioViewModel;
 import com.api.doarmais.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UsuarioService {
@@ -52,6 +53,45 @@ public class UsuarioService {
         usuarioModel.setTipoUsuarioModel(tipoUsuarioModel);
 
         usuarioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.CONTA_SEM_EMAIL_VERIFICADO));
+    }
+
+    public boolean validarCPF(String cpf) {
+        char dig10, dig11;
+        int sm, i, r, num, peso;
+
+        try {
+            sm = 0;
+            peso = 10;
+            for (i=0; i<9; i++) {
+                num = (int)(cpf.charAt(i) - 48);
+                sm = sm + (num * peso);
+                peso = peso - 1;
+            }
+
+            r = 11 - (sm % 11);
+            if ((r == 10) || (r == 11))
+                dig10 = '0';
+            else
+                dig10 = (char)(r + 48);
+
+            sm = 0;
+            peso = 11;
+            for(i=0; i<10; i++) {
+                num = (int)(cpf.charAt(i) - 48);
+                sm = sm + (num * peso);
+                peso = peso - 1;
+            }
+
+            r = 11 - (sm % 11);
+            if ((r == 10) || (r == 11))
+                dig11 = '0';
+            else
+                dig11 = (char)(r + 48);
+
+            return (dig10 == cpf.charAt(9)) && (dig11 == cpf.charAt(10));
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }

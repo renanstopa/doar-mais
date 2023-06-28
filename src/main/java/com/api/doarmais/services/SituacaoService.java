@@ -1,9 +1,7 @@
 package com.api.doarmais.services;
 
-import com.api.doarmais.models.SituacaoModel;
-import com.api.doarmais.models.TipoUsuarioModel;
+import com.api.doarmais.models.tabelas.SituacaoModel;
 import com.api.doarmais.repositories.SituacaoRepository;
-import com.api.doarmais.repositories.TipoUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

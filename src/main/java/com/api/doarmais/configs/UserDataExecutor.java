@@ -1,8 +1,8 @@
 package com.api.doarmais.configs;
 
-import com.api.doarmais.models.SituacaoModel;
-import com.api.doarmais.models.TipoDenunciaModel;
-import com.api.doarmais.models.TipoUsuarioModel;
+import com.api.doarmais.models.tabelas.SituacaoModel;
+import com.api.doarmais.models.tabelas.TipoDenunciaModel;
+import com.api.doarmais.models.tabelas.TipoUsuarioModel;
 import com.api.doarmais.services.SituacaoService;
 import com.api.doarmais.services.TipoDenunciaService;
 import com.api.doarmais.services.TipoUsuarioService;

@@ -1,4 +1,4 @@
-package com.api.doarmais.models;
+package com.api.doarmais.models.tabelas;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_reset_senha")
-public class ResetSenhaModel {
+@Table(name = "tab_autenticacao_email")
+public class AutenticacaoEmailModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cd_reset_senha")
-    private Integer cdResetSenha;
+    @Column(name = "cd_autenticacao_email")
+    private Integer cdAutenticacaoEmail;
 
     @Column(name = "tx_email_usuario")
     private String txEmailUsuario;
@@ -29,8 +29,5 @@ public class ResetSenhaModel {
 
     @Column(name = "tx_token")
     private String txToken;
-
-    @Column(name = "dt_validade_token")
-    private LocalDateTime dtValidadeToken;
 
 }

@@ -1,4 +1,4 @@
-package com.api.doarmais.models;
+package com.api.doarmais.models.tabelas;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,14 +14,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_categoria_item")
-public class CategoriaItemModel {
+@Table(name = "tab_tipo_anuncio")
+public class TipoAnuncioModel {
 
     @Id
-    @Column(name = "cd_categoria_item")
-    private Integer cdCategoriaItem;
+    @Column(name = "cd_tipo_anuncio")
+    private Integer cdTipoAnuncio;
 
-    @Column(name = "tx_categoria_item")
-    private String txCategoriaItem;
+    @Column(name = "tx_tipo_anuncio")
+    private String txTipoAnuncio;
 
 }
