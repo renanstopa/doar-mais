@@ -141,4 +141,20 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(InvalidDocument.class)
+    ProblemDetail handleInvalidDocument(InvalidDocument e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro na criação de conta");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(AddressAlreadyExists.class)
+    ProblemDetail handleAddressAlreadyExists(AddressAlreadyExists e){
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+        problemDetail.setTitle("Erro na criação de endereço");
+        problemDetail.setDetail(e.getMessage());
+        return problemDetail;
+    }
+
 }

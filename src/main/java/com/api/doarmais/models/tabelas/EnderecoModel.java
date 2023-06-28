@@ -1,4 +1,4 @@
-package com.api.doarmais.models;
+package com.api.doarmais.models.tabelas;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public class EnderecoModel {
     @Column(name = "tx_cep")
     private String txCep;
 
-    @Column(name = "txUf")
+    @Column(name = "tx_uf")
     private String txUf;
 
     @Column(name = "tx_bairro")
@@ -43,5 +43,8 @@ public class EnderecoModel {
 
     @Column(name = "tx_complemento")
     private String txComplemento;
+
+    @Column(name = "ck_ativo")
+    private Integer ckAtivo;
 
 }

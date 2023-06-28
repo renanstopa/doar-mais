@@ -1,8 +1,8 @@
 package com.api.doarmais.services;
 
-import com.api.doarmais.models.ResetSenhaModel;
-import com.api.doarmais.models.SituacaoModel;
-import com.api.doarmais.models.UsuarioModel;
+import com.api.doarmais.models.tabelas.ResetSenhaModel;
+import com.api.doarmais.models.tabelas.SituacaoModel;
+import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.repositories.ResetSenhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSendException;

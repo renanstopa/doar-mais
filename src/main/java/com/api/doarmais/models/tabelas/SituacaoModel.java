@@ -1,4 +1,4 @@
-package com.api.doarmais.models;
+package com.api.doarmais.models.tabelas;
 
 import jakarta.persistence.*;
 import lombok.*;

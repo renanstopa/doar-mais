@@ -1,9 +1,9 @@
 package com.api.doarmais.controllers;
 
 import com.api.doarmais.exceptions.*;
-import com.api.doarmais.models.AutenticacaoEmailModel;
-import com.api.doarmais.models.SituacaoModel;
-import com.api.doarmais.models.UsuarioModel;
+import com.api.doarmais.models.tabelas.AutenticacaoEmailModel;
+import com.api.doarmais.models.tabelas.SituacaoModel;
+import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.services.AutenticacaoEmailService;
 import com.api.doarmais.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;

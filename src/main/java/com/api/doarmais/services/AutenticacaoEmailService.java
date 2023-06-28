@@ -1,21 +1,15 @@
 package com.api.doarmais.services;
 
-import com.api.doarmais.models.AutenticacaoEmailModel;
-import com.api.doarmais.models.ResetSenhaModel;
-import com.api.doarmais.models.SituacaoModel;
-import com.api.doarmais.models.UsuarioModel;
+import com.api.doarmais.models.tabelas.AutenticacaoEmailModel;
+import com.api.doarmais.models.tabelas.SituacaoModel;
+import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.repositories.AutenticacaoEmailRepository;
-import com.api.doarmais.repositories.ResetSenhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Optional;
-import java.util.TimeZone;
 import java.util.UUID;
 
 @Service

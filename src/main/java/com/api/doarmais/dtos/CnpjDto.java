@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class CnpjDto {
 
+    private String razao_social;
+    private String ddd_telefone_1;
     private Integer cep;
     private String uf;
     private String bairro;

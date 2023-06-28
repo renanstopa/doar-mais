@@ -1,8 +1,8 @@
 package com.api.doarmais.controllers;
 
 import com.api.doarmais.dtos.DenunciaDto;
-import com.api.doarmais.models.DenunciaModel;
-import com.api.doarmais.models.SituacaoModel;
+import com.api.doarmais.models.tabelas.DenunciaModel;
+import com.api.doarmais.models.tabelas.SituacaoModel;
 import com.api.doarmais.services.DenunciaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;

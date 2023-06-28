@@ -1,9 +1,8 @@
 package com.api.doarmais.services;
 
-import com.api.doarmais.models.DenunciaModel;
+import com.api.doarmais.models.tabelas.DenunciaModel;
 import com.api.doarmais.repositories.DenunciaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 @Service
