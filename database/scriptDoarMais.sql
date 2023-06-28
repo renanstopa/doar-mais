@@ -143,6 +143,7 @@ create table tab_autenticacao_email(
 
 -- CRIAÇÃO DAS VIEWS
 
+-- drop view if exists vw_perfil_usuario;
 create view
 	vw_perfil_usuario
 as select
@@ -166,6 +167,8 @@ from
 join
 	tab_endereco e
 on
-	(u.cd_usuario = e.cd_usuario);
+	(u.cd_usuario = e.cd_usuario)
+where
+	e.ck_ativo = 1;
 
 -- FIM DAS VIEWS
