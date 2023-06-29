@@ -4,6 +4,7 @@ import com.api.doarmais.dtos.AtualizarDadosDto;
 import com.api.doarmais.dtos.EnderecoDto;
 import com.api.doarmais.dtos.TrocarSenhaDto;
 import com.api.doarmais.exceptions.AddressAlreadyExists;
+import com.api.doarmais.exceptions.PasswordNotEqual;
 import com.api.doarmais.models.tabelas.EnderecoModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.models.views.PerfilUsuarioViewModel;
@@ -83,6 +84,9 @@ public class UsuarioController {
 
     @PatchMapping("/trocarsenha")
     public ResponseEntity<UsuarioModel> trocarSenha(@Valid @RequestBody TrocarSenhaDto trocarSenhaDto){
+        if(!trocarSenhaDto.getSenha().equals(trocarSenhaDto.getConfirmaSenha()))
+            throw new PasswordNotEqual("As senhas devem ser iguais");
+
         UsuarioModel usuarioModel = (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         usuarioModel.setTxSenha(passwordEncoder.encode(trocarSenhaDto.getSenha()));
 
