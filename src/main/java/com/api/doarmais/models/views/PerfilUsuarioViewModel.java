@@ -11,35 +11,34 @@ import lombok.Data;
 @Table(name = "vw_perfil_usuario")
 public class PerfilUsuarioViewModel {
 
-    @Id
-    @Column(name = "cd_usuario")
-    private Integer cdUsuario;
+  @Id
+  @Column(name = "id")
+  private Integer id;
 
-    @Column(name = "tx_usuario")
-    private String txUsuario;
+  @Column(name = "nome")
+  private String nome;
 
-    @Column(name = "tx_telefone")
-    private String txTelefone;
+  @Column(name = "telefone")
+  private String telefone;
 
-    @Column(name = "tx_documento")
-    private String txDocumento;
+  @Column(name = "documento")
+  private String documento;
 
-    @Column(name = "tx_cep")
-    private String txCep;
+  @Column(name = "cep")
+  private String cep;
 
-    @Column(name = "tx_uf")
-    private String txUf;
+  @Column(name = "uf")
+  private String uf;
 
-    @Column(name = "tx_cidade")
-    private String txCidade;
+  @Column(name = "cidade")
+  private String cidade;
 
-    @Column(name = "tx_bairro")
-    private String txBairro;
+  @Column(name = "bairro")
+  private String bairro;
 
-    @Column(name = "cd_numero")
-    private Integer txNumero;
+  @Column(name = "numero")
+  private Integer numero;
 
-    @Column(name = "tx_complemento")
-    private String txComplemento;
-
+  @Column(name = "complemento")
+  private String complemento;
 }

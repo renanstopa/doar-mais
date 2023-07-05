@@ -1,36 +1,34 @@
 package com.api.doarmais.models.tabelas;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_reset_senha")
+@Table(name = "reset_senha")
 public class ResetSenhaModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cd_reset_senha")
-    private Integer cdResetSenha;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Integer id;
 
-    @Column(name = "tx_email_usuario")
-    private String txEmailUsuario;
+  @Column(name = "email_usuario")
+  private String emailUsuario;
 
-    @Column(name = "cd_situacao")
-    private Integer cdSituacao;
+  @Column(name = "id_situacao")
+  private Integer idSituacao;
 
-    @Column(name = "tx_token")
-    private String txToken;
+  @Column(name = "token")
+  private String token;
 
-    @Column(name = "dt_validade_token")
-    private LocalDateTime dtValidadeToken;
-
+  @Column(name = "data_validade")
+  private LocalDateTime dataValidade;
 }

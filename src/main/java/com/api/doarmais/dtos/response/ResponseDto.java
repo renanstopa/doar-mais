@@ -1,4 +1,4 @@
-package com.api.doarmais.dtos;
+package com.api.doarmais.dtos.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ResponseDto {
 
-    private String token;
-
+  private String token;
 }

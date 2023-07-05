@@ -1,8 +1,8 @@
 package com.api.doarmais.controllers;
 
 import com.api.doarmais.clients.BrasilApiClient;
-import com.api.doarmais.dtos.CepDto;
-import com.api.doarmais.dtos.CnpjDto;
+import com.api.doarmais.dtos.response.CepResponseDto;
+import com.api.doarmais.dtos.response.CnpjResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,17 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/brasilapi")
 public class BrasilApiController {
 
-    @Autowired
-    private BrasilApiClient brasilApiClient;
+  @Autowired private BrasilApiClient brasilApiClient;
 
-    @GetMapping("/infocep/{cep}")
-    public ResponseEntity<CepDto> infoCep(@PathVariable("cep") String cep){
-        return ResponseEntity.ok(brasilApiClient.infoCep(cep));
-    }
+  @GetMapping("/infocep/{cep}")
+  public ResponseEntity<CepResponseDto> infoCep(@PathVariable("cep") String cep) {
+    return ResponseEntity.ok(brasilApiClient.infoCep(cep));
+  }
 
-    @GetMapping("/infocnpj/{cnpj}")
-    public ResponseEntity<CnpjDto> infoCnpj(@PathVariable("cnpj") String cnpj){
-        return ResponseEntity.ok(brasilApiClient.infoCnpj(cnpj));
-    }
-
+  @GetMapping("/infocnpj/{cnpj}")
+  public ResponseEntity<CnpjResponseDto> infoCnpj(@PathVariable("cnpj") String cnpj) {
+    return ResponseEntity.ok(brasilApiClient.infoCnpj(cnpj));
+  }
 }

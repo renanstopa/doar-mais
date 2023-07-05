@@ -1,6 +1,8 @@
 package com.api.doarmais.models.tabelas;
 
 import jakarta.persistence.*;
+import java.util.Collection;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,84 +11,80 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_usuario")
+@Table(name = "usuario")
 public class UsuarioModel implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cd_usuario")
-    private Integer cdUsuario;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "cd_tipo_usuario")
-    private TipoUsuarioModel tipoUsuarioModel;
+  @ManyToOne
+  @JoinColumn(name = "id_tipo_usuario")
+  private TipoUsuarioModel tipoUsuarioModel;
 
-    @ManyToOne
-    @JoinColumn(name = "cd_situacao")
-    private SituacaoModel situacaoModel;
+  @ManyToOne
+  @JoinColumn(name = "id_situacao")
+  private SituacaoModel situacaoModel;
 
-    @Column(name = "tx_usuario")
-    private String txUsuario;
+  @Column(name = "nome")
+  private String nome;
 
-    @Column(name = "tx_email")
-    private String txEmail;
+  @Column(name = "email")
+  private String email;
 
-    @Column(name = "tx_senha")
-    private String txSenha;
+  @Column(name = "senha")
+  private String senha;
 
-    @Column(name = "tx_telefone")
-    private String txTelefone;
+  @Column(name = "telefone")
+  private String telefone;
 
-    @Column(name = "tx_documento")
-    private String txDocumento;
+  @Column(name = "documento")
+  private String documento;
 
-    @Column(name = "tx_role")
-    private String txRole;
+  @Column(name = "role")
+  private String role;
 
-    @Column(name = "img_comprovante_residencia")
-    private String imgComprovanteResidencia;
+  @Column(name = "comprovante_residencia")
+  private String comprovanteResidencia;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(txRole));
-    }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role));
+  }
 
-    @Override
-    public String getPassword() {
-        return txSenha;
-    }
+  @Override
+  public String getPassword() {
+    return senha;
+  }
 
-    @Override
-    public String getUsername() {
-        return txEmail;
-    }
+  @Override
+  public String getUsername() {
+    return email;
+  }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 }

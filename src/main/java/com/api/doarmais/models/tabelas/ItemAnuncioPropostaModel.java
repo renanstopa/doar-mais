@@ -11,20 +11,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_item_anuncio_proposta")
+@Table(name = "item_anuncio_proposta")
 public class ItemAnuncioPropostaModel {
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "cd_proposta")
-    private PropostaModel cdProposta;
+  @Id
+  @ManyToOne
+  @JoinColumn(name = "id_proposta")
+  private PropostaModel propostaModel;
 
-    @Id
-    @ManyToOne
-    @JoinColumn(name = "cd_item")
-    private ItemAnuncioModel cdItem;
+  @Id
+  @ManyToOne
+  @JoinColumn(name = "id_item")
+  private ItemAnuncioModel itemAnuncioModel;
 
-    @Column(name = "qtd_solicitada_item")
-    private Integer qtdSolicitadaItem;
-
+  @Column(name = "quantidade_solicitada")
+  private Integer quantidadeSolicitada;
 }

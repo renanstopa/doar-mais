@@ -5,6 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TipoUsuarioRepository extends JpaRepository<TipoUsuarioModel, Integer> {
-    TipoUsuarioModel findByCdTipoUsuario(Integer cdTipoUsuario);
-}
+public interface TipoUsuarioRepository extends JpaRepository<TipoUsuarioModel, Integer> {}

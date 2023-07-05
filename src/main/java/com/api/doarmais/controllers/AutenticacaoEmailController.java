@@ -1,11 +1,13 @@
 package com.api.doarmais.controllers;
 
+import com.api.doarmais.dtos.response.UsuarioResponseDto;
 import com.api.doarmais.exceptions.*;
 import com.api.doarmais.models.tabelas.AutenticacaoEmailModel;
 import com.api.doarmais.models.tabelas.SituacaoModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.services.AutenticacaoEmailService;
 import com.api.doarmais.services.UsuarioService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,30 +18,31 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/autenticacaoemail")
 public class AutenticacaoEmailController {
 
-    @Autowired
-    private AutenticacaoEmailService autenticacaoEmailService;
+  @Autowired private AutenticacaoEmailService autenticacaoEmailService;
 
-    @Autowired
-    private UsuarioService usuarioService;
+  @Autowired private UsuarioService usuarioService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+  @Autowired private PasswordEncoder passwordEncoder;
 
-    @PatchMapping("/validar/{token}")
-    public ResponseEntity<UsuarioModel> trocarSenha(@PathVariable("token") String token){
-        if(!autenticacaoEmailService.verificarPedidoPorToken(token))
-            throw new TokenDoesNotExists("URL inválida");
+  @Autowired private ModelMapper modelMapper;
 
-        AutenticacaoEmailModel autenticacaoEmailModel = autenticacaoEmailService.buscarPorToken(token);
-        if(autenticacaoEmailModel.getCdSituacao().equals(SituacaoModel.TOKEN_UTILIZADO))
-            throw new LinkAlreadyUsed("Esse link já foi utilizado para autenticar o email");
+  @PatchMapping("/validar/{token}")
+  public ResponseEntity<UsuarioResponseDto> trocarSenha(@PathVariable("token") String token) {
+    if (!autenticacaoEmailService.verificarPedidoPorToken(token))
+      throw new TokenDoesNotExists("URL inválida");
 
-        autenticacaoEmailModel.setCdSituacao(SituacaoModel.TOKEN_UTILIZADO);
-        autenticacaoEmailService.gravar(autenticacaoEmailModel);
-        UsuarioModel usuarioModel = usuarioService.buscarUsuarioPorEmail(autenticacaoEmailModel.getTxEmailUsuario());
+    AutenticacaoEmailModel autenticacaoEmailModel = autenticacaoEmailService.buscarPorToken(token);
+    if (autenticacaoEmailModel.getId().equals(SituacaoModel.TOKEN_UTILIZADO))
+      throw new LinkAlreadyUsed("Esse link já foi utilizado para autenticar o email");
 
-        usuarioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.CONTA_SEM_APROVACAO_DO_ADM));
-        return new ResponseEntity<UsuarioModel>(usuarioService.gravar(usuarioModel), HttpStatus.OK);
-    }
+    autenticacaoEmailModel.setId(SituacaoModel.TOKEN_UTILIZADO);
+    autenticacaoEmailService.gravar(autenticacaoEmailModel);
+    UsuarioModel usuarioModel =
+        usuarioService.buscarUsuarioPorEmail(autenticacaoEmailModel.getEmailUsuario());
 
+    usuarioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.CONTA_SEM_APROVACAO_DO_ADM));
+    return new ResponseEntity<UsuarioResponseDto>(
+        modelMapper.map(usuarioService.gravar(usuarioModel), UsuarioResponseDto.class),
+        HttpStatus.OK);
+  }
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EnderecoRepository extends JpaRepository<EnderecoModel, Integer> {
-    boolean existsByTxCepAndCdNumeroAndUsuarioModelCdUsuario(String cep, Integer numero, Integer usuario);
+  boolean existsByCepAndNumeroAndUsuarioModelId(String cep, Integer numero, Integer usuario);
 
-    EnderecoModel findByUsuarioModelCdUsuarioAndCkAtivo(Integer usuario, int ativo);
+  EnderecoModel findByUsuarioModelIdAndAtivo(Integer usuario, int ativo);
 }

@@ -6,28 +6,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_autenticacao_email")
+@Table(name = "autenticacao_email")
 public class AutenticacaoEmailModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cd_autenticacao_email")
-    private Integer cdAutenticacaoEmail;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Integer id;
 
-    @Column(name = "tx_email_usuario")
-    private String txEmailUsuario;
+  @Column(name = "email_usuario")
+  private String emailUsuario;
 
-    @Column(name = "cd_situacao")
-    private Integer cdSituacao;
+  @Column(name = "id_situacao")
+  private Integer idSituacao;
 
-    @Column(name = "tx_token")
-    private String txToken;
-
+  @Column(name = "token")
+  private String token;
 }

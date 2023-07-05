@@ -11,40 +11,39 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_endereco")
+@Table(name = "endereco")
 public class EnderecoModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cd_endereco")
-    private Integer cdEndereco;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "cd_usuario")
-    private UsuarioModel usuarioModel;
+  @ManyToOne
+  @JoinColumn(name = "id_usuario")
+  private UsuarioModel usuarioModel;
 
-    @Column(name = "tx_cep")
-    private String txCep;
+  @Column(name = "cep")
+  private String cep;
 
-    @Column(name = "tx_uf")
-    private String txUf;
+  @Column(name = "uf")
+  private String uf;
 
-    @Column(name = "tx_bairro")
-    private String txBairro;
+  @Column(name = "bairro")
+  private String bairro;
 
-    @Column(name = "tx_cidade")
-    private String txCidade;
+  @Column(name = "cidade")
+  private String cidade;
 
-    @Column(name = "tx_logradouro")
-    private String txLogradouro;
+  @Column(name = "logradouro")
+  private String logradouro;
 
-    @Column(name = "cd_numero")
-    private Integer cdNumero;
+  @Column(name = "numero")
+  private Integer numero;
 
-    @Column(name = "tx_complemento")
-    private String txComplemento;
+  @Column(name = "complemento")
+  private String complemento;
 
-    @Column(name = "ck_ativo")
-    private Integer ckAtivo;
-
+  @Column(name = "ativo")
+  private Integer ativo;
 }
