@@ -17,37 +17,30 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Autowired
-    private JwtAuthFilter jwtAuthFilter;
+  @Autowired private JwtAuthFilter jwtAuthFilter;
 
-    @Autowired
-    private AuthenticationProvider authenticationProvider;
+  @Autowired private AuthenticationProvider authenticationProvider;
 
-    private static final String[] AUTH_WHITELIST = {
-            "/auth/**",
-            "/brasilapi/**",
-            "/resetsenha/**",
-            "/autenticacaoemail/**"
-    };
+  private static final String[] AUTH_WHITELIST = {
+    "/auth/**", "/brasilapi/**", "/resetsenha/**", "/autenticacaoemail/**"
+  };
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf()
-                .disable()
-                .authorizeHttpRequests()
-                .requestMatchers(AUTH_WHITELIST)
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf()
+        .disable()
+        .authorizeHttpRequests()
+        .requestMatchers(AUTH_WHITELIST)
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .authenticationProvider(authenticationProvider)
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
-
+    return http.build();
+  }
 }

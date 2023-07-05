@@ -8,10 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class DenunciaService {
 
-    @Autowired
-    private DenunciaRepository denunciaRepository;
+  @Autowired private DenunciaRepository denunciaRepository;
 
-    public DenunciaModel gravar(DenunciaModel denunciaModel) {
-        return denunciaRepository.save(denunciaModel);
-    }
+  public DenunciaModel gravar(DenunciaModel denunciaModel) {
+    return denunciaRepository.save(denunciaModel);
+  }
 }

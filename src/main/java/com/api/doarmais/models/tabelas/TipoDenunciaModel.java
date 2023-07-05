@@ -14,14 +14,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_tipo_denuncia")
+@Table(name = "tipo_denuncia")
 public class TipoDenunciaModel {
 
-    @Id
-    @Column(name = "cd_tipo_denuncia")
-    private Integer cdTipoDenuncia;
+  @Id
+  @Column(name = "id")
+  private Integer id;
 
-    @Column(name = "tx_tipo_denuncia")
-    private String txTipoDenuncia;
-
+  @Column(name = "descricao")
+  private String descricao;
 }

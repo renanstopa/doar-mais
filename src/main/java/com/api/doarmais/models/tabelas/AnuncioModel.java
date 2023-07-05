@@ -1,45 +1,43 @@
 package com.api.doarmais.models.tabelas;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "tab_anuncio")
+@Table(name = "anuncio")
 public class AnuncioModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cd_anuncio")
-    private Integer cdAnuncio;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "cd_tipo_anuncio")
-    private TipoAnuncioModel tipoAnuncioModel;
+  @ManyToOne
+  @JoinColumn(name = "id_tipo_anuncio")
+  private TipoAnuncioModel tipoAnuncioModel;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-    @Column(name = "dt_criacao_anuncio")
-    private LocalDateTime dtCriacaoAnuncio;
+  @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
+  @Column(name = "data_criacao")
+  private LocalDateTime dataCriacao;
 
-    @Column(name = "tx_titulo_anuncio")
-    private String txTituloAnuncio;
+  @Column(name = "titulo")
+  private String titulo;
 
-    @Column(name = "tx_cep")
-    private String txCep;
+  @Column(name = "cep")
+  private String cep;
 
-    @Column(name = "tx_cidade")
-    private String txCidade;
+  @Column(name = "cidade")
+  private String cidade;
 
-    @Column(name = "tx_uf")
-    private String txUf;
-
+  @Column(name = "uf")
+  private String uf;
 }

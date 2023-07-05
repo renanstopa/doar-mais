@@ -2,87 +2,64 @@ package com.api.doarmais.services;
 
 import com.api.doarmais.models.tabelas.ResetSenhaModel;
 import com.api.doarmais.models.tabelas.SituacaoModel;
-import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.repositories.ResetSenhaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailSendException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Optional;
 import java.util.TimeZone;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ResetSenhaService {
 
-    @Autowired
-    private ResetSenhaRepository resetSenhaRepository;
+  @Autowired private ResetSenhaRepository resetSenhaRepository;
 
-    @Autowired
-    private UsuarioService usuarioService;
+  @Autowired private UsuarioService usuarioService;
 
-    @Autowired
-    private JavaMailSender sender;
+  @Autowired private JavaMailSender sender;
 
-    public boolean verificarPedidoPorEmail(String email) {
-        return resetSenhaRepository.existsByTxEmailUsuarioAndCdSituacao(email, 0);
-    }
+  public boolean verificarPedidoPorEmail(String email) {
+    return resetSenhaRepository.existsByEmailUsuarioAndIdSituacao(email, 0);
+  }
 
-    public ResetSenhaModel buscarPedido(String email) {
-        return resetSenhaRepository.buscarUltimoPedidoQuery(email);
-    }
+  public ResetSenhaModel buscarPedido(String email) {
+    return resetSenhaRepository.buscarUltimoPedidoQuery(email);
+  }
 
-    public ResetSenhaModel gravar(ResetSenhaModel resetSenhaModel) {
-        return resetSenhaRepository.save(resetSenhaModel);
-    }
+  public ResetSenhaModel gravar(ResetSenhaModel resetSenhaModel) {
+    return resetSenhaRepository.save(resetSenhaModel);
+  }
 
-    public Optional<ResetSenhaModel> buscarPedidoCriado(ResetSenhaModel pedidoGerado) {
-        return resetSenhaRepository.findById(pedidoGerado.getCdResetSenha());
-    }
+  public Optional<ResetSenhaModel> buscarPedidoCriado(ResetSenhaModel pedidoGerado) {
+    return resetSenhaRepository.findById(pedidoGerado.getId());
+  }
 
-    public ResetSenhaModel gerarPedido(String email) {
-        String token = UUID.randomUUID().toString();
-        LocalDateTime validade = LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).plusDays(1);
+  public ResetSenhaModel gerarPedido(String email) {
+    String token = UUID.randomUUID().toString();
+    LocalDateTime validade = LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).plusDays(1);
 
-        ResetSenhaModel resetSenhaModel = new ResetSenhaModel();
-        resetSenhaModel.setCdSituacao(SituacaoModel.TOKEN_NAO_UTILIZADO);
-        resetSenhaModel.setTxEmailUsuario(email);
-        resetSenhaModel.setTxToken(token);
-        resetSenhaModel.setDtValidadeToken(validade);
-        return resetSenhaModel;
-    }
+    ResetSenhaModel resetSenhaModel = new ResetSenhaModel();
+    resetSenhaModel.setId(SituacaoModel.TOKEN_NAO_UTILIZADO);
+    resetSenhaModel.setEmailUsuario(email);
+    resetSenhaModel.setToken(token);
+    resetSenhaModel.setDataValidade(validade);
+    return resetSenhaModel;
+  }
 
-    public void enviarEmail(ResetSenhaModel pedidoGerado) {
-        String url = "https://localhost:8080/resetsenha/trocarsenha/" + pedidoGerado.getTxToken();
-        SimpleMailMessage message = new SimpleMailMessage();
-        UsuarioModel usuario = usuarioService.buscarUsuarioPorEmail(pedidoGerado.getTxEmailUsuario());
+  public ResetSenhaModel buscarPedidoPorToken(String token) {
+    return resetSenhaRepository.findByToken(token);
+  }
 
-        message.setSubject("Doar+ - Alteração de senha");
-        message.setText("Olá, " + usuario.getTxUsuario() + "!\n" +
-                "Para realizar a alteração de sua senha entre nesse link " + url);
-        message.setTo(usuario.getTxEmail());
-        message.setFrom("doar.mais@outlook.com");
+  public boolean verificarPedidoPorToken(String token) {
+    return resetSenhaRepository.existsByToken(token);
+  }
 
-        try{
-            sender.send(message);
-        } catch(Exception e) {
-            throw new MailSendException(e.getMessage());
-        }
-    }
-
-    public ResetSenhaModel buscarPedidoPorToken(String token) {
-        return resetSenhaRepository.findByTxToken(token);
-    }
-
-    public boolean verificarPedidoPorToken(String token) {
-        return resetSenhaRepository.existsByTxToken(token);
-    }
-
-    public boolean expirou(ResetSenhaModel resetSenhaModel) {
-        return resetSenhaModel.getDtValidadeToken().isBefore(LocalDateTime.now(ZoneId.of(TimeZone.getDefault().getID())));
-    }
+  public boolean expirou(ResetSenhaModel resetSenhaModel) {
+    return resetSenhaModel
+        .getDataValidade()
+        .isBefore(LocalDateTime.now(ZoneId.of(TimeZone.getDefault().getID())));
+  }
 }

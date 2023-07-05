@@ -1,8 +1,8 @@
 package com.api.doarmais.services;
 
-import com.api.doarmais.dtos.RequestDto;
-import com.api.doarmais.dtos.ResponseDto;
-import com.api.doarmais.dtos.CriarUsuarioDto;
+import com.api.doarmais.dtos.request.CriarUsuarioRequestDto;
+import com.api.doarmais.dtos.request.RequestDto;
+import com.api.doarmais.dtos.response.ResponseDto;
 import com.api.doarmais.exceptions.AccountNotVerifiedByAdm;
 import com.api.doarmais.exceptions.BlockedAccount;
 import com.api.doarmais.exceptions.EmailAccountNotVerified;
@@ -19,59 +19,47 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+  @Autowired private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+  @Autowired private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private JwtService jwtService;
+  @Autowired private JwtService jwtService;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+  @Autowired private AuthenticationManager authenticationManager;
 
-    public ResponseDto register(CriarUsuarioDto request) {
-        var user = UsuarioModel.builder()
-                .txUsuario(request.getTxUsuario())
-                .txTelefone(request.getTxTelefone())
-                .txDocumento(request.getTxDocumento())
-                .txEmail(request.getTxEmail())
-                .txSenha(passwordEncoder.encode(request.getTxSenha()))
-                .txRole("USER")
-                .build();
-        usuarioRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        return ResponseDto.builder()
-                .token(jwtToken)
-                .build();
-    }
+  public ResponseDto register(CriarUsuarioRequestDto request) {
+    var user =
+        UsuarioModel.builder()
+            .nome(request.getNome())
+            .telefone(request.getTelefone())
+            .documento(request.getDocumento())
+            .email(request.getEmail())
+            .senha(passwordEncoder.encode(request.getSenha()))
+            .role("USER")
+            .build();
+    usuarioRepository.save(user);
+    var jwtToken = jwtService.generateToken(user);
+    return ResponseDto.builder().token(jwtToken).build();
+  }
 
-    public ResponseDto authenticate(RequestDto request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getTxEmail(),
-                        request.getTxSenha()
-                )
-        );
-        var user = usuarioRepository.findByTxEmail(request.getTxEmail());
+  public ResponseDto authenticate(RequestDto request) {
+    authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(request.getEmail(), request.getSenha()));
+    var user = usuarioRepository.findByEmail(request.getEmail());
 
-        if(user.getSituacaoModel().getCdSituacao().equals(SituacaoModel.CONTA_SEM_EMAIL_VERIFICADO))
-            throw new EmailAccountNotVerified("Seu email ainda não foi validado");
+    if (user.getSituacaoModel().getId().equals(SituacaoModel.CONTA_SEM_EMAIL_VERIFICADO))
+      throw new EmailAccountNotVerified("Seu email ainda não foi validado");
 
-        if(user.getSituacaoModel().getCdSituacao().equals(SituacaoModel.CONTA_SEM_APROVACAO_DO_ADM))
-            throw new AccountNotVerifiedByAdm("O administrador ainda não aprovou sua conta");
+    if (user.getSituacaoModel().getId().equals(SituacaoModel.CONTA_SEM_APROVACAO_DO_ADM))
+      throw new AccountNotVerifiedByAdm("O administrador ainda não aprovou sua conta");
 
-        if(user.getSituacaoModel().getCdSituacao().equals(SituacaoModel.CONTA_SUSPENSA))
-            throw new SuspendedAccount("Essa conta não pode mais ser utilizada pois foi excluída");
+    if (user.getSituacaoModel().getId().equals(SituacaoModel.CONTA_SUSPENSA))
+      throw new SuspendedAccount("Essa conta não pode mais ser utilizada pois foi excluída");
 
-        if(user.getSituacaoModel().getCdSituacao().equals(SituacaoModel.CONTA_BLOQUEADA))
-            throw new BlockedAccount("Sua conta foi bloqueada por determinado tempo");
+    if (user.getSituacaoModel().getId().equals(SituacaoModel.CONTA_BLOQUEADA))
+      throw new BlockedAccount("Sua conta foi bloqueada por determinado tempo");
 
-        var jwtToken = jwtService.generateToken(user);
-        return ResponseDto.builder()
-                .token(jwtToken)
-                .build();
-    }
-
+    var jwtToken = jwtService.generateToken(user);
+    return ResponseDto.builder().token(jwtToken).build();
+  }
 }

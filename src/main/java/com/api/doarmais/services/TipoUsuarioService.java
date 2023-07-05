@@ -2,26 +2,25 @@ package com.api.doarmais.services;
 
 import com.api.doarmais.models.tabelas.TipoUsuarioModel;
 import com.api.doarmais.repositories.TipoUsuarioRepository;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TipoUsuarioService {
 
-    @Autowired
-    private TipoUsuarioRepository tipoUsuarioRepository;
+  @Autowired private TipoUsuarioRepository tipoUsuarioRepository;
 
-    public void saveAllTipoUsuarios(List<TipoUsuarioModel> tipoUsuarioModels) {
-        tipoUsuarioRepository.saveAll(tipoUsuarioModels);
-    }
+  public void saveAllTipoUsuarios(List<TipoUsuarioModel> tipoUsuarioModels) {
+    tipoUsuarioRepository.saveAll(tipoUsuarioModels);
+  }
 
-    public TipoUsuarioModel buscarTipoUsuario(Integer cdTipoUsuario) {
-        return tipoUsuarioRepository.findByCdTipoUsuario(cdTipoUsuario);
-    }
+  public Optional<TipoUsuarioModel> buscarTipoUsuario(Integer cdTipoUsuario) {
+    return tipoUsuarioRepository.findById(cdTipoUsuario);
+  }
 
-    public boolean verificarExistencia() {
-        return tipoUsuarioRepository.existsById(1);
-    }
+  public boolean verificarExistencia() {
+    return tipoUsuarioRepository.existsById(1);
+  }
 }

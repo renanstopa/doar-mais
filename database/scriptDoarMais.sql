@@ -4,139 +4,139 @@ use doarmais;
 
 -- CRIAÇÃO DO BANCO
 
-create table tab_situacao(
-	cd_situacao int not null,
-    tx_situacao varchar(45),
-    primary key (cd_situacao)
+create table situacao(
+	id int not null,
+    descricao varchar(45),
+    primary key (id)
 );
 
-create table tab_tipo_usuario(
-	cd_tipo_usuario int not null,
-    tx_tipo_usuario varchar(45),
-    primary key (cd_tipo_usuario)
+create table tipo_usuario(
+	id int not null,
+    descricao varchar(45),
+    primary key (id)
 );
 
-create table tab_usuario(
-	cd_usuario int not null auto_increment,
-    cd_tipo_usuario int,
-    cd_situacao int,
-    tx_usuario varchar(200),
-    tx_email varchar(200),
-    tx_senha varchar(200),
-    tx_telefone varchar(11),
-    tx_documento varchar(14),
-    tx_role varchar(45),
-    img_comprovante_residencia blob,
-    primary key (cd_usuario),
-    foreign key (cd_tipo_usuario) references tab_tipo_usuario (cd_tipo_usuario),
-    foreign key (cd_situacao) references tab_situacao (cd_situacao)
+create table usuario(
+	id int not null auto_increment,
+    id_tipo_usuario int,
+    id_situacao int,
+    nome varchar(200),
+    email varchar(200),
+    senha varchar(200),
+    telefone varchar(11),
+    documento varchar(14),
+    role varchar(45),
+    comprovante_residencia blob,
+    primary key (id),
+    foreign key (id_tipo_usuario) references tipo_usuario (id),
+    foreign key (id_situacao) references situacao (id)
 );
 
-create table tab_endereco(
-	cd_endereco int not null auto_increment,
-    cd_usuario int,
-    tx_cep varchar(8),
-    tx_uf char(2),
-    tx_cidade varchar(150),
-    tx_bairro varchar(150),
-    tx_logradouro varchar(200),
-    cd_numero int,
-    tx_complemento varchar(100),
-    ck_ativo int,
-    primary key (cd_endereco, cd_usuario),
-    foreign key (cd_usuario) references tab_usuario (cd_usuario)
+create table endereco(
+	id int not null auto_increment,
+    id_usuario int,
+    cep varchar(8),
+    uf char(2),
+    cidade varchar(150),
+    bairro varchar(150),
+    logradouro varchar(200),
+    numero int,
+    complemento varchar(100),
+    ativo int,
+    primary key (id, id_usuario),
+    foreign key (id_usuario) references usuario (id)
 );
 
-create table tab_tipo_denuncia(
-	cd_tipo_denuncia int not null,
-    tx_tipo_denuncia varchar(45),
-    primary key (cd_tipo_denuncia)
+create table tipo_denuncia(
+	id int not null,
+    descricao varchar(45),
+    primary key (id)
 );
 
-create table tab_denuncia(
-	cd_denuncia int not null auto_increment,
-    cd_tipo_denuncia int,
-    cd_usuario int,
-    cd_situacao int,
-    desc_denuncia text,
-    dt_denuncia datetime,
-    primary key (cd_denuncia),
-    foreign key (cd_tipo_denuncia) references tab_tipo_denuncia (cd_tipo_denuncia),
-    foreign key (cd_usuario) references tab_usuario (cd_usuario),
-    foreign key (cd_situacao) references tab_situacao (cd_situacao)
+create table denuncia(
+	id int not null auto_increment,
+    id_tipo_denuncia int,
+    id_usuario int,
+    id_situacao int,
+    descricao text,
+    data_criacao datetime,
+    primary key (id),
+    foreign key (id_tipo_denuncia) references tipo_denuncia (id),
+    foreign key (id_usuario) references usuario (id),
+    foreign key (id_situacao) references situacao (id)
 );
 
-create table tab_tipo_anuncio(
-	cd_tipo_anuncio int not null,
-    tx_tipo_anuncio varchar(45),
-    primary key (cd_tipo_anuncio)
+create table tipo_anuncio(
+	id int not null,
+    descricao varchar(45),
+    primary key (id)
 );
 
-create table tab_anuncio(
-	cd_anuncio int not null auto_increment,
-    cd_tipo_anuncio int,
-    dt_criacao_anuncio datetime,
-    tx_titulo_anuncio varchar(100),
-    tx_cep varchar(8),
-    tx_cidade varchar(150),
-    tx_uf char(2),
-    primary key (cd_anuncio),
-    foreign key (cd_tipo_anuncio) references tab_tipo_anuncio (cd_tipo_anuncio)
+create table anuncio(
+	id int not null auto_increment,
+    id_tipo_anuncio int,
+    data_criacao datetime,
+    titulo varchar(100),
+    cep varchar(8),
+    cidade varchar(150),
+    uf char(2),
+    primary key (id),
+    foreign key (id_tipo_anuncio) references tipo_anuncio (id)
 );
 
-create table tab_proposta(
-	cd_proposta int not null auto_increment,
-	cd_usuario int,
-    cd_usuario_aceito int,
-    cd_situacao int,
-    dt_agendada datetime,
-    primary key (cd_proposta, cd_usuario, cd_usuario_aceito, cd_situacao),
-    foreign key (cd_usuario) references tab_usuario (cd_usuario),
-    foreign key (cd_usuario_aceito) references tab_usuario (cd_usuario),
-    foreign key (cd_situacao) references tab_situacao (cd_situacao)
+create table proposta(
+	id int not null auto_increment,
+	id_usuario int,
+    id_usuario_aceito int,
+    id_situacao int,
+    data_agendada datetime,
+    primary key (id),
+    foreign key (id_usuario) references usuario (id),
+    foreign key (id_usuario_aceito) references usuario (id),
+    foreign key (id_situacao) references situacao (id)
 );
 
-create table tab_categoria_item(
-	cd_categoria_item int not null,
-    tx_categoria_item varchar(45),
-    primary key (cd_categoria_item)
+create table categoria_item(
+	id int not null,
+    descricao varchar(45),
+    primary key (id)
 );
 
-create table tab_item_anuncio(
-	cd_item int not null auto_increment,
-    cd_anuncio int,
-    cd_categoria_item int,
-    qtd_item int,
-    desc_item_anuncio text,
-    primary key (cd_item),
-    foreign key (cd_anuncio) references tab_anuncio (cd_anuncio),
-    foreign key (cd_categoria_item) references tab_categoria_item (cd_categoria_item)
+create table item_anuncio(
+	id int not null auto_increment,
+    id_anuncio int,
+    id_categoria_item int,
+    quantidade int,
+    descricao text,
+    primary key (id),
+    foreign key (id_anuncio) references anuncio (id),
+    foreign key (id_categoria_item) references categoria_item (id)
 );
 
-create table tab_item_anuncio_proposta(
-	cd_proposta int,
-    cd_item int,
-    qtd_solicitada_item int,
-    primary key (cd_proposta, cd_item),
-    foreign key (cd_proposta) references tab_proposta (cd_proposta),
-    foreign key (cd_item) references tab_item_anuncio (cd_item)
+create table item_anuncio_proposta(
+	id_proposta int,
+    id_item int,
+    quantidade_solicitada int,
+    primary key (id_proposta, id_item),
+    foreign key (id_proposta) references proposta (id),
+    foreign key (id_item) references item_anuncio (id)
 );
 
-create table tab_reset_senha(
-	cd_reset_senha int not null auto_increment,
-    tx_email_usuario varchar(200),
-    cd_situacao int,
-    tx_token varchar(200),
-    dt_validade_token datetime,
-    primary key (cd_reset_senha)
+create table reset_senha(
+	id int not null auto_increment,
+    email_usuario varchar(200),
+    id_situacao int,
+    token varchar(200),
+    data_validade datetime,
+    primary key (id)
 );
 
-create table tab_autenticacao_email(
-	cd_autenticacao_email int not null auto_increment,
-    tx_email_usuario varchar(200),
-    cd_situacao int,
-    tx_token varchar(200),
-    primary key (cd_autenticacao_email)
+create table autenticacao_email(
+	id int not null auto_increment,
+    email_usuario varchar(200),
+    id_situacao int,
+    token varchar(200),
+    primary key (id)
 );
 
 -- FIM BANCO
@@ -147,28 +147,28 @@ create table tab_autenticacao_email(
 create view
 	vw_perfil_usuario
 as select
-	u.cd_usuario, upper(u.tx_usuario) as tx_usuario,
+	u.id, upper(u.nome) as nome,
     case
-        when length(u.tx_telefone) = 11 then concat('(', substring(u.tx_telefone, 1, 2), ') ', substring(u.tx_telefone, 3, 5), '-', substring(u.tx_telefone, 8, 4))
-        when length(u.tx_telefone) = 10 then concat('(', substring(u.tx_telefone, 1, 2), ') ', substring(u.tx_telefone, 3, 4), '-', substring(u.tx_telefone, 7, 4))
-        else u.tx_telefone
+        when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
+        when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
+        else u.telefone
     end as
-		tx_telefone,
+		telefone,
     case
-        when u.cd_tipo_usuario = 1 then concat(substring(u.tx_documento, 1, 3), '.', substring(u.tx_documento, 4, 3), '.', substring(u.tx_documento, 7, 3), '-', substring(u.tx_documento, 10, 2))
-        when u.cd_tipo_usuario = 2 then concat(substring(u.tx_documento, 1, 2), '.', substring(u.tx_documento, 3, 3), '.', substring(u.tx_documento, 6, 3), '/', substring(u.tx_documento, 9, 4), '-', substring(u.tx_documento, 13, 2))
-        else u.tx_documento
+        when u.id = 1 then concat(substring(u.documento, 1, 3), '.', substring(u.documento, 4, 3), '.', substring(u.documento, 7, 3), '-', substring(u.documento, 10, 2))
+        when u.id = 2 then concat(substring(u.documento, 1, 2), '.', substring(u.documento, 3, 3), '.', substring(u.documento, 6, 3), '/', substring(u.documento, 9, 4), '-', substring(u.documento, 13, 2))
+        else u.documento
     end as
-		tx_documento, concat(substring(e.tx_cep, 1, 5), '-', substring(e.tx_cep, 6, 8)) as tx_cep,
-        e.tx_uf, upper(e.tx_cidade) as tx_cidade, upper(e.tx_bairro) as tx_bairro, upper(e.tx_logradouro) as tx_logradouro,
-        e.cd_numero, upper(e.tx_complemento) as tx_complemento
+		documento, concat(substring(e.cep, 1, 5), '-', substring(e.cep, 6, 8)) as cep,
+        e.uf, upper(e.cidade) as cidade, upper(e.bairro) as bairro, upper(e.logradouro) as logradouro,
+        e.numero, upper(e.complemento) as complemento
 from
-	tab_usuario u
+	usuario u
 join
-	tab_endereco e
+	endereco e
 on
-	(u.cd_usuario = e.cd_usuario)
+	(u.id = e.id_usuario)
 where
-	e.ck_ativo = 1;
+	e.ativo = 1;
 
 -- FIM DAS VIEWS

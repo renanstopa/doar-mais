@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ResetSenhaRepository extends JpaRepository<ResetSenhaModel, Integer> {
 
-    boolean existsByTxEmailUsuarioAndCdSituacao(String email, Integer situacao);
+  boolean existsByEmailUsuarioAndIdSituacao(String email, Integer situacao);
 
-    @Query("select r from ResetSenhaModel r where r.txEmailUsuario = ?1 order by r.cdResetSenha desc limit 1")
-    ResetSenhaModel buscarUltimoPedidoQuery(String email);
+  @Query("select r from ResetSenhaModel r where r.emailUsuario = ?1 order by r.id desc limit 1")
+  ResetSenhaModel buscarUltimoPedidoQuery(String email);
 
-    ResetSenhaModel findByTxToken(String token);
+  ResetSenhaModel findByToken(String token);
 
-    boolean existsByTxToken(String token);
+  boolean existsByToken(String token);
 }

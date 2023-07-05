@@ -1,6 +1,11 @@
 package com.api.doarmais.controllers;
 
-import com.api.doarmais.dtos.*;
+import com.api.doarmais.dtos.request.CriarUsuarioRequestDto;
+import com.api.doarmais.dtos.request.RequestDto;
+import com.api.doarmais.dtos.response.ResponseDto;
+import com.api.doarmais.dtos.response.UsuarioResponseDto;
+import com.api.doarmais.events.OngCriadaEvent;
+import com.api.doarmais.events.UsuarioCriadoEvent;
 import com.api.doarmais.exceptions.InvalidDocument;
 import com.api.doarmais.exceptions.UserAlreadyExists;
 import com.api.doarmais.models.tabelas.AutenticacaoEmailModel;
@@ -12,8 +17,10 @@ import com.api.doarmais.services.EnderecoService;
 import com.api.doarmais.services.UsuarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,78 +31,82 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private AuthenticationService authenticationService;
+  @Autowired private AuthenticationService authenticationService;
 
-    @Autowired
-    private UsuarioService usuarioService;
+  @Autowired private UsuarioService usuarioService;
 
-    @Autowired
-    private EnderecoService enderecoService;
+  @Autowired private EnderecoService enderecoService;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+  @Autowired private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private AutenticacaoEmailService autenticacaoEmailService;
+  @Autowired private AutenticacaoEmailService autenticacaoEmailService;
 
-    @PostMapping("/registrarusuario")
-    public ResponseEntity<UsuarioModel> registrarUsuario(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto){
+  @Autowired private ModelMapper modelMapper;
 
-        if (usuarioService.verificarUsuarioPorEmail(criarUsuarioDto.getTxEmail()))
-            throw new UserAlreadyExists("Email já cadastrado");
+  @Autowired private ApplicationEventPublisher eventPublisher;
 
-        if (usuarioService.verificarUsuarioPorDocumento(criarUsuarioDto.getTxDocumento()))
-            throw new UserAlreadyExists("CPF já cadastrado");
+  @PostMapping("/registrarusuario")
+  public ResponseEntity<UsuarioResponseDto> registrarUsuario(
+      @RequestBody @Valid CriarUsuarioRequestDto criarUsuarioRequestDto) {
 
-        if(!usuarioService.validarCPF(criarUsuarioDto.getTxDocumento())){
-            throw new InvalidDocument("CPF inválido");
-        }
+    if (usuarioService.verificarUsuarioPorEmail(criarUsuarioRequestDto.getEmail()))
+      throw new UserAlreadyExists("Email já cadastrado");
 
-        var usuarioModel = new UsuarioModel();
-        BeanUtils.copyProperties(criarUsuarioDto, usuarioModel);
-        usuarioService.completarInfoUsuario(usuarioModel, passwordEncoder, 1);
-        usuarioModel = usuarioService.gravar(usuarioModel);
+    if (usuarioService.verificarUsuarioPorDocumento(criarUsuarioRequestDto.getDocumento()))
+      throw new UserAlreadyExists("CPF já cadastrado");
 
-        var enderecoModel = new EnderecoModel();
-        enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioDto);
-        enderecoService.gravar(enderecoModel);
-
-        AutenticacaoEmailModel autenticacaoGerada = autenticacaoEmailService.gerarAutenticacaoEmail(usuarioModel.getTxEmail());
-        autenticacaoEmailService.gravar(autenticacaoGerada);
-        autenticacaoEmailService.enviarEmail(autenticacaoGerada);
-
-        return new ResponseEntity<UsuarioModel>(usuarioService.buscarUsuario(usuarioModel).get(), HttpStatus.CREATED);
+    if (!usuarioService.validarCPF(criarUsuarioRequestDto.getDocumento())) {
+      throw new InvalidDocument("CPF inválido");
     }
 
-    @PostMapping("/registrarong")
-    public ResponseEntity<UsuarioModel> registrarOng(@RequestBody @Valid CriarUsuarioDto criarUsuarioDto){
+    var usuarioModel = new UsuarioModel();
+    BeanUtils.copyProperties(criarUsuarioRequestDto, usuarioModel);
+    usuarioService.completarInfoUsuario(usuarioModel, passwordEncoder, 1);
+    usuarioModel = usuarioService.gravar(usuarioModel);
 
-        if (usuarioService.verificarUsuarioPorEmail(criarUsuarioDto.getTxEmail()))
-            throw new UserAlreadyExists("Email já cadastrado");
+    var enderecoModel = new EnderecoModel();
+    enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioRequestDto);
+    enderecoService.gravar(enderecoModel);
 
-        if (usuarioService.verificarUsuarioPorDocumento(criarUsuarioDto.getTxDocumento()))
-            throw new UserAlreadyExists("CNPJ já cadastrado");
+    AutenticacaoEmailModel autenticacaoGerada =
+        autenticacaoEmailService.gerarAutenticacaoEmail(usuarioModel.getEmail());
+    autenticacaoEmailService.gravar(autenticacaoGerada);
+    eventPublisher.publishEvent(new UsuarioCriadoEvent(autenticacaoGerada));
 
-        var usuarioModel = new UsuarioModel();
-        BeanUtils.copyProperties(criarUsuarioDto, usuarioModel);
-        usuarioService.completarInfoUsuario(usuarioModel, passwordEncoder, 2);
-        usuarioModel = usuarioService.gravar(usuarioModel);
+    return new ResponseEntity<UsuarioResponseDto>(
+        modelMapper.map(usuarioModel, UsuarioResponseDto.class), HttpStatus.CREATED);
+  }
 
-        var enderecoModel = new EnderecoModel();
-        enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioDto);
-        enderecoService.gravar(enderecoModel);
+  @PostMapping("/registrarong")
+  public ResponseEntity<UsuarioResponseDto> registrarOng(
+      @RequestBody @Valid CriarUsuarioRequestDto criarUsuarioRequestDto) {
 
-        AutenticacaoEmailModel autenticacaoGerada = autenticacaoEmailService.gerarAutenticacaoEmail(usuarioModel.getTxEmail());
-        autenticacaoEmailService.gravar(autenticacaoGerada);
-        autenticacaoEmailService.enviarEmail(autenticacaoGerada);
+    if (usuarioService.verificarUsuarioPorEmail(criarUsuarioRequestDto.getEmail()))
+      throw new UserAlreadyExists("Email já cadastrado");
 
-        return new ResponseEntity<UsuarioModel>(usuarioService.buscarUsuario(usuarioModel).get(), HttpStatus.CREATED);
-    }
+    if (usuarioService.verificarUsuarioPorDocumento(criarUsuarioRequestDto.getDocumento()))
+      throw new UserAlreadyExists("CNPJ já cadastrado");
 
-    @PostMapping("/autenticar")
-    public ResponseEntity<ResponseDto> authenticate(@RequestBody RequestDto request){
-        return ResponseEntity.ok(authenticationService.authenticate(request));
-    }
+    var usuarioModel = new UsuarioModel();
+    BeanUtils.copyProperties(criarUsuarioRequestDto, usuarioModel);
+    usuarioService.completarInfoUsuario(usuarioModel, passwordEncoder, 2);
+    usuarioModel = usuarioService.gravar(usuarioModel);
 
+    var enderecoModel = new EnderecoModel();
+    enderecoService.armazenarEndereco(usuarioModel, enderecoModel, criarUsuarioRequestDto);
+    enderecoService.gravar(enderecoModel);
+
+    AutenticacaoEmailModel autenticacaoGerada =
+        autenticacaoEmailService.gerarAutenticacaoEmail(usuarioModel.getEmail());
+    autenticacaoEmailService.gravar(autenticacaoGerada);
+    eventPublisher.publishEvent(new OngCriadaEvent(autenticacaoGerada));
+
+    return new ResponseEntity<UsuarioResponseDto>(
+        modelMapper.map(usuarioModel, UsuarioResponseDto.class), HttpStatus.CREATED);
+  }
+
+  @PostMapping("/autenticar")
+  public ResponseEntity<ResponseDto> authenticate(@RequestBody RequestDto request) {
+    return ResponseEntity.ok(authenticationService.authenticate(request));
+  }
 }
