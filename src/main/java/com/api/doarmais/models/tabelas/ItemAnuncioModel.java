@@ -27,6 +27,9 @@ public class ItemAnuncioModel {
   @JoinColumn(name = "id_categoria_item")
   private CategoriaItemModel categoriaItemModel;
 
+  @Column(name = "nome")
+  private String nome;
+
   @Column(name = "quantidade")
   private Integer quantidade;
 
