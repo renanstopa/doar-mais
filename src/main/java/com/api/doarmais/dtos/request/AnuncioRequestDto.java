@@ -18,8 +18,7 @@ public class AnuncioRequestDto {
     @Size(max = 100, message = "Título deve ter no máximo 100 caracteres!")
     private String titulo;
 
-    @Valid
-    List<ItemAnuncioRequestDto> listaItens;
+    private List<@Valid ItemAnuncioRequestDto> listaItens;
 
     @NotNull(message = "Data início não pode ser nula!")
     @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
@@ -43,6 +42,16 @@ public class AnuncioRequestDto {
     @NotNull(message = "Cidade não pode ser nulo!")
     @Size(max = 150, message = "Cidade deve ter no máximo 150 caracteres!")
     private String cidade;
+
+    @NotBlank(message = "Bairro deve ser preenchido!")
+    @NotNull(message = "Bairro não pode ser nulo!")
+    @Size(max = 150, message = "Bairro deve ter no máximo 150 caracteres!")
+    private String bairro;
+
+    @NotBlank(message = "Logradouro deve ser preenchido!")
+    @NotNull(message = "Logradouro não pode ser nulo!")
+    @Size(max = 200, message = "Logradouro deve ter no máximo 200 caracteres!")
+    private String logradouro;
 
     @NotNull(message = "Número não pode ser nulo!")
     private Integer numero;

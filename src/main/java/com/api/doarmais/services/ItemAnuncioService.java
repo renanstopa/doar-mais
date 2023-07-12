@@ -5,6 +5,8 @@ import com.api.doarmais.repositories.ItemAnuncioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ItemAnuncioService {
 
@@ -12,5 +14,9 @@ public class ItemAnuncioService {
 
     public void gravar(ItemAnuncioModel itemAnuncioModel) {
         itemAnuncioRepository.save(itemAnuncioModel);
+    }
+
+    public List<ItemAnuncioModel> buscaPorAnuncio(Integer id) {
+        return itemAnuncioRepository.findByAnuncioModelId(id);
     }
 }

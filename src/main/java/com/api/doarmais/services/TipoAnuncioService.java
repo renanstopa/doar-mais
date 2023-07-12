@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TipoAnuncioService {
@@ -19,4 +20,5 @@ public class TipoAnuncioService {
     public void saveAllTipoAnuncios(List<TipoAnuncioModel> tipoAnuncioModels) {
         tipoAnuncioRepository.saveAll(tipoAnuncioModels);
     }
+
 }

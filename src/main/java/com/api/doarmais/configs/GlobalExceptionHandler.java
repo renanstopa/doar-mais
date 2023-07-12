@@ -5,20 +5,27 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-  ProblemDetail handleValidationErrors(MethodArgumentNotValidException e) {
+    ProblemDetail handleValidationErrors(MethodArgumentNotValidException e) {
     ProblemDetail problemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
     problemDetail.setType(e.getBody().getType());
     problemDetail.setTitle("Dado não informado corretamente");
-    problemDetail.setDetail(e.getMessage());
+    List<FieldError> errors = e.getBindingResult().getFieldErrors();
+    String detail = String.join(", ", MethodArgumentNotValidException.errorsToStringList(errors));
+    problemDetail.setDetail(detail);
     return problemDetail;
   }
 

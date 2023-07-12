@@ -51,8 +51,11 @@ public class AnuncioModel {
   @Column(name = "cidade")
   private String cidade;
 
-  @Column(name = "endereco")
-  private String endereco;
+  @Column(name = "bairro")
+  private String bairro;
+
+  @Column(name = "logradourp")
+  private String logradouro;
 
   @Column(name = "numero")
   private Integer numero;

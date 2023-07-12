@@ -1,6 +1,7 @@
 package com.api.doarmais.dtos.request;
 
 import com.api.doarmais.models.tabelas.CategoriaItemModel;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,6 +18,7 @@ public class ItemAnuncioRequestDto {
     private CategoriaItemModel categoriaItemModel;
 
     @NotNull(message = "Quantidade não pode ser nula!")
+    @Min(value = 1, message = "Quantidade deve ser no mímino 1")
     private Integer quantidade;
 
     @NotBlank(message = "Descrição do Produto deve ser preenchida!")
