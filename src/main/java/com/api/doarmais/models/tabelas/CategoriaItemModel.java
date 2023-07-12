@@ -19,7 +19,7 @@ public class CategoriaItemModel {
 
   @Id
   @Column(name = "id")
-  private Integer cdCategoriaItem;
+  private Integer id;
 
   @Column(name = "descricao")
   private String descricao;

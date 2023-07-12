@@ -75,23 +75,29 @@ create table tipo_anuncio(
 create table anuncio(
 	id int not null auto_increment,
     id_tipo_anuncio int,
+    id_usuario_criador int,
     data_criacao datetime,
     titulo varchar(100),
+    data_inicio_disponibilidade datetime,
+    data_fim_disponibilidade datetime,
     cep varchar(8),
-    cidade varchar(150),
     uf char(2),
+    cidade varchar(150),
+    endereco varchar(300),
+    numero int,
+    complemento varchar(100),
+    ponto_referencia varchar(100),
     primary key (id),
-    foreign key (id_tipo_anuncio) references tipo_anuncio (id)
+    foreign key (id_tipo_anuncio) references tipo_anuncio (id),
+    foreign key (id_usuario_criador) references usuario (id)
 );
 
 create table proposta(
 	id int not null auto_increment,
-	id_usuario int,
     id_usuario_aceito int,
     id_situacao int,
     data_agendada datetime,
     primary key (id),
-    foreign key (id_usuario) references usuario (id),
     foreign key (id_usuario_aceito) references usuario (id),
     foreign key (id_situacao) references situacao (id)
 );
@@ -106,6 +112,7 @@ create table item_anuncio(
 	id int not null auto_increment,
     id_anuncio int,
     id_categoria_item int,
+    nome varchar(60),
     quantidade int,
     descricao text,
     primary key (id),

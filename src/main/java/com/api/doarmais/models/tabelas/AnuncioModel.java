@@ -25,6 +25,10 @@ public class AnuncioModel {
   @JoinColumn(name = "id_tipo_anuncio")
   private TipoAnuncioModel tipoAnuncioModel;
 
+  @ManyToOne
+  @JoinColumn(name = "id_usuario_criador")
+  private UsuarioModel usuarioModel;
+
   @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
   @Column(name = "data_criacao")
   private LocalDateTime dataCriacao;
@@ -32,12 +36,31 @@ public class AnuncioModel {
   @Column(name = "titulo")
   private String titulo;
 
+  @Column(name = "data_inicio_disponibilidade")
+  private LocalDateTime dataInicioDisponibilidade;
+
+  @Column(name = "data_fim_disponibilidade")
+  private LocalDateTime dataFimDisponibilidade;
+
   @Column(name = "cep")
   private String cep;
+
+  @Column(name = "uf")
+  private String uf;
 
   @Column(name = "cidade")
   private String cidade;
 
-  @Column(name = "uf")
-  private String uf;
+  @Column(name = "endereco")
+  private String endereco;
+
+  @Column(name = "numero")
+  private Integer numero;
+
+  @Column(name = "complemento")
+  private String complemento;
+
+  @Column(name = "ponto_referencia")
+  private String pontoReferencia;
+
 }
