@@ -2,7 +2,6 @@ package com.api.doarmais.configs;
 
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.services.*;
-
 import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,26 +69,26 @@ public class UserDataExecutor implements CommandLineRunner {
               SituacaoModel.builder().id(42).descricao("Denúncia gerenciada").build());
       situacaoService.saveAllSituacoes(situacaoModels);
 
-      if(!tipoAnuncioService.verificarExistencia()){
+      if (!tipoAnuncioService.verificarExistencia()) {
         List<TipoAnuncioModel> tipoAnuncioModels =
-                Arrays.asList(
-                        TipoAnuncioModel.builder().id(1).descricao("Doação").build(),
-                        TipoAnuncioModel.builder().id(2).descricao("Pedido").build(),
-                        TipoAnuncioModel.builder().id(3).descricao("Doação Rápida").build());
+            Arrays.asList(
+                TipoAnuncioModel.builder().id(1).descricao("Doação").build(),
+                TipoAnuncioModel.builder().id(2).descricao("Pedido").build(),
+                TipoAnuncioModel.builder().id(3).descricao("Doação Rápida").build());
         tipoAnuncioService.saveAllTipoAnuncios(tipoAnuncioModels);
       }
 
-      if(!categoriaItemService.verificarExistencia()){
+      if (!categoriaItemService.verificarExistencia()) {
         List<CategoriaItemModel> categoriaItemModels =
-                Arrays.asList(
-                        CategoriaItemModel.builder().id(1).descricao("Alimento").build(),
-                        CategoriaItemModel.builder().id(2).descricao("Eletrônico").build(),
-                        CategoriaItemModel.builder().id(3).descricao("Eletrodoméstico").build(),
-                        CategoriaItemModel.builder().id(4).descricao("Roupa").build(),
-                        CategoriaItemModel.builder().id(5).descricao("Móvel").build(),
-                        CategoriaItemModel.builder().id(6).descricao("Entretenimento").build(),
-                        CategoriaItemModel.builder().id(7).descricao("Pet").build(),
-                        CategoriaItemModel.builder().id(8).descricao("Outro").build());
+            Arrays.asList(
+                CategoriaItemModel.builder().id(1).descricao("Alimento").build(),
+                CategoriaItemModel.builder().id(2).descricao("Eletrônico").build(),
+                CategoriaItemModel.builder().id(3).descricao("Eletrodoméstico").build(),
+                CategoriaItemModel.builder().id(4).descricao("Roupa").build(),
+                CategoriaItemModel.builder().id(5).descricao("Móvel").build(),
+                CategoriaItemModel.builder().id(6).descricao("Entretenimento").build(),
+                CategoriaItemModel.builder().id(7).descricao("Pet").build(),
+                CategoriaItemModel.builder().id(8).descricao("Outro").build());
         categoriaItemService.saveAllCategoriaItens(categoriaItemModels);
       }
     }

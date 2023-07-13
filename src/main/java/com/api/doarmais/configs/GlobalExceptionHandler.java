@@ -1,24 +1,21 @@
 package com.api.doarmais.configs;
 
 import com.api.doarmais.exceptions.*;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.mail.MailSendException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
-    ProblemDetail handleValidationErrors(MethodArgumentNotValidException e) {
+  ProblemDetail handleValidationErrors(MethodArgumentNotValidException e) {
     ProblemDetail problemDetail =
         ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
     problemDetail.setType(e.getBody().getType());

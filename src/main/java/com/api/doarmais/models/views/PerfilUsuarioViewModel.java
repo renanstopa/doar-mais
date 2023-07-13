@@ -15,6 +15,9 @@ public class PerfilUsuarioViewModel {
   @Column(name = "id")
   private Integer id;
 
+  @Column(name = "id_endereco")
+  private Integer idEndereco;
+
   @Column(name = "nome")
   private String nome;
 

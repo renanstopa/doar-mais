@@ -1,35 +1,36 @@
 package com.api.doarmais.dtos.response;
 
-import lombok.Data;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class AnuncioResponseDto {
 
-    private String titulo;
+  private String titulo;
 
-    private List<ItemAnuncioResponseDto> itens;
+  private List<ItemAnuncioResponseDto> itens;
 
-    private LocalDateTime dataInicioDisponibilidade;
+  @JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone = "GMT-3")
+  private LocalDateTime dataInicioDisponibilidade;
 
-    private LocalDateTime dataFimDisponibilidade;
+  @JsonFormat(pattern = "dd/MM/yyyy HH:mm", timezone = "GMT-3")
+  private LocalDateTime dataFimDisponibilidade;
 
-    private String cep;
+  private String cep;
 
-    private String uf;
+  private String uf;
 
-    private String cidade;
+  private String cidade;
 
-    private String bairro;
+  private String bairro;
 
-    private String logradouro;
+  private String logradouro;
 
-    private Integer numero;
+  private Integer numero;
 
-    private String complemento;
+  private String complemento;
 
-    private String pontoReferencia;
-
+  private String pontoReferencia;
 }

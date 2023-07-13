@@ -1,5 +1,6 @@
 package com.api.doarmais.controllers;
 
+import com.api.doarmais.controllers.interfaces.AuthController;
 import com.api.doarmais.dtos.request.CriarUsuarioRequestDto;
 import com.api.doarmais.dtos.request.RequestDto;
 import com.api.doarmais.dtos.response.ResponseDto;
@@ -15,7 +16,6 @@ import com.api.doarmais.services.AutenticacaoEmailService;
 import com.api.doarmais.services.AuthenticationService;
 import com.api.doarmais.services.EnderecoService;
 import com.api.doarmais.services.UsuarioService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -27,9 +27,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthControllerImpl implements AuthController {
 
   @Autowired private AuthenticationService authenticationService;
 
@@ -45,9 +44,8 @@ public class AuthController {
 
   @Autowired private ApplicationEventPublisher eventPublisher;
 
-  @PostMapping("/registrarusuario")
   public ResponseEntity<UsuarioResponseDto> registrarUsuario(
-      @RequestBody @Valid CriarUsuarioRequestDto criarUsuarioRequestDto) {
+      CriarUsuarioRequestDto criarUsuarioRequestDto) {
 
     if (usuarioService.verificarUsuarioPorEmail(criarUsuarioRequestDto.getEmail()))
       throw new UserAlreadyExists("Email já cadastrado");
@@ -55,9 +53,8 @@ public class AuthController {
     if (usuarioService.verificarUsuarioPorDocumento(criarUsuarioRequestDto.getDocumento()))
       throw new UserAlreadyExists("CPF já cadastrado");
 
-    if (!usuarioService.validarCPF(criarUsuarioRequestDto.getDocumento())) {
+    if (!usuarioService.validarCPF(criarUsuarioRequestDto.getDocumento()))
       throw new InvalidDocument("CPF inválido");
-    }
 
     var usuarioModel = new UsuarioModel();
     BeanUtils.copyProperties(criarUsuarioRequestDto, usuarioModel);
@@ -77,9 +74,8 @@ public class AuthController {
         modelMapper.map(usuarioModel, UsuarioResponseDto.class), HttpStatus.CREATED);
   }
 
-  @PostMapping("/registrarong")
   public ResponseEntity<UsuarioResponseDto> registrarOng(
-      @RequestBody @Valid CriarUsuarioRequestDto criarUsuarioRequestDto) {
+      CriarUsuarioRequestDto criarUsuarioRequestDto) {
 
     if (usuarioService.verificarUsuarioPorEmail(criarUsuarioRequestDto.getEmail()))
       throw new UserAlreadyExists("Email já cadastrado");
@@ -105,8 +101,7 @@ public class AuthController {
         modelMapper.map(usuarioModel, UsuarioResponseDto.class), HttpStatus.CREATED);
   }
 
-  @PostMapping("/autenticar")
-  public ResponseEntity<ResponseDto> authenticate(@RequestBody RequestDto request) {
+  public ResponseEntity<ResponseDto> authenticate(RequestDto request) {
     return ResponseEntity.ok(authenticationService.authenticate(request));
   }
 }

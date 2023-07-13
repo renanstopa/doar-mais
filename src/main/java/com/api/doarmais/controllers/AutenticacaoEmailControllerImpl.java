@@ -1,5 +1,6 @@
 package com.api.doarmais.controllers;
 
+import com.api.doarmais.controllers.interfaces.AutenticacaoEmailController;
 import com.api.doarmais.dtos.response.UsuarioResponseDto;
 import com.api.doarmais.exceptions.*;
 import com.api.doarmais.models.tabelas.AutenticacaoEmailModel;
@@ -15,8 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/autenticacaoemail")
-public class AutenticacaoEmailController {
+public class AutenticacaoEmailControllerImpl implements AutenticacaoEmailController {
 
   @Autowired private AutenticacaoEmailService autenticacaoEmailService;
 
@@ -26,8 +26,7 @@ public class AutenticacaoEmailController {
 
   @Autowired private ModelMapper modelMapper;
 
-  @PatchMapping("/validar/{token}")
-  public ResponseEntity<UsuarioResponseDto> trocarSenha(@PathVariable("token") String token) {
+  public ResponseEntity<UsuarioResponseDto> autenticarEmail(String token) {
     if (!autenticacaoEmailService.verificarPedidoPorToken(token))
       throw new TokenDoesNotExists("URL inválida");
 

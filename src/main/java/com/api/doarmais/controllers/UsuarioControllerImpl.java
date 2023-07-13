@@ -1,5 +1,6 @@
 package com.api.doarmais.controllers;
 
+import com.api.doarmais.controllers.interfaces.UsuarioController;
 import com.api.doarmais.dtos.request.AtualizarDadosRequestDto;
 import com.api.doarmais.dtos.request.EnderecoRequestDto;
 import com.api.doarmais.dtos.request.TrocarSenhaRequestDto;
@@ -24,8 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/usuario")
-public class UsuarioController {
+public class UsuarioControllerImpl implements UsuarioController {
 
   @Autowired private UsuarioService usuarioService;
 
