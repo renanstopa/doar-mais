@@ -1,5 +1,6 @@
 package com.api.doarmais.controllers;
 
+import com.api.doarmais.controllers.interfaces.ResetSenhaController;
 import com.api.doarmais.dtos.request.ResetRequestDto;
 import com.api.doarmais.dtos.request.TrocarSenhaRequestDto;
 import com.api.doarmais.dtos.response.ResetSenhaResponseDto;
@@ -11,7 +12,6 @@ import com.api.doarmais.models.tabelas.SituacaoModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.services.ResetSenhaService;
 import com.api.doarmais.services.UsuarioService;
-import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -21,8 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/resetsenha")
-public class ResetSenhaController {
+public class ResetSenhaControllerImpl implements ResetSenhaController {
 
   @Autowired private ResetSenhaService resetSenhaService;
 
@@ -35,8 +34,7 @@ public class ResetSenhaController {
   @Autowired private ModelMapper modelMapper;
 
   @PostMapping("/enviaremail")
-  public ResponseEntity<ResetSenhaResponseDto> enviarEmail(
-      @RequestBody @Valid ResetRequestDto resetRequestDto) {
+  public ResponseEntity<ResetSenhaResponseDto> enviarEmail(ResetRequestDto resetRequestDto) {
 
     if (!usuarioService.verificarUsuarioPorEmail(resetRequestDto.getEmail())) {
       throw new UserNotFound("Email inválido");
@@ -62,10 +60,8 @@ public class ResetSenhaController {
         HttpStatus.CREATED);
   }
 
-  @PatchMapping("/trocarsenha/{token}")
   public ResponseEntity<UsuarioResponseDto> trocarSenha(
-      @PathVariable("token") String token,
-      @RequestBody @Valid TrocarSenhaRequestDto trocarSenhaRequestDto) {
+      String token, TrocarSenhaRequestDto trocarSenhaRequestDto) {
     ResetSenhaModel resetSenhaModel = resetSenhaService.buscarPedidoPorToken(token);
     if (!resetSenhaService.verificarPedidoPorToken(token))
       throw new TokenDoesNotExists("URL inválida");

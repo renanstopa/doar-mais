@@ -22,7 +22,12 @@ public class SecurityConfig {
   @Autowired private AuthenticationProvider authenticationProvider;
 
   private static final String[] AUTH_WHITELIST = {
-    "/auth/**", "/brasilapi/**", "/resetsenha/**", "/autenticacaoemail/**"
+    "/auth/**",
+    "/brasilapi/**",
+    "/resetsenha/**",
+    "/autenticacaoemail/**",
+    "/docs/**",
+    "/v3/api-docs/**"
   };
 
   @Bean

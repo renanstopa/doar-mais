@@ -2,6 +2,7 @@ package com.api.doarmais.models.tabelas;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -65,5 +66,4 @@ public class AnuncioModel {
 
   @Column(name = "ponto_referencia")
   private String pontoReferencia;
-
 }
