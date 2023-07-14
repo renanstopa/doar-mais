@@ -2,19 +2,19 @@ package com.api.doarmais.controllers;
 
 import com.api.doarmais.controllers.interfaces.AnuncioController;
 import com.api.doarmais.dtos.request.AnuncioRequestDto;
+import com.api.doarmais.dtos.request.FiltroAnuncioRequestDto;
 import com.api.doarmais.dtos.request.ItemAnuncioRequestDto;
 import com.api.doarmais.dtos.response.AnuncioResponseDto;
 import com.api.doarmais.dtos.response.ItemAnuncioResponseDto;
 import com.api.doarmais.exceptions.EndDateBeforeBeginDate;
 import com.api.doarmais.models.tabelas.AnuncioModel;
 import com.api.doarmais.models.tabelas.ItemAnuncioModel;
-import com.api.doarmais.models.tabelas.TipoAnuncioModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
+import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.services.AnuncioService;
 import com.api.doarmais.services.ItemAnuncioService;
 import com.api.doarmais.services.TipoAnuncioService;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.modelmapper.ModelMapper;
@@ -36,11 +36,10 @@ public class AnuncioControllerImpl implements AnuncioController {
 
   @Autowired private ModelMapper modelMapper;
 
-  //    @GetMapping()
-  //    public ResponseEntity<?> listarAnuncios(){
-  //        return null;
-  //    }
-  //
+      public ResponseEntity<List<BuscaAnuncioViewModel>> buscar(FiltroAnuncioRequestDto filtroAnuncioRequestDto){
+          return new ResponseEntity<List<BuscaAnuncioViewModel>>(anuncioService.buscar(filtroAnuncioRequestDto), HttpStatus.OK);
+      }
+
   //    @GetMapping()
   //    public ResponseEntity<?> visualizarAnuncio(){
   //        return null;
@@ -55,8 +54,7 @@ public class AnuncioControllerImpl implements AnuncioController {
 
     var anuncioModel = new AnuncioModel();
     BeanUtils.copyProperties(anuncioRequestDto, anuncioModel);
-    anuncioModel.setDataCriacao(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
-    anuncioModel.setTipoAnuncioModel(new TipoAnuncioModel(2));
+    anuncioService.completarInformacoes(anuncioModel, 1);
 
     var usuarioCriador =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -91,8 +89,7 @@ public class AnuncioControllerImpl implements AnuncioController {
 
     var anuncioModel = new AnuncioModel();
     BeanUtils.copyProperties(anuncioRequestDto, anuncioModel);
-    anuncioModel.setDataCriacao(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
-    anuncioModel.setTipoAnuncioModel(new TipoAnuncioModel(2));
+    anuncioService.completarInformacoes(anuncioModel, 2);
 
     var usuarioCriador =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
