@@ -2,7 +2,7 @@ package com.api.doarmais.models.tabelas;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,6 +29,10 @@ public class AnuncioModel {
   @ManyToOne
   @JoinColumn(name = "id_usuario_criador")
   private UsuarioModel usuarioModel;
+
+  @ManyToOne
+  @JoinColumn(name = "id_situacao")
+  private SituacaoModel situacaoModel;
 
   @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
   @Column(name = "data_criacao")
