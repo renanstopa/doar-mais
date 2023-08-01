@@ -2,7 +2,6 @@ package com.api.doarmais.models.tabelas;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -59,7 +58,7 @@ public class AnuncioModel {
   @Column(name = "bairro")
   private String bairro;
 
-  @Column(name = "logradourp")
+  @Column(name = "logradouro")
   private String logradouro;
 
   @Column(name = "numero")

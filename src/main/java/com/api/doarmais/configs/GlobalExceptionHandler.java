@@ -178,4 +178,31 @@ public class GlobalExceptionHandler {
     problemDetail.setDetail(e.getMessage());
     return problemDetail;
   }
+
+  @ExceptionHandler(EndDateBeforeBeginDate.class)
+  ProblemDetail handleEndDateBeforeBeginDate(EndDateBeforeBeginDate e) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+    problemDetail.setTitle("Erro na criação de anúncio");
+    problemDetail.setDetail(e.getMessage());
+    return problemDetail;
+  }
+
+  @ExceptionHandler(InvalidDate.class)
+  ProblemDetail handleEndDateBeforeBeginDate(InvalidDate e) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+    problemDetail.setTitle("Erro na criação de anúncio");
+    problemDetail.setDetail(e.getMessage());
+    return problemDetail;
+  }
+
+  @ExceptionHandler(TokenDoesNotExists.class)
+  ProblemDetail handleEndDateBeforeBeginDate(TokenDoesNotExists e) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+    problemDetail.setTitle("Erro ao acessar a URL");
+    problemDetail.setDetail(e.getMessage());
+    return problemDetail;
+  }
 }

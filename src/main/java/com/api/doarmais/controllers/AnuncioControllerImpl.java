@@ -7,14 +7,17 @@ import com.api.doarmais.dtos.request.ItemAnuncioRequestDto;
 import com.api.doarmais.dtos.response.AnuncioResponseDto;
 import com.api.doarmais.dtos.response.ItemAnuncioResponseDto;
 import com.api.doarmais.exceptions.EndDateBeforeBeginDate;
+import com.api.doarmais.exceptions.InvalidDate;
 import com.api.doarmais.models.tabelas.AnuncioModel;
 import com.api.doarmais.models.tabelas.ItemAnuncioModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.services.AnuncioService;
+import com.api.doarmais.services.EnderecoService;
 import com.api.doarmais.services.ItemAnuncioService;
 import com.api.doarmais.services.TipoAnuncioService;
-
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import org.modelmapper.ModelMapper;
@@ -34,11 +37,28 @@ public class AnuncioControllerImpl implements AnuncioController {
 
   @Autowired private TipoAnuncioService tipoAnuncioService;
 
+  @Autowired private EnderecoService enderecoService;
+
   @Autowired private ModelMapper modelMapper;
 
-      public ResponseEntity<List<BuscaAnuncioViewModel>> buscar(FiltroAnuncioRequestDto filtroAnuncioRequestDto){
-          return new ResponseEntity<List<BuscaAnuncioViewModel>>(anuncioService.buscar(filtroAnuncioRequestDto), HttpStatus.OK);
-      }
+  public ResponseEntity<List<BuscaAnuncioViewModel>> buscar(
+      @RequestParam(name = "titulo") String titulo,
+      @RequestParam(name = "cidade") String cidade,
+      @RequestParam(name = "tipoUsuario", required = false) Integer tipoUsuario,
+      @RequestParam(name = "tipoAnuncio", required = false) Integer tipoAnuncio,
+      @RequestParam(name = "tipoCategoriaItem", required = false) Integer tipoCategoriaItem) {
+    if (cidade.isBlank()) {
+      var usuarioLogado =
+          (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      var enderecoAtivo = enderecoService.buscarEnderecoAtivo(usuarioLogado.getId());
+      cidade = enderecoAtivo.getCidade();
+    }
+
+    FiltroAnuncioRequestDto filtro = new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, tipoAnuncio, tipoCategoriaItem);
+
+    return new ResponseEntity<List<BuscaAnuncioViewModel>>(
+        anuncioService.buscar(filtro), HttpStatus.OK);
+  }
 
   //    @GetMapping()
   //    public ResponseEntity<?> visualizarAnuncio(){
@@ -47,10 +67,14 @@ public class AnuncioControllerImpl implements AnuncioController {
 
   public ResponseEntity<AnuncioResponseDto> criarDoacao(AnuncioRequestDto anuncioRequestDto) {
     if (anuncioRequestDto
+        .getDataInicioDisponibilidade()
+        .isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))))
+      throw new InvalidDate("Data inicial da disponibilidade não pode ser antes que a data atual");
+
+    if (anuncioRequestDto
         .getDataFimDisponibilidade()
         .isBefore(anuncioRequestDto.getDataInicioDisponibilidade()))
-      throw new EndDateBeforeBeginDate(
-          "Data final da disponibilidade deve ser maior que a inicial");
+      throw new EndDateBeforeBeginDate("Data final da disponibilidade deve ser depois da inicial");
 
     var anuncioModel = new AnuncioModel();
     BeanUtils.copyProperties(anuncioRequestDto, anuncioModel);
@@ -82,10 +106,14 @@ public class AnuncioControllerImpl implements AnuncioController {
 
   public ResponseEntity<AnuncioModel> criarPedido(AnuncioRequestDto anuncioRequestDto) {
     if (anuncioRequestDto
+        .getDataInicioDisponibilidade()
+        .isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))))
+      throw new InvalidDate("Data inicial da disponibilidade não pode ser antes que a data atual");
+
+    if (anuncioRequestDto
         .getDataFimDisponibilidade()
         .isBefore(anuncioRequestDto.getDataInicioDisponibilidade()))
-      throw new EndDateBeforeBeginDate(
-          "Data final da disponibilidade deve ser maior que a inicial");
+      throw new EndDateBeforeBeginDate("Data final da disponibilidade deve ser depois da inicial");
 
     var anuncioModel = new AnuncioModel();
     BeanUtils.copyProperties(anuncioRequestDto, anuncioModel);

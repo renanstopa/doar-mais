@@ -47,15 +47,15 @@ public class UsuarioModel implements UserDetails {
   @Column(name = "documento")
   private String documento;
 
-  @Column(name = "role")
-  private String role;
+  @Column(name = "cargo")
+  private String cargo;
 
   @Column(name = "comprovante_residencia")
   private String comprovanteResidencia;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role));
+    return List.of(new SimpleGrantedAuthority(cargo));
   }
 
   @Override

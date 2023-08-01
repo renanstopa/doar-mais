@@ -44,7 +44,7 @@ public class UsuarioService {
   public void completarInfoUsuario(
       UsuarioModel usuarioModel, PasswordEncoder passwordEncoder, Integer cdTipoUsuario) {
     usuarioModel.setSenha(passwordEncoder.encode(usuarioModel.getSenha()));
-    usuarioModel.setRole("USER");
+    usuarioModel.setCargo("USER");
 
     TipoUsuarioModel tipoUsuarioModel = tipoUsuarioService.buscarTipoUsuario(cdTipoUsuario).get();
     usuarioModel.setTipoUsuarioModel(tipoUsuarioModel);

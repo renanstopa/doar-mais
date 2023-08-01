@@ -25,7 +25,7 @@ create table usuario(
     senha varchar(200),
     telefone varchar(11),
     documento varchar(14),
-    role varchar(45),
+    cargo varchar(45),
     comprovante_residencia blob,
     primary key (id),
     foreign key (id_tipo_usuario) references tipo_usuario (id),
@@ -76,6 +76,7 @@ create table anuncio(
 	id int not null auto_increment,
     id_tipo_anuncio int,
     id_usuario_criador int,
+    id_situacao int,
     data_criacao datetime,
     titulo varchar(100),
     data_inicio_disponibilidade datetime,
@@ -90,7 +91,8 @@ create table anuncio(
     ponto_referencia varchar(100),
     primary key (id),
     foreign key (id_tipo_anuncio) references tipo_anuncio (id),
-    foreign key (id_usuario_criador) references usuario (id)
+    foreign key (id_usuario_criador) references usuario (id),
+    foreign key (id_situacao) references situacao (id)
 );
 
 create table proposta(
@@ -155,7 +157,7 @@ create table autenticacao_email(
 create view
 	vw_perfil_usuario
 as select
-	u.id, upper(u.nome) as nome,
+	u.id, e.id as id_endereco, upper(u.nome) as nome,
     case
         when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
         when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
@@ -178,5 +180,20 @@ on
 	(u.id = e.id_usuario)
 where
 	e.ativo = 1;
+
+-- drop view if exists vw_busca_anuncio
+create view
+	vw_busca_anuncio
+as select
+	a.id, a.id_tipo_anuncio, u.id_tipo_usuario, u.nome, a.titulo,
+    a.data_inicio_disponibilidade,  a.data_fim_disponibilidade, a.cidade
+from
+	anuncio a
+join
+	usuario u
+on
+	(a.id_usuario_criador = u.id)
+where
+	a.id_situacao = 21;
 
 -- FIM DAS VIEWS
