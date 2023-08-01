@@ -1,4 +1,4 @@
-
+set time_zone='America/Sao_Paulo';
 
 insert into anuncio values
 (1, 1, 1, 21, now(), 'Roupa e comida', now(), date_add(now(),interval 1 day), '11533040', 'SP', 'Cubatão', 'Jardim Casqueiro', 'Rua Estados Unidos', 530, '', 'Final da rua do Kalabalis'),
