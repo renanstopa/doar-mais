@@ -33,7 +33,6 @@ public class ResetSenhaControllerImpl implements ResetSenhaController {
 
   @Autowired private ModelMapper modelMapper;
 
-  @PostMapping("/enviaremail")
   public ResponseEntity<ResetSenhaResponseDto> enviarEmail(ResetRequestDto resetRequestDto) {
 
     if (!usuarioService.verificarUsuarioPorEmail(resetRequestDto.getEmail())) {

@@ -17,4 +17,7 @@ public class AtualizarDadosRequestDto {
   @NotNull(message = "Telefone não pode ser nulo!")
   @Size(min = 10, max = 11, message = "Telefone deve conter entre 10 e 11 números!")
   private String telefone;
+
+  @NotNull(message = "Id endereço não pode ser nulo!")
+  private Integer idEndereco;
 }

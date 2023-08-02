@@ -157,7 +157,7 @@ create table autenticacao_email(
 create view
 	vw_perfil_usuario
 as select
-	u.id, e.id as id_endereco, upper(u.nome) as nome,
+	u.id, e.id as id_endereco, u.nome,
     case
         when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
         when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
@@ -185,8 +185,31 @@ where
 create view
 	vw_busca_anuncio
 as select
-	a.id, a.id_tipo_anuncio, u.id_tipo_usuario, u.nome, a.titulo,
+	a.id, a.id_tipo_anuncio, u.id_tipo_usuario, a.id_usuario_criador, u.nome, a.titulo,
     a.data_inicio_disponibilidade,  a.data_fim_disponibilidade, a.cidade
+from
+	anuncio a
+join
+	usuario u
+on
+	(a.id_usuario_criador = u.id)
+where
+	a.id_situacao = 21;
+
+-- drop view if exists vw_consulta_anuncio
+create view
+	vw_consulta_anuncio
+as select
+	a.id, a.id_usuario_criador, a.titulo, a.data_inicio_disponibilidade, a.data_fim_disponibilidade,
+    concat(concat_ws(',', a.logradouro, a.numero, if(a.complemento is not null and a.complemento != '', a.complemento, null)),
+    if(a.ponto_referencia is not null and a.ponto_referencia != '', concat(', ', a.ponto_referencia), ''), ' - ', a.cidade, ', ', a.bairro, ' - ', a.uf) as endereco_completo,
+    u.nome,
+    case
+        when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
+        when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
+        else u.telefone
+    end as
+		telefone
 from
 	anuncio a
 join

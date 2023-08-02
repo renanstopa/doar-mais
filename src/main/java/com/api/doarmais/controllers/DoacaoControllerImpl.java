@@ -1,6 +1,6 @@
 package com.api.doarmais.controllers;
 
-import com.api.doarmais.controllers.interfaces.AnuncioController;
+import com.api.doarmais.controllers.interfaces.DoacaoController;
 import com.api.doarmais.dtos.request.AnuncioRequestDto;
 import com.api.doarmais.dtos.request.FiltroAnuncioRequestDto;
 import com.api.doarmais.dtos.request.ItemAnuncioRequestDto;
@@ -12,10 +12,8 @@ import com.api.doarmais.models.tabelas.AnuncioModel;
 import com.api.doarmais.models.tabelas.ItemAnuncioModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
-import com.api.doarmais.services.AnuncioService;
-import com.api.doarmais.services.EnderecoService;
-import com.api.doarmais.services.ItemAnuncioService;
-import com.api.doarmais.services.TipoAnuncioService;
+import com.api.doarmais.models.views.ConsultaAnuncioViewModel;
+import com.api.doarmais.services.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -26,12 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AnuncioControllerImpl implements AnuncioController {
-
-  @Autowired private AnuncioService anuncioService;
+public class DoacaoControllerImpl implements DoacaoController {
+  @Autowired private DoacaoService doacaoService;
 
   @Autowired private ItemAnuncioService itemAnuncioService;
 
@@ -39,33 +36,36 @@ public class AnuncioControllerImpl implements AnuncioController {
 
   @Autowired private EnderecoService enderecoService;
 
+  @Autowired private ConsultaAnuncioViewService consultaAnuncioViewService;
+
   @Autowired private ModelMapper modelMapper;
 
+  // BUSCA DE ANÚNCIO COM FINALIDADE DE CRIAR UMA PROPOSTA
+
   public ResponseEntity<List<BuscaAnuncioViewModel>> buscar(
-      @RequestParam(name = "titulo") String titulo,
-      @RequestParam(name = "cidade") String cidade,
-      @RequestParam(name = "tipoUsuario", required = false) Integer tipoUsuario,
-      @RequestParam(name = "tipoAnuncio", required = false) Integer tipoAnuncio,
-      @RequestParam(name = "tipoCategoriaItem", required = false) Integer tipoCategoriaItem) {
-    if (cidade.isBlank()) {
+      String titulo, String cidade, Integer tipoUsuario, Integer tipoCategoriaItem) {
+    if (cidade == null || cidade.isBlank()) {
       var usuarioLogado =
           (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       var enderecoAtivo = enderecoService.buscarEnderecoAtivo(usuarioLogado.getId());
       cidade = enderecoAtivo.getCidade();
     }
 
-    FiltroAnuncioRequestDto filtro = new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, tipoAnuncio, tipoCategoriaItem);
+    FiltroAnuncioRequestDto filtro =
+        new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, 1, tipoCategoriaItem);
 
     return new ResponseEntity<List<BuscaAnuncioViewModel>>(
-        anuncioService.buscar(filtro), HttpStatus.OK);
+        doacaoService.buscar(filtro), HttpStatus.OK);
   }
 
-  //    @GetMapping()
-  //    public ResponseEntity<?> visualizarAnuncio(){
-  //        return null;
-  //    }
+  public ResponseEntity<ConsultaAnuncioViewModel> consultar(Integer id) {
+    return new ResponseEntity<ConsultaAnuncioViewModel>(
+        consultaAnuncioViewService.consultar(id), HttpStatus.OK);
+  }
 
-  public ResponseEntity<AnuncioResponseDto> criarDoacao(AnuncioRequestDto anuncioRequestDto) {
+  // AÇÕES RELACIONADAS AOS SEUS ANÚNCIOS
+
+  public ResponseEntity<AnuncioResponseDto> criarAnuncio(AnuncioRequestDto anuncioRequestDto) {
     if (anuncioRequestDto
         .getDataInicioDisponibilidade()
         .isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))))
@@ -78,13 +78,13 @@ public class AnuncioControllerImpl implements AnuncioController {
 
     var anuncioModel = new AnuncioModel();
     BeanUtils.copyProperties(anuncioRequestDto, anuncioModel);
-    anuncioService.completarInformacoes(anuncioModel, 1);
+    doacaoService.completarInformacoes(anuncioModel, 1);
 
     var usuarioCriador =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     anuncioModel.setUsuarioModel(usuarioCriador);
 
-    anuncioModel = anuncioService.gravar(anuncioModel);
+    anuncioModel = doacaoService.gravar(anuncioModel);
 
     for (ItemAnuncioRequestDto itemDto : anuncioRequestDto.getListaItens()) {
       var itemAnuncioModel = new ItemAnuncioModel();
@@ -102,36 +102,5 @@ public class AnuncioControllerImpl implements AnuncioController {
     response.setItens(listaItensResponse);
 
     return new ResponseEntity<AnuncioResponseDto>(response, HttpStatus.CREATED);
-  }
-
-  public ResponseEntity<AnuncioModel> criarPedido(AnuncioRequestDto anuncioRequestDto) {
-    if (anuncioRequestDto
-        .getDataInicioDisponibilidade()
-        .isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))))
-      throw new InvalidDate("Data inicial da disponibilidade não pode ser antes que a data atual");
-
-    if (anuncioRequestDto
-        .getDataFimDisponibilidade()
-        .isBefore(anuncioRequestDto.getDataInicioDisponibilidade()))
-      throw new EndDateBeforeBeginDate("Data final da disponibilidade deve ser depois da inicial");
-
-    var anuncioModel = new AnuncioModel();
-    BeanUtils.copyProperties(anuncioRequestDto, anuncioModel);
-    anuncioService.completarInformacoes(anuncioModel, 2);
-
-    var usuarioCriador =
-        (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    anuncioModel.setUsuarioModel(usuarioCriador);
-
-    anuncioModel = anuncioService.gravar(anuncioModel);
-
-    for (ItemAnuncioRequestDto itemDto : anuncioRequestDto.getListaItens()) {
-      var itemAnuncioModel = new ItemAnuncioModel();
-      itemAnuncioModel.setAnuncioModel(anuncioModel);
-      BeanUtils.copyProperties(itemDto, itemAnuncioModel);
-      itemAnuncioService.gravar(itemAnuncioModel);
-    }
-
-    return new ResponseEntity<AnuncioModel>(anuncioModel, HttpStatus.CREATED);
   }
 }

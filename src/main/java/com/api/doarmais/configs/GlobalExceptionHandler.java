@@ -205,4 +205,13 @@ public class GlobalExceptionHandler {
     problemDetail.setDetail(e.getMessage());
     return problemDetail;
   }
+
+  @ExceptionHandler(CantDeleteAddress.class)
+  ProblemDetail handleCantDeleteAddress(CantDeleteAddress e) {
+    ProblemDetail problemDetail =
+        ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+    problemDetail.setTitle("Erro ao excluír endereço");
+    problemDetail.setDetail(e.getMessage());
+    return problemDetail;
+  }
 }
