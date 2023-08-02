@@ -28,7 +28,7 @@ public class NotificadorAutenticacaoEmailUsuario implements Notificador<UsuarioC
   @Async
   public void enviar(UsuarioCriadoEvent usuarioCriadoEvent) {
     String url =
-        "https://localhost:8080/autenticacaoemail/validar/"
+        "https://localhost:8080/autenticacaoemail?token="
             + usuarioCriadoEvent.getAutenticacaoEmailModel().getToken();
     SimpleMailMessage message = new SimpleMailMessage();
     UsuarioModel usuario =

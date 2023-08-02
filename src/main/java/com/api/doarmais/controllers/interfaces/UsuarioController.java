@@ -9,6 +9,7 @@ import com.api.doarmais.models.views.PerfilUsuarioViewModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,26 +21,25 @@ import org.springframework.web.bind.annotation.*;
 public interface UsuarioController {
 
   @Operation(description = "Endpoint utilizado para visualizar o perfil.")
-  @GetMapping("/perfil")
+  @GetMapping("")
   public ResponseEntity<PerfilUsuarioViewModel> perfilUsuario();
 
   @Operation(description = "Endpoint utilizado para atualizar os dados.")
-  @PatchMapping("/atualizardados")
+  @PatchMapping("")
   public ResponseEntity<UsuarioResponseDto> atualizarDados(
       @Valid @RequestBody AtualizarDadosRequestDto atualizarDadosRequestDto);
 
   @Operation(description = "Endpoint utilizado para criar um endereço.")
-  @PostMapping("/criarendereco")
+  @PostMapping("/enderecos")
   public ResponseEntity<EnderecoResponseDto> criarEndereco(
       @Valid @RequestBody EnderecoRequestDto enderecoRequestDto);
 
-  @Operation(description = "Endpoint utilizado para trocar o endereço ativo da conta.")
-  @PatchMapping("/trocarendereco/{endereco}")
-  public ResponseEntity<EnderecoResponseDto> trocarEndereco(
-      @PathVariable("endereco") Integer endereco);
+  @Operation(description = "Endpoint utilizado para deletar endereço.")
+  @DeleteMapping("/enderecos/{idEndereco}")
+  public ResponseEntity<HttpStatus> deletarEndereco(@PathVariable("idEndereco") Integer idEndereco);
 
   @Operation(description = "Endpoint utilizado para trocar a senha.")
-  @PatchMapping("/trocarsenha")
+  @PatchMapping("/senha")
   public ResponseEntity<UsuarioResponseDto> trocarSenha(
       @Valid @RequestBody TrocarSenhaRequestDto trocarSenhaRequestDto);
 }

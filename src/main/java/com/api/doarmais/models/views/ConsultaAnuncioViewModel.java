@@ -6,24 +6,15 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "vw_busca_anuncio")
-public class BuscaAnuncioViewModel {
+@Table(name = "vw_consulta_anuncio")
+public class ConsultaAnuncioViewModel {
 
   @Id
   @Column(name = "id")
   private Integer id;
 
-  @Column(name = "id_tipo_anuncio")
-  private Integer idTipoAnuncio;
-
-  @Column(name = "id_tipo_usuario")
-  private Integer idTipoUsuario;
-
   @Column(name = "id_usuario_criador")
   private Integer idUsuarioCriador;
-
-  @Column(name = "nome")
-  private String nome;
 
   @Column(name = "titulo")
   private String titulo;
@@ -34,6 +25,12 @@ public class BuscaAnuncioViewModel {
   @Column(name = "data_fim_disponibilidade")
   private LocalDateTime dataFimDisponibilidade;
 
-  @Column(name = "cidade")
-  private String cidade;
+  @Column(name = "endereco_completo")
+  private String enderecoCompleto;
+
+  @Column(name = "nome")
+  private String nome;
+
+  @Column(name = "telefone")
+  private String telefone;
 }

@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.*;
 @Tag(
     name = "Reset de senha",
     description = "Endpoints responsáveis por gerenciar o reset de senha.")
-@RequestMapping("/resetsenha")
+@RequestMapping("/senha")
 public interface ResetSenhaController {
 
   @Operation(
       description = "Endpoint utilizado para enviar a URL de reset de senha no email do usuário.")
-  @PostMapping("/enviaremail")
+  @PostMapping("/reset")
   public ResponseEntity<ResetSenhaResponseDto> enviarEmail(
       @RequestBody @Valid ResetRequestDto resetRequestDto);
 
   @Operation(description = "Endpoint utilizado para trocar a senha.")
-  @PatchMapping("/trocarsenha/{token}")
+  @PatchMapping("")
   public ResponseEntity<UsuarioResponseDto> trocarSenha(
-      @PathVariable("token") String token,
+      @RequestParam("token") String token,
       @RequestBody @Valid TrocarSenhaRequestDto trocarSenhaRequestDto);
 }

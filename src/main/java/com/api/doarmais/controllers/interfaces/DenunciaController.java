@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface DenunciaController {
 
   @Operation(description = "Endpoint utilizado para gerar uma denúncia/bug/melhoria.")
-  @PostMapping("/criardenuncia")
+  @PostMapping("")
   public ResponseEntity<DenunciaResponseDto> criarDenuncia(
       @Valid @RequestBody DenunciaRequestDto denunciaRequestDto);
 }

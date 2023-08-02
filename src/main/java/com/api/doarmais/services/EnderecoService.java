@@ -43,4 +43,12 @@ public class EnderecoService {
   public Optional<EnderecoModel> buscarNovoEndereco(Integer endereco) {
     return enderecoRepository.findById(endereco);
   }
+
+  public void deletar(Integer idEndereco) {
+    enderecoRepository.deleteById(idEndereco);
+  }
+
+  public Integer verificarQtdEndereco(Integer idUsuario) {
+    return enderecoRepository.verificarQtdEnderecoQuery(idUsuario);
+  }
 }

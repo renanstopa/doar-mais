@@ -17,7 +17,7 @@ insert into situacao values
 (13, 'Conta apta para uso'),
 (14, 'Conta suspensa'),
 (15, 'Conta encerrada'),
-(21, 'Anúncio criado'),
+(21, 'Anúncio ativo'),
 (22, 'Anúncio sem itens'),
 (23, 'Anúncio cancelado'),
 (24, 'Anúncio finalizado'),

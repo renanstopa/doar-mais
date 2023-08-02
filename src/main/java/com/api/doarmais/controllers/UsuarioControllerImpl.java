@@ -7,6 +7,7 @@ import com.api.doarmais.dtos.request.TrocarSenhaRequestDto;
 import com.api.doarmais.dtos.response.EnderecoResponseDto;
 import com.api.doarmais.dtos.response.UsuarioResponseDto;
 import com.api.doarmais.exceptions.AddressAlreadyExists;
+import com.api.doarmais.exceptions.CantDeleteAddress;
 import com.api.doarmais.exceptions.PasswordNotEqual;
 import com.api.doarmais.models.tabelas.EnderecoModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
@@ -37,7 +38,6 @@ public class UsuarioControllerImpl implements UsuarioController {
 
   @Autowired private ModelMapper modelMapper;
 
-  @GetMapping("/perfil")
   public ResponseEntity<PerfilUsuarioViewModel> perfilUsuario() {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -45,18 +45,27 @@ public class UsuarioControllerImpl implements UsuarioController {
         perfilUsuarioViewService.consultarPerfil(usuarioModel.getId()).get(), HttpStatus.FOUND);
   }
 
-  @PatchMapping("/atualizardados")
   public ResponseEntity<UsuarioResponseDto> atualizarDados(
       @Valid @RequestBody AtualizarDadosRequestDto atualizarDadosRequestDto) {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     BeanUtils.copyProperties(atualizarDadosRequestDto, usuarioModel);
+
+    EnderecoModel enderecoAtual = enderecoService.buscarEnderecoAtivo(usuarioModel.getId());
+    EnderecoModel novoEnderecoAtivo =
+        enderecoService.buscarNovoEndereco(atualizarDadosRequestDto.getIdEndereco()).get();
+
+    enderecoAtual.setAtivo(2);
+    enderecoService.gravar(enderecoAtual);
+
+    novoEnderecoAtivo.setAtivo(1);
+    enderecoService.gravar(novoEnderecoAtivo);
+
     return new ResponseEntity<UsuarioResponseDto>(
         modelMapper.map(usuarioService.gravar(usuarioModel), UsuarioResponseDto.class),
         HttpStatus.OK);
   }
 
-  @PostMapping("/criarendereco")
   public ResponseEntity<EnderecoResponseDto> criarEndereco(
       @Valid @RequestBody EnderecoRequestDto enderecoRequestDto) {
     UsuarioModel usuarioModel =
@@ -77,25 +86,17 @@ public class UsuarioControllerImpl implements UsuarioController {
         HttpStatus.CREATED);
   }
 
-  @PatchMapping("/trocarendereco/{endereco}")
-  public ResponseEntity<EnderecoResponseDto> trocarEndereco(
-      @PathVariable("endereco") Integer endereco) {
+  public ResponseEntity<HttpStatus> deletarEndereco(Integer idEndereco) {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    EnderecoModel enderecoAtual = enderecoService.buscarEnderecoAtivo(usuarioModel.getId());
-    EnderecoModel novoEnderecoAtivo = enderecoService.buscarNovoEndereco(endereco).get();
+    if (enderecoService.verificarQtdEndereco(usuarioModel.getId()).equals(1))
+      throw new CantDeleteAddress("Esse é seu último endereço cadastrado, impossível excluír");
 
-    enderecoAtual.setAtivo(2);
-    enderecoService.gravar(enderecoAtual);
+    enderecoService.deletar(idEndereco);
 
-    novoEnderecoAtivo.setAtivo(1);
-    enderecoService.gravar(novoEnderecoAtivo);
-
-    return new ResponseEntity<EnderecoResponseDto>(
-        modelMapper.map(novoEnderecoAtivo, EnderecoResponseDto.class), HttpStatus.OK);
+    return new ResponseEntity<HttpStatus>(HttpStatus.OK);
   }
 
-  @PatchMapping("/trocarsenha")
   public ResponseEntity<UsuarioResponseDto> trocarSenha(
       @Valid @RequestBody TrocarSenhaRequestDto trocarSenhaRequestDto) {
     if (!trocarSenhaRequestDto.getSenha().equals(trocarSenhaRequestDto.getConfirmaSenha()))
