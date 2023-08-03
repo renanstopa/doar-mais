@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class AnuncioResponseDto {
 
+  private Integer id;
+
   private String titulo;
 
   private List<ItemAnuncioResponseDto> itens;

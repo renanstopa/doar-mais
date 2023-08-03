@@ -1,5 +1,6 @@
 package com.api.doarmais.models.tabelas;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;

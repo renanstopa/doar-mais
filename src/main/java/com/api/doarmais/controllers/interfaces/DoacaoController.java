@@ -8,6 +8,8 @@ import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.models.views.ConsultaAnuncioViewModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/doacao")
 public interface DoacaoController {
 
-  // BUSCA DE ANÚNCIO COM FINALIDADE DE CRIAR UMA PROPOSTA
+  @Operation(description = "Endpoint utilizado para criar um anúncio.")
+  @PostMapping("")
+  public ResponseEntity<AnuncioResponseDto> criarAnuncio(
+          @Valid @RequestBody AnuncioRequestDto anuncioRequestDto);
 
   @Operation(description = "Endpoint utilizado para buscar os anúncio através de filtros")
   @GetMapping("")
@@ -31,13 +36,8 @@ public interface DoacaoController {
   @GetMapping("/{id}")
   public ResponseEntity<ConsultaAnuncioViewModel> consultar(@PathVariable("id") Integer id);
 
+  @Operation(description = "Endpoint utilizado para criar uma proposta referente a um anúncio")
   @PostMapping("/proposta")
   public ResponseEntity<PropostaResponseDto>criarProposta(@Valid @RequestBody PropostaRequestDto propostaRequestDto);
 
-  // AÇÕES RELACIONADAS AOS SEUS ANÚNCIOS
-
-  @Operation(description = "Endpoint utilizado para criar um anúncio.")
-  @PostMapping("")
-  public ResponseEntity<AnuncioResponseDto> criarAnuncio(
-      @Valid @RequestBody AnuncioRequestDto anuncioRequestDto);
 }

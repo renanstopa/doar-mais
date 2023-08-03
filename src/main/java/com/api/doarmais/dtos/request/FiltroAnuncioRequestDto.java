@@ -7,9 +7,10 @@ import lombok.Data;
 @AllArgsConstructor
 public class FiltroAnuncioRequestDto {
 
-  String titulo;
-  String cidade;
-  Integer tipoUsuario;
-  Integer tipoAnuncio;
-  Integer tipoCategoriaItem;
+  private String titulo;
+  private String cidade;
+  private Integer tipoUsuario;
+  private Integer tipoAnuncio;
+  private Integer tipoCategoriaItem;
+  private Integer idUsuario;
 }

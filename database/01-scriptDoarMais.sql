@@ -89,6 +89,7 @@ create table anuncio(
     numero int,
     complemento varchar(100),
     ponto_referencia varchar(100),
+    quantidade_proposta int,
     primary key (id),
     foreign key (id_tipo_anuncio) references tipo_anuncio (id),
     foreign key (id_usuario_criador) references usuario (id),
@@ -126,10 +127,11 @@ create table item_anuncio(
 );
 
 create table item_anuncio_proposta(
+    id int not null auto_increment,
 	id_proposta int,
     id_item int,
     quantidade_solicitada int,
-    primary key (id_proposta, id_item),
+    primary key (id),
     foreign key (id_proposta) references proposta (id),
     foreign key (id_item) references item_anuncio (id)
 );

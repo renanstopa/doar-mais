@@ -35,6 +35,7 @@ public class AnuncioService {
     anuncioModel.setDataCriacao(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
     anuncioModel.setTipoAnuncioModel(new TipoAnuncioModel(tipoAnuncio));
     anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CRIADO));
+    anuncioModel.setQuantidadeProposta(0);
   }
 
   public List<BuscaAnuncioViewModel> buscar(FiltroAnuncioRequestDto filtro) {
@@ -77,6 +78,9 @@ public class AnuncioService {
                 builder.equal(
                     subRoot.get("categoriaItemModel").get("id"), filtro.getTipoCategoriaItem()));
         predicate.add(builder.in(root.get("id")).value(subquery));
+      }
+      if(filtro.getIdUsuario() != null){
+        predicate.add(builder.equal(root.get("idUsuarioCriador"), filtro.getIdUsuario()));
       }
     }
 

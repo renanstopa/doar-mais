@@ -30,7 +30,7 @@ public class SituacaoModel {
   public static final Integer PROPOSTA_ENVIADA = 31;
   public static final Integer PROPOSTA_CONFIRMADA = 32;
   public static final Integer PROPOSTA_RECUSADA = 33;
-  public static final Integer ENCONTRO_CANCELADA = 34;
+  public static final Integer PROPOSTA_CANCELADA = 34;
   public static final Integer ENCONTRO_REALIZADO = 35;
   public static final Integer ENCONTRO_NAO_REALIZADO = 36;
 

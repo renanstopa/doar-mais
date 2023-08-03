@@ -1,5 +1,6 @@
 package com.api.doarmais.models.tabelas;
 
+import com.api.doarmais.dtos.request.EditarItemAnuncioRequestDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,4 +36,8 @@ public class ItemAnuncioModel {
 
   @Column(name = "descricao")
   private String descricao;
+
+    public Boolean verificarTrocaitem(EditarItemAnuncioRequestDto itemDto) {
+      return !this.getQuantidade().equals(itemDto.getQuantidade());
+    }
 }

@@ -24,6 +24,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +56,44 @@ public class DoacaoControllerImpl implements DoacaoController {
 
   @Autowired private ModelMapper modelMapper;
 
-  // BUSCA DE ANÚNCIO COM FINALIDADE DE CRIAR UMA PROPOSTA
+  public ResponseEntity<AnuncioResponseDto> criarAnuncio(AnuncioRequestDto anuncioRequestDto) {
+    if (anuncioRequestDto
+            .getDataInicioDisponibilidade()
+            .isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))))
+      throw new InvalidDate("Data inicial da disponibilidade não pode ser antes que a data atual");
+
+    if (anuncioRequestDto
+            .getDataFimDisponibilidade()
+            .isBefore(anuncioRequestDto.getDataInicioDisponibilidade()))
+      throw new EndDateBeforeBeginDate("Data final da disponibilidade deve ser depois da inicial");
+
+    var anuncioModel = new AnuncioModel();
+    BeanUtils.copyProperties(anuncioRequestDto, anuncioModel);
+    anuncioService.completarInformacoes(anuncioModel, 1);
+
+    var usuarioCriador =
+            (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    anuncioModel.setUsuarioModel(usuarioCriador);
+
+    anuncioModel = anuncioService.gravar(anuncioModel);
+
+    for (ItemAnuncioRequestDto itemDto : anuncioRequestDto.getListaItens()) {
+      var itemAnuncioModel = new ItemAnuncioModel();
+      itemAnuncioModel.setAnuncioModel(anuncioModel);
+      BeanUtils.copyProperties(itemDto, itemAnuncioModel);
+      itemAnuncioService.gravar(itemAnuncioModel);
+    }
+
+    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(anuncioModel.getId());
+    List<ItemAnuncioResponseDto> listaItensResponse = new ArrayList<ItemAnuncioResponseDto>();
+    for (ItemAnuncioModel item : listaItens) {
+      listaItensResponse.add(modelMapper.map(item, ItemAnuncioResponseDto.class));
+    }
+    AnuncioResponseDto response = modelMapper.map(anuncioModel, AnuncioResponseDto.class);
+    response.setItens(listaItensResponse);
+
+    return new ResponseEntity<AnuncioResponseDto>(response, HttpStatus.CREATED);
+  }
 
   public ResponseEntity<List<BuscaAnuncioViewModel>> buscar(
       String titulo, String cidade, Integer tipoUsuario, Integer tipoCategoriaItem) {
@@ -65,7 +105,7 @@ public class DoacaoControllerImpl implements DoacaoController {
     }
 
     FiltroAnuncioRequestDto filtro =
-        new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, 1, tipoCategoriaItem);
+        new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, 1, tipoCategoriaItem, null);
 
     return new ResponseEntity<List<BuscaAnuncioViewModel>>(
         anuncioService.buscar(filtro), HttpStatus.OK);
@@ -95,44 +135,4 @@ public class DoacaoControllerImpl implements DoacaoController {
     return new ResponseEntity<PropostaResponseDto>(propostaService.gerarResponse(propostaModel), HttpStatus.CREATED);
   }
 
-  // AÇÕES RELACIONADAS AOS SEUS ANÚNCIOS
-
-  public ResponseEntity<AnuncioResponseDto> criarAnuncio(AnuncioRequestDto anuncioRequestDto) {
-    if (anuncioRequestDto
-        .getDataInicioDisponibilidade()
-        .isBefore(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))))
-      throw new InvalidDate("Data inicial da disponibilidade não pode ser antes que a data atual");
-
-    if (anuncioRequestDto
-        .getDataFimDisponibilidade()
-        .isBefore(anuncioRequestDto.getDataInicioDisponibilidade()))
-      throw new EndDateBeforeBeginDate("Data final da disponibilidade deve ser depois da inicial");
-
-    var anuncioModel = new AnuncioModel();
-    BeanUtils.copyProperties(anuncioRequestDto, anuncioModel);
-    anuncioService.completarInformacoes(anuncioModel, 1);
-
-    var usuarioCriador =
-        (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    anuncioModel.setUsuarioModel(usuarioCriador);
-
-    anuncioModel = anuncioService.gravar(anuncioModel);
-
-    for (ItemAnuncioRequestDto itemDto : anuncioRequestDto.getListaItens()) {
-      var itemAnuncioModel = new ItemAnuncioModel();
-      itemAnuncioModel.setAnuncioModel(anuncioModel);
-      BeanUtils.copyProperties(itemDto, itemAnuncioModel);
-      itemAnuncioService.gravar(itemAnuncioModel);
-    }
-
-    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(anuncioModel.getId());
-    List<ItemAnuncioResponseDto> listaItensResponse = new ArrayList<ItemAnuncioResponseDto>();
-    for (ItemAnuncioModel item : listaItens) {
-      listaItensResponse.add(modelMapper.map(item, ItemAnuncioResponseDto.class));
-    }
-    AnuncioResponseDto response = modelMapper.map(anuncioModel, AnuncioResponseDto.class);
-    response.setItens(listaItensResponse);
-
-    return new ResponseEntity<AnuncioResponseDto>(response, HttpStatus.CREATED);
-  }
 }

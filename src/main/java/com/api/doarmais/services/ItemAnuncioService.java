@@ -18,4 +18,8 @@ public class ItemAnuncioService {
   public List<ItemAnuncioModel> buscaPorAnuncio(Integer id) {
     return itemAnuncioRepository.findByAnuncioModelId(id);
   }
+
+    public ItemAnuncioModel buscarPorId(Integer id) {
+      return itemAnuncioRepository.findById(id).get();
+    }
 }
