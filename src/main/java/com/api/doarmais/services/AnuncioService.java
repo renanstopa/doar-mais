@@ -1,9 +1,12 @@
 package com.api.doarmais.services;
 
 import com.api.doarmais.dtos.request.FiltroAnuncioRequestDto;
+import com.api.doarmais.dtos.request.ItemPropostaRequestDto;
+import com.api.doarmais.dtos.request.PropostaRequestDto;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
-import com.api.doarmais.repositories.DoacaoRepository;
+import com.api.doarmais.repositories.AnuncioRepository;
+import com.api.doarmais.repositories.ItemAnuncioRepository;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
@@ -16,14 +19,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DoacaoService {
+public class AnuncioService {
 
-  @Autowired private DoacaoRepository doacaoRepository;
+  @Autowired private AnuncioRepository anuncioRepository;
+
+  @Autowired private ItemAnuncioRepository itemAnuncioRepository;
 
   @Autowired private EntityManager entityManager;
 
   public AnuncioModel gravar(AnuncioModel anuncioModel) {
-    return doacaoRepository.save(anuncioModel);
+    return anuncioRepository.save(anuncioModel);
   }
 
   public void completarInformacoes(AnuncioModel anuncioModel, Integer tipoAnuncio) {
@@ -79,5 +84,38 @@ public class DoacaoService {
 
     query.where(builder.and(predicate.toArray(new Predicate[predicate.size()])));
     query.orderBy(builder.asc(root.get("dataInicioDisponibilidade")));
+  }
+
+    public boolean verificarDataAgendada(PropostaRequestDto propostaRequestDto) {
+        AnuncioModel anuncioModel = anuncioRepository.findById(propostaRequestDto.getIdAnuncio()).get();
+        LocalDateTime data = propostaRequestDto.getDataAgendada();
+
+        return (data.isAfter(anuncioModel.getDataInicioDisponibilidade()) && data.isBefore(anuncioModel.getDataFimDisponibilidade()));
+    }
+
+  public boolean verificarQuantidadeItem(PropostaRequestDto propostaRequestDto) {
+    for (ItemPropostaRequestDto itemProposta : propostaRequestDto.getItemPropostaRequestDtoList()) {
+      ItemAnuncioModel itemAnuncioModel = itemAnuncioRepository.findById(itemProposta.getIdItem()).get();
+      if(itemProposta.getQuantidade() > itemAnuncioModel.getQuantidade())
+        return false;
+    }
+
+    return true;
+  }
+
+  public AnuncioModel buscarPorId(Integer idAnuncio) {
+    return anuncioRepository.findById(idAnuncio).get();
+  }
+
+  public void atualizarSituacao(AnuncioModel anuncioModel) {
+    List<ItemAnuncioModel> itemAnuncioModelList = itemAnuncioRepository.findByAnuncioModelId(anuncioModel.getId());
+
+    for (ItemAnuncioModel item : itemAnuncioModelList) {
+      if(!item.getQuantidade().equals(0))
+        return;
+    }
+
+    anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_ITENS_ESGOTADOS));
+    anuncioRepository.save(anuncioModel);
   }
 }

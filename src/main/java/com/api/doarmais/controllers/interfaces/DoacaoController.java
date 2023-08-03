@@ -1,7 +1,9 @@
 package com.api.doarmais.controllers.interfaces;
 
 import com.api.doarmais.dtos.request.AnuncioRequestDto;
+import com.api.doarmais.dtos.request.PropostaRequestDto;
 import com.api.doarmais.dtos.response.AnuncioResponseDto;
+import com.api.doarmais.dtos.response.PropostaResponseDto;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.models.views.ConsultaAnuncioViewModel;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,6 +30,9 @@ public interface DoacaoController {
   @Operation(description = "Endpoint utilizado para consultar os dados do anúncio excolhido")
   @GetMapping("/{id}")
   public ResponseEntity<ConsultaAnuncioViewModel> consultar(@PathVariable("id") Integer id);
+
+  @PostMapping("/proposta")
+  public ResponseEntity<PropostaResponseDto>criarProposta(@Valid @RequestBody PropostaRequestDto propostaRequestDto);
 
   // AÇÕES RELACIONADAS AOS SEUS ANÚNCIOS
 

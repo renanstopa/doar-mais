@@ -214,4 +214,22 @@ public class GlobalExceptionHandler {
     problemDetail.setDetail(e.getMessage());
     return problemDetail;
   }
+
+  @ExceptionHandler(WrongDate.class)
+  ProblemDetail handleWrongDate(WrongDate e) {
+    ProblemDetail problemDetail =
+            ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+    problemDetail.setTitle("Erro ao criar proposta");
+    problemDetail.setDetail(e.getMessage());
+    return problemDetail;
+  }
+
+  @ExceptionHandler(ImpossibleItemQuantity.class)
+  ProblemDetail handleImpossibleItemQuantity(ImpossibleItemQuantity e) {
+    ProblemDetail problemDetail =
+            ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getLocalizedMessage());
+    problemDetail.setTitle("Erro ao criar proposta");
+    problemDetail.setDetail(e.getMessage());
+    return problemDetail;
+  }
 }
