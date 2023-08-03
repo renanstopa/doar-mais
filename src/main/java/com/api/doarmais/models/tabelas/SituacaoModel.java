@@ -27,10 +27,12 @@ public class SituacaoModel {
   public static final Integer ANUNCIO_CANCELADO = 23;
   public static final Integer ANUNCIO_FINALIZADO = 24;
 
-  public static final Integer PROPOSTA_CONFIRMADA = 31;
-  public static final Integer PROPOSTA_CANCELADA = 32;
-  public static final Integer ENCONTRO_REALIZADO = 33;
-  public static final Integer ENCONTRO_NAO_REALIZADO = 34;
+  public static final Integer PROPOSTA_ENVIADA = 31;
+  public static final Integer PROPOSTA_CONFIRMADA = 32;
+  public static final Integer PROPOSTA_RECUSADA = 33;
+  public static final Integer PROPOSTA_CANCELADA = 34;
+  public static final Integer ENCONTRO_REALIZADO = 35;
+  public static final Integer ENCONTRO_NAO_REALIZADO = 36;
 
   public static final Integer DENUNCIA_CRIADA = 41;
   public static final Integer DENUNCIA_GERENCIADA = 42;

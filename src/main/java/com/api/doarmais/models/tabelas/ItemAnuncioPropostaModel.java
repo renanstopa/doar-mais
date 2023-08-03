@@ -15,11 +15,14 @@ import lombok.NoArgsConstructor;
 public class ItemAnuncioPropostaModel {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private Integer id;
+
   @ManyToOne
   @JoinColumn(name = "id_proposta")
   private PropostaModel propostaModel;
 
-  @Id
   @ManyToOne
   @JoinColumn(name = "id_item")
   private ItemAnuncioModel itemAnuncioModel;

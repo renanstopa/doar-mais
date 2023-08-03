@@ -69,4 +69,7 @@ public class AnuncioModel {
 
   @Column(name = "ponto_referencia")
   private String pontoReferencia;
+
+  @Column(name = "quantidade_proposta")
+  private Integer quantidadeProposta;
 }

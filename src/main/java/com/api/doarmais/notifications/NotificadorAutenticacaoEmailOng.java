@@ -3,6 +3,7 @@ package com.api.doarmais.notifications;
 import com.api.doarmais.events.OngCriadaEvent;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.services.UsuarioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
 import org.springframework.mail.MailSendException;
@@ -15,14 +16,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @Configuration
 public class NotificadorAutenticacaoEmailOng implements Notificador<OngCriadaEvent> {
 
-  private UsuarioService usuarioService;
+  @Autowired private UsuarioService usuarioService;
 
-  private JavaMailSender sender;
-
-  public NotificadorAutenticacaoEmailOng(UsuarioService usuarioService, JavaMailSender sender) {
-    this.usuarioService = usuarioService;
-    this.sender = sender;
-  }
+  @Autowired private JavaMailSender sender;
 
   @EventListener
   @Async

@@ -89,6 +89,7 @@ create table anuncio(
     numero int,
     complemento varchar(100),
     ponto_referencia varchar(100),
+    quantidade_proposta int,
     primary key (id),
     foreign key (id_tipo_anuncio) references tipo_anuncio (id),
     foreign key (id_usuario_criador) references usuario (id),
@@ -97,11 +98,13 @@ create table anuncio(
 
 create table proposta(
 	id int not null auto_increment,
-    id_usuario_aceito int,
+    id_usuario int,
+    id_anuncio int,
     id_situacao int,
     data_agendada datetime,
     primary key (id),
-    foreign key (id_usuario_aceito) references usuario (id),
+    foreign key (id_usuario) references usuario (id),
+    foreign key (id_anuncio) references anuncio (id),
     foreign key (id_situacao) references situacao (id)
 );
 
@@ -124,10 +127,11 @@ create table item_anuncio(
 );
 
 create table item_anuncio_proposta(
+    id int not null auto_increment,
 	id_proposta int,
     id_item int,
     quantidade_solicitada int,
-    primary key (id_proposta, id_item),
+    primary key (id),
     foreign key (id_proposta) references proposta (id),
     foreign key (id_item) references item_anuncio (id)
 );
@@ -201,7 +205,7 @@ create view
 	vw_consulta_anuncio
 as select
 	a.id, a.id_usuario_criador, a.titulo, a.data_inicio_disponibilidade, a.data_fim_disponibilidade,
-    concat(concat_ws(',', a.logradouro, a.numero, if(a.complemento is not null and a.complemento != '', a.complemento, null)),
+    concat(concat_ws(', ', a.logradouro, a.numero, if(a.complemento is not null and a.complemento != '', a.complemento, null)),
     if(a.ponto_referencia is not null and a.ponto_referencia != '', concat(', ', a.ponto_referencia), ''), ' - ', a.cidade, ', ', a.bairro, ' - ', a.uf) as endereco_completo,
     u.nome,
     case

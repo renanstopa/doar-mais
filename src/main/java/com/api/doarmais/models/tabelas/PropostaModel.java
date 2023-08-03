@@ -1,5 +1,6 @@
 package com.api.doarmais.models.tabelas;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -22,8 +23,12 @@ public class PropostaModel {
   private Integer id;
 
   @ManyToOne
-  @JoinColumn(name = "id_usuario_aceito")
+  @JoinColumn(name = "id_usuario")
   private UsuarioModel usuarioModel;
+
+  @ManyToOne
+  @JoinColumn(name = "id_anuncio")
+  private AnuncioModel anuncioModel;
 
   @ManyToOne
   @JoinColumn(name = "id_situacao")

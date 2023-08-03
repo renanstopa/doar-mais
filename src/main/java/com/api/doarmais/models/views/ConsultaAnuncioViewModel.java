@@ -1,8 +1,15 @@
 package com.api.doarmais.models.views;
 
+import com.api.doarmais.dtos.response.ItemAnuncioResponseDto;
+import com.api.doarmais.models.tabelas.ItemAnuncioModel;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 
 @Entity
 @Data
@@ -33,4 +40,15 @@ public class ConsultaAnuncioViewModel {
 
   @Column(name = "telefone")
   private String telefone;
+
+  @Transient
+  private List<ItemAnuncioResponseDto> itemList = new ArrayList<>();
+
+  public void armazenarItens(List<ItemAnuncioModel> itemAnuncioModelList){
+    for (ItemAnuncioModel itens : itemAnuncioModelList) {
+      ItemAnuncioResponseDto response = new ItemAnuncioResponseDto();
+      BeanUtils.copyProperties(itens, response);
+      itemList.add(response);
+    }
+  }
 }
