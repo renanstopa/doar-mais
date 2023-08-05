@@ -2,7 +2,6 @@ package com.api.doarmais.services;
 
 import com.api.doarmais.dtos.request.ItemPropostaRequestDto;
 import com.api.doarmais.dtos.request.PropostaRequestDto;
-import com.api.doarmais.events.PropostaCanceladaEvent;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.repositories.AnuncioRepository;
 import com.api.doarmais.repositories.ItemAnuncioPropostaRepository;
@@ -59,6 +58,6 @@ public class ItemAnuncioPropostaService {
         }
       }
 
-      eventPublisher.publishEvent(new PropostaCanceladaEvent(proposta));
+
     }
 }

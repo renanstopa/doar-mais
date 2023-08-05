@@ -25,8 +25,9 @@ insert into situacao values
 (32, 'Proposta confirmada'),
 (33, 'Proposta recusada'),
 (34, 'Proposta cancelada'),
-(35, 'Encontro realizado'),
-(36, 'Encontro não realizado'),
+(35, 'Proposta em análise'),
+(36, 'Encontro realizado'),
+(37, 'Encontro não realizado'),
 (41, 'Denúncia criada'),
 (42, 'Denúncia gerenciada');
 

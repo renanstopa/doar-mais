@@ -1,11 +1,13 @@
 package com.api.doarmais.services;
 
+import com.api.doarmais.dtos.request.EditarItemAnuncioRequestDto;
 import com.api.doarmais.dtos.request.FiltroAnuncioRequestDto;
 import com.api.doarmais.dtos.request.ItemPropostaRequestDto;
 import com.api.doarmais.dtos.request.PropostaRequestDto;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.repositories.AnuncioRepository;
+import com.api.doarmais.repositories.ItemAnuncioPropostaRepository;
 import com.api.doarmais.repositories.ItemAnuncioRepository;
 import io.micrometer.common.util.StringUtils;
 import jakarta.persistence.EntityManager;
@@ -25,6 +27,8 @@ public class AnuncioService {
 
   @Autowired private ItemAnuncioRepository itemAnuncioRepository;
 
+  @Autowired private ItemAnuncioPropostaRepository itemAnuncioPropostaRepository;
+
   @Autowired private EntityManager entityManager;
 
   public AnuncioModel gravar(AnuncioModel anuncioModel) {
@@ -35,7 +39,8 @@ public class AnuncioService {
     anuncioModel.setDataCriacao(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
     anuncioModel.setTipoAnuncioModel(new TipoAnuncioModel(tipoAnuncio));
     anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CRIADO));
-    anuncioModel.setQuantidadeProposta(0);
+    if(anuncioModel.getQuantidadeProposta() == null)
+      anuncioModel.setQuantidadeProposta(0);
   }
 
   public List<BuscaAnuncioViewModel> buscar(FiltroAnuncioRequestDto filtro) {
@@ -122,4 +127,25 @@ public class AnuncioService {
     anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_ITENS_ESGOTADOS));
     anuncioRepository.save(anuncioModel);
   }
+
+    public void voltarQuantidadeOriginalItem(ItemAnuncioModel itemAnuncioModel, List<PropostaModel> propostasCanceladas, EditarItemAnuncioRequestDto itemDto) {
+      for (PropostaModel proposta : propostasCanceladas) {
+        List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList = itemAnuncioPropostaRepository.findByPropostaModelId(proposta.getId());
+
+        for (ItemAnuncioPropostaModel itemProposta : itemAnuncioPropostaModelList) {
+          if(itemProposta.getItemAnuncioModel().equals(itemAnuncioModel)){
+            itemAnuncioModel.setQuantidade(itemAnuncioModel.getQuantidade() + itemProposta.getQuantidadeSolicitada());
+            itemDto.setQuantidade(itemAnuncioModel.getQuantidade());
+            itemAnuncioRepository.save(itemAnuncioModel);
+          }
+        }
+
+        AnuncioModel anuncioModel = proposta.getAnuncioModel();
+        if(!anuncioModel.getSituacaoModel().getId().equals(22)){
+          anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CRIADO));
+          anuncioRepository.save(anuncioModel);
+        }
+      }
+    }
+
 }

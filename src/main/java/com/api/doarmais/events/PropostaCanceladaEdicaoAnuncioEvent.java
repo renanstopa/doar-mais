@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class PropostaCanceladaEvent {
+public class PropostaCanceladaEdicaoAnuncioEvent {
 
   private PropostaModel propostaModel;
 }

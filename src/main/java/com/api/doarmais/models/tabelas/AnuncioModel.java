@@ -1,5 +1,6 @@
 package com.api.doarmais.models.tabelas;
 
+import com.api.doarmais.dtos.request.EditarAnuncioRequestDto;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
@@ -72,4 +73,17 @@ public class AnuncioModel {
 
   @Column(name = "quantidade_proposta")
   private Integer quantidadeProposta;
+
+    public boolean verficarTrocaInfoPrincipal(EditarAnuncioRequestDto anuncioEditado) {
+      if(!this.cep.equals(anuncioEditado.getCep()))
+        return true;
+
+      if(!this.getNumero().equals(anuncioEditado.getNumero()))
+        return true;
+
+      if(!this.getDataInicioDisponibilidade().equals(anuncioEditado.getDataInicioDisponibilidade()))
+        return true;
+
+      return !this.getDataFimDisponibilidade().equals(anuncioEditado.getDataFimDisponibilidade());
+    }
 }
