@@ -31,8 +31,9 @@ public class SituacaoModel {
   public static final Integer PROPOSTA_CONFIRMADA = 32;
   public static final Integer PROPOSTA_RECUSADA = 33;
   public static final Integer PROPOSTA_CANCELADA = 34;
-  public static final Integer ENCONTRO_REALIZADO = 35;
-  public static final Integer ENCONTRO_NAO_REALIZADO = 36;
+  public static final Integer PROPOSTA_EM_ANALISE = 35;
+  public static final Integer ENCONTRO_REALIZADO = 36;
+  public static final Integer ENCONTRO_NAO_REALIZADO = 37;
 
   public static final Integer DENUNCIA_CRIADA = 41;
   public static final Integer DENUNCIA_GERENCIADA = 42;
