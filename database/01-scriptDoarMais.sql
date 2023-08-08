@@ -153,6 +153,15 @@ create table autenticacao_email(
     primary key (id)
 );
 
+create table punicao(
+    id int not null auto_increment,
+    id_usuario int,
+    data_agendada datetime,
+    data_cancelamento datetime,
+    motivo text,
+    primary key (id)
+);
+
 -- FIM BANCO
 
 -- CRIAÇÃO DAS VIEWS

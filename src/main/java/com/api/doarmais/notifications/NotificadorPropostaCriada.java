@@ -66,9 +66,9 @@ public class NotificadorPropostaCriada implements Notificador<PropostaCriadaEven
                       "Quantidade - " + item.getQuantidadeSolicitada() + "<br><br>";
     }
 
-    String botoes = "<a href=\"https://localhost:8080/doacao/" + proposta.getAnuncioModel().getId() + "\"><button style=\"padding: 8px; font-weight: bold; background-color: #5865F2; border-radius: 9px; border-style: none; color: white;\">VER ANÚNCIO</button></a>\n" +
-                    "<a href=\"\"><button style=\"padding: 8px; font-weight: bold; background-color: #27AE60; border-radius: 9px; border-style: none; color: white;\">ACEITAR</button></a>\n" +
-                    "<a href=\"\"><button style=\"padding: 8px; font-weight: bold; background-color: #FF8164; border-radius: 9px; border-style: none; color: white;\">RECUSAR</button></a>";
+    String botoes = "<a href=\"https://localhost:8080/doacao/" + proposta.getAnuncioModel().getId() + "\"><button style=\"padding: 8px; font-weight: bold; background-color: #5865F2; border-radius: 9px; border-style: none; color: white; cursor: pointer;\">VER ANÚNCIO</button></a>\n" +
+                    "<a href=\"\"><button style=\"padding: 8px; font-weight: bold; background-color: #27AE60; border-radius: 9px; border-style: none; color: white; cursor: pointer;\">ACEITAR</button></a>\n" +
+                    "<a href=\"\"><button style=\"padding: 8px; font-weight: bold; background-color: #FF8164; border-radius: 9px; border-style: none; color: white; cursor: pointer;\">RECUSAR</button></a>";
 
     helper.setText(titulo + "" + conteudo + "" + anuncio + "" + itensPedidos + "" + botoes, true);
 

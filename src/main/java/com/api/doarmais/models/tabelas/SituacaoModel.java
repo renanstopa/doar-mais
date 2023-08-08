@@ -38,6 +38,9 @@ public class SituacaoModel {
   public static final Integer DENUNCIA_CRIADA = 41;
   public static final Integer DENUNCIA_GERENCIADA = 42;
 
+  public static final Integer PUNICAO_NAO_VERIFICADA = 51;
+  public static final Integer PUNICAO_VERIFICADA = 52;
+
   @Id
   @NonNull
   @Column(name = "id")

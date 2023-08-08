@@ -3,7 +3,7 @@ package com.api.doarmais.services;
 import com.api.doarmais.dtos.request.PropostaRequestDto;
 import com.api.doarmais.dtos.response.ItemPropostaResponseDto;
 import com.api.doarmais.dtos.response.PropostaResponseDto;
-import com.api.doarmais.events.PropostaCanceladaEdicaoAnuncioEvent;
+import com.api.doarmais.events.PropostaCanceladaAnuncioEvent;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +64,12 @@ public class PropostaService {
     propostaRepository.save(proposta);
   }
 
-  public List<PropostaModel> cancelarTodasPropostasDoAnuncio(Integer id) {
+  public List<PropostaModel> cancelarTodasPropostasDoAnuncio(Integer id, String motivo) {
     AnuncioModel anuncioModel = anuncioRepository.findById(id).get();
     List<PropostaModel> propostaModelList = propostaRepository.buscarPorAnuncioIdQuery(id);
 
     for (PropostaModel proposta : propostaModelList)
-      eventPublisher.publishEvent(new PropostaCanceladaEdicaoAnuncioEvent(proposta));
+      eventPublisher.publishEvent(new PropostaCanceladaAnuncioEvent(proposta, motivo));
 
     propostaRepository.cancelarTodasPropostaAnuncioQuery(id);
     return propostaModelList;
@@ -85,7 +85,7 @@ public class PropostaService {
 
       propostaRepository.propostaEmAnaliseQuery(propostaModel.getId());
 
-      eventPublisher.publishEvent(new PropostaCanceladaEdicaoAnuncioEvent(propostaModel));
+      eventPublisher.publishEvent(new PropostaCanceladaAnuncioEvent(propostaModel, "Foi cancelada, pois a pessoa que criou precisou editar o anúncio!"));
 
     }
 

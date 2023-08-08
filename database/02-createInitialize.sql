@@ -29,7 +29,9 @@ insert into situacao values
 (36, 'Encontro realizado'),
 (37, 'Encontro não realizado'),
 (41, 'Denúncia criada'),
-(42, 'Denúncia gerenciada');
+(42, 'Denúncia gerenciada'),
+(51, 'Punição não verificada'),
+(52, 'Punição verificada');
 
 insert into tipo_anuncio values
 (1, 'Doação'),
