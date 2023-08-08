@@ -1,10 +1,8 @@
 package com.api.doarmais.notifications;
 
-import com.api.doarmais.events.PropostaCanceladaEdicaoAnuncioEvent;
-import com.api.doarmais.events.PropostaCriadaEvent;
+import com.api.doarmais.events.PropostaCanceladaAnuncioEvent;
 import com.api.doarmais.models.tabelas.ItemAnuncioPropostaModel;
 import com.api.doarmais.models.tabelas.PropostaModel;
-import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.services.ItemAnuncioPropostaService;
 import com.api.doarmais.services.UsuarioService;
 import jakarta.mail.MessagingException;
@@ -22,7 +20,7 @@ import java.util.List;
 
 @EnableAsync
 @Configuration
-public class NotificadorPropostaCanceladaEdicaoAnuncio implements Notificador<PropostaCanceladaEdicaoAnuncioEvent> {
+public class NotificadorPropostaCanceladaAnuncio implements Notificador<PropostaCanceladaAnuncioEvent> {
 
   @Autowired private JavaMailSender sender;
 
@@ -32,7 +30,7 @@ public class NotificadorPropostaCanceladaEdicaoAnuncio implements Notificador<Pr
 
   @EventListener
   @Async
-  public void enviar(PropostaCanceladaEdicaoAnuncioEvent propostaCanceladaEdicaoAnuncioEvent) throws MessagingException {
+  public void enviar(PropostaCanceladaAnuncioEvent propostaCanceladaEdicaoAnuncioEvent) throws MessagingException {
     SimpleMailMessage message = new SimpleMailMessage();
 
     PropostaModel proposta = propostaCanceladaEdicaoAnuncioEvent.getPropostaModel();
@@ -50,7 +48,7 @@ public class NotificadorPropostaCanceladaEdicaoAnuncio implements Notificador<Pr
     message.setText("Olá, " + proposta.getUsuarioModel().getNome() + "!\n\n" +
                     "Sua proposta - " + proposta.getAnuncioModel().getTitulo() + "\n\n" + itens +
                     "Agendada para - " + proposta.getDataAgendada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + "\n" +
-                    "Foi cancelada, pois a pessoa que criou precisou editar o anúncio!");
+            propostaCanceladaEdicaoAnuncioEvent.getMotivo());
 
     try {
       sender.send(message);

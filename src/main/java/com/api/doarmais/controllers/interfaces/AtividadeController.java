@@ -2,6 +2,7 @@ package com.api.doarmais.controllers.interfaces;
 
 import com.api.doarmais.dtos.request.AnuncioRequestDto;
 import com.api.doarmais.dtos.request.EditarAnuncioRequestDto;
+import com.api.doarmais.dtos.request.MotivoCancelamentoDto;
 import com.api.doarmais.dtos.request.PropostaRequestDto;
 import com.api.doarmais.dtos.response.AnuncioResponseDto;
 import com.api.doarmais.dtos.response.PropostaResponseDto;
@@ -21,8 +22,10 @@ public interface AtividadeController {
 
   @Operation(description = "Endpoint utilizado para editar um anúncio.")
   @PatchMapping("/{id}")
-  public ResponseEntity<AnuncioResponseDto> editarAnuncio( @PathVariable("id") Integer id,
+  public ResponseEntity<AnuncioResponseDto> editarAnuncio(@PathVariable("id") Integer id,
           @Valid @RequestBody EditarAnuncioRequestDto editarAnuncioRequestDto);
 
-
+  @Operation(description = "Endpoint utilizado para cancelar um anúncio.")
+  @PatchMapping("/cancelar/{id}")
+  public ResponseEntity<AnuncioResponseDto> cancelarAnuncio(@PathVariable("id") Integer id, @Valid @RequestBody MotivoCancelamentoDto motivoCancelamentoDto);
 }

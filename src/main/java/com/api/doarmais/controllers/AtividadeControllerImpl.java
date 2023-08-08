@@ -3,10 +3,7 @@ package com.api.doarmais.controllers;
 import com.api.doarmais.clients.BrasilApiClient;
 import com.api.doarmais.controllers.interfaces.AtividadeController;
 import com.api.doarmais.controllers.interfaces.BrasilApiController;
-import com.api.doarmais.dtos.request.AnuncioRequestDto;
-import com.api.doarmais.dtos.request.EditarAnuncioRequestDto;
-import com.api.doarmais.dtos.request.EditarItemAnuncioRequestDto;
-import com.api.doarmais.dtos.request.ItemAnuncioRequestDto;
+import com.api.doarmais.dtos.request.*;
 import com.api.doarmais.dtos.response.AnuncioResponseDto;
 import com.api.doarmais.dtos.response.CepResponseDto;
 import com.api.doarmais.dtos.response.CnpjResponseDto;
@@ -63,7 +60,7 @@ public class AtividadeControllerImpl implements AtividadeController {
     List<PropostaModel> propostasCanceladas = new ArrayList<>();
     boolean trocouInfoPrincipal = anuncioModel.verficarTrocaInfoPrincipal(editarAnuncioRequestDto);
     if (trocouInfoPrincipal)
-      propostasCanceladas = propostaService.cancelarTodasPropostasDoAnuncio(anuncioModel.getId());
+      propostasCanceladas = propostaService.cancelarTodasPropostasDoAnuncio(anuncioModel.getId(), "Foi cancelada, pois a pessoa que criou precisou editar o anúncio!");
 
     BeanUtils.copyProperties(editarAnuncioRequestDto, anuncioModel);
     anuncioService.completarInformacoes(anuncioModel, anuncioModel.getTipoAnuncioModel().getId());
@@ -83,6 +80,28 @@ public class AtividadeControllerImpl implements AtividadeController {
     }
 
     propostaService.cancelarPropostasEmAnalise();
+
+    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(anuncioModel.getId());
+    List<ItemAnuncioResponseDto> listaItensResponse = new ArrayList<ItemAnuncioResponseDto>();
+    for (ItemAnuncioModel item : listaItens) {
+      listaItensResponse.add(modelMapper.map(item, ItemAnuncioResponseDto.class));
+    }
+
+    AnuncioResponseDto response = modelMapper.map(anuncioModel, AnuncioResponseDto.class);
+    response.setItens(listaItensResponse);
+
+    return new ResponseEntity<AnuncioResponseDto>(response, HttpStatus.OK);
+  }
+
+  public ResponseEntity<AnuncioResponseDto> cancelarAnuncio(Integer id, MotivoCancelamentoDto motivoCancelamentoDto) {
+    var anuncioModel = anuncioService.buscarPorId(id);
+
+    List<PropostaModel> propostasCanceladas = new ArrayList<>();
+    propostasCanceladas = propostaService.cancelarTodasPropostasDoAnuncio(anuncioModel.getId(), "Foi cancelada pelo criador do anúncio!");
+    propostaService.cancelarPropostasEmAnalise();
+
+    anuncioService.verificarEnvioPunicao(propostasCanceladas, motivoCancelamentoDto);
+    anuncioService.cancelarAnuncio(anuncioModel);
 
     List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(anuncioModel.getId());
     List<ItemAnuncioResponseDto> listaItensResponse = new ArrayList<ItemAnuncioResponseDto>();

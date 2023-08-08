@@ -1,9 +1,8 @@
 package com.api.doarmais.services;
 
-import com.api.doarmais.dtos.request.EditarItemAnuncioRequestDto;
-import com.api.doarmais.dtos.request.FiltroAnuncioRequestDto;
-import com.api.doarmais.dtos.request.ItemPropostaRequestDto;
-import com.api.doarmais.dtos.request.PropostaRequestDto;
+import com.api.doarmais.dtos.request.*;
+import com.api.doarmais.events.PossivelPunicaoEvent;
+import com.api.doarmais.events.PropostaCanceladaAnuncioEvent;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.repositories.AnuncioRepository;
@@ -17,6 +16,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +30,10 @@ public class AnuncioService {
   @Autowired private ItemAnuncioPropostaRepository itemAnuncioPropostaRepository;
 
   @Autowired private EntityManager entityManager;
+
+  @Autowired private ApplicationEventPublisher eventPublisher;
+
+  @Autowired private PunicaoService punicaoService;
 
   public AnuncioModel gravar(AnuncioModel anuncioModel) {
     return anuncioRepository.save(anuncioModel);
@@ -148,4 +152,17 @@ public class AnuncioService {
       }
     }
 
+    public void cancelarAnuncio(AnuncioModel anuncioModel) {
+      anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CANCELADO));
+      anuncioRepository.save(anuncioModel);
+    }
+
+  public void verificarEnvioPunicao(List<PropostaModel> propostasCanceladas, MotivoCancelamentoDto motivo) {
+    for (PropostaModel proposta : propostasCanceladas) {
+      if(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).isAfter(proposta.getDataAgendada().minusHours(3))){
+        eventPublisher.publishEvent(new PossivelPunicaoEvent(proposta));
+        punicaoService.gerarVerificacaoPunicao(proposta, motivo);
+      }
+    }
+  }
 }
