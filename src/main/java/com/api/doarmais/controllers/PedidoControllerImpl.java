@@ -15,11 +15,6 @@ import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.models.views.ConsultaAnuncioViewModel;
 import com.api.doarmais.services.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +25,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
-@RequestMapping("/doacao")
-public class DoacaoControllerImpl implements AnuncioController {
+@RequestMapping("/pedido")
+public class PedidoControllerImpl implements AnuncioController {
 
   @Autowired private AnuncioService anuncioService;
   @Autowired private ItemAnuncioService itemAnuncioService;
@@ -58,7 +58,7 @@ public class DoacaoControllerImpl implements AnuncioController {
 
     var anuncioModel = new AnuncioModel();
     BeanUtils.copyProperties(anuncioRequestDto, anuncioModel);
-    anuncioService.completarInformacoes(anuncioModel, 1);
+    anuncioService.completarInformacoes(anuncioModel, 2);
 
     var usuarioCriador =
             (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -88,14 +88,13 @@ public class DoacaoControllerImpl implements AnuncioController {
       String titulo, String cidade, Integer tipoUsuario, Integer tipoCategoriaItem) {
     var usuarioLogado =
             (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
     if (cidade == null || cidade.isBlank()) {
       var enderecoAtivo = enderecoService.buscarEnderecoAtivo(usuarioLogado.getId());
       cidade = enderecoAtivo.getCidade();
     }
 
     FiltroAnuncioRequestDto filtro =
-        new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, 1, tipoCategoriaItem, usuarioLogado.getId());
+        new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, 2, tipoCategoriaItem, usuarioLogado.getId());
 
     return new ResponseEntity<List<BuscaAnuncioViewModel>>(
         anuncioService.buscar(filtro), HttpStatus.OK);

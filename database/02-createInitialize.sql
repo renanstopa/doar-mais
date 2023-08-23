@@ -7,6 +7,7 @@ insert into tipo_denuncia values
 (1, 'Melhoria'),
 (2, 'Bug'),
 (3, 'Denunciar usuário');
+(4, 'Denunciar anúncio');
 
 insert into situacao values
 (1, 'Token não utilizado'),

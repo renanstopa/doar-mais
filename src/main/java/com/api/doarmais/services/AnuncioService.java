@@ -60,8 +60,6 @@ public class AnuncioService {
       FiltroAnuncioRequestDto filtro,
       CriteriaBuilder builder,
       CriteriaQuery<BuscaAnuncioViewModel> query) {
-    var usuarioLogado =
-        (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     Root<BuscaAnuncioViewModel> root = query.from(BuscaAnuncioViewModel.class);
     List<Predicate> predicate = new ArrayList<Predicate>();
 
@@ -88,12 +86,9 @@ public class AnuncioService {
                     subRoot.get("categoriaItemModel").get("id"), filtro.getTipoCategoriaItem()));
         predicate.add(builder.in(root.get("id")).value(subquery));
       }
-      if(filtro.getIdUsuario() != null){
-        predicate.add(builder.equal(root.get("idUsuarioCriador"), filtro.getIdUsuario()));
-      }
     }
 
-    predicate.add(builder.notEqual(root.get("idUsuarioCriador"), usuarioLogado.getId()));
+    predicate.add(builder.notEqual(root.get("idUsuarioCriador"), filtro.getIdUsuario()));
 
     query.where(builder.and(predicate.toArray(new Predicate[predicate.size()])));
     query.orderBy(builder.asc(root.get("dataInicioDisponibilidade")));

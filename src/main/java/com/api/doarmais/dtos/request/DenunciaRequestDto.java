@@ -1,5 +1,6 @@
 package com.api.doarmais.dtos.request;
 
+import com.api.doarmais.models.tabelas.AnuncioModel;
 import com.api.doarmais.models.tabelas.TipoDenunciaModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +14,9 @@ public class DenunciaRequestDto {
   @NotNull(message = "Tipo denuncia não pode ser nula!")
   private TipoDenunciaModel tipoDenunciaModel;
 
-  private UsuarioModel usuarioModel;
+  private UsuarioModel usuarioModelDenunciado;
+
+  private AnuncioModel anuncioModel;
 
   @NotBlank(message = "Descrição denuncia deve ser preenchida!")
   @NotNull(message = "Descrição denuncia não pode ser nula!")
