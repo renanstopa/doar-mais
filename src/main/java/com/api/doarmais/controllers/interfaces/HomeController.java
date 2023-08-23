@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Tag(
-    name = "Denúncia",
+    name = "Home",
     description =
-        "Endpoints responsáveis por criar uma denúncia/bug/melhoria que será enviada para o adm.")
-@RequestMapping("/denuncia")
-public interface DenunciaController {
+        "Endpoints responsáveis pela funcionalidades da página home.")
+@RequestMapping("/home")
+public interface HomeController {
 
-  @Operation(description = "Endpoint utilizado para gerar uma denúncia/bug/melhoria.")
-  @PostMapping("")
+  @Operation(description = "Endpoint utilizado para gerar uma denúncia referente a bug/melhoria.")
+  @PostMapping("/denuncia")
   public ResponseEntity<DenunciaResponseDto> criarDenuncia(
       @Valid @RequestBody DenunciaRequestDto denunciaRequestDto);
 }

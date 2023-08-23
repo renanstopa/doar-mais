@@ -15,11 +15,6 @@ import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.models.views.ConsultaAnuncioViewModel;
 import com.api.doarmais.services.*;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +25,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
-@RequestMapping("/doacao")
-public class DoacaoControllerImpl implements AnuncioController {
+@RequestMapping("/doacaorapida")
+public class DoacaoRapidaControllerImpl implements AnuncioController {
 
   @Autowired private AnuncioService anuncioService;
   @Autowired private ItemAnuncioService itemAnuncioService;
@@ -58,7 +58,7 @@ public class DoacaoControllerImpl implements AnuncioController {
 
     var anuncioModel = new AnuncioModel();
     BeanUtils.copyProperties(anuncioRequestDto, anuncioModel);
-    anuncioService.completarInformacoes(anuncioModel, 1);
+    anuncioService.completarInformacoes(anuncioModel, 3);
 
     var usuarioCriador =
             (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

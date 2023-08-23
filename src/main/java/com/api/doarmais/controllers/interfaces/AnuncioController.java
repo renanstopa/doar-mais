@@ -1,23 +1,22 @@
 package com.api.doarmais.controllers.interfaces;
 
 import com.api.doarmais.dtos.request.AnuncioRequestDto;
+import com.api.doarmais.dtos.request.DenunciaRequestDto;
 import com.api.doarmais.dtos.request.PropostaRequestDto;
 import com.api.doarmais.dtos.response.AnuncioResponseDto;
+import com.api.doarmais.dtos.response.DenunciaResponseDto;
 import com.api.doarmais.dtos.response.PropostaResponseDto;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.models.views.ConsultaAnuncioViewModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@Tag(name = "Doação", description = "Endpoints responsáveis por gerenciar as ações de doações.")
-@RequestMapping("/doacao")
-public interface DoacaoController {
+@Tag(name = "Anúncio", description = "Endpoints responsáveis por gerenciar as ações do anúncio.")
+public interface AnuncioController {
 
   @Operation(description = "Endpoint utilizado para criar um anúncio.")
   @PostMapping("")
@@ -39,5 +38,9 @@ public interface DoacaoController {
   @Operation(description = "Endpoint utilizado para criar uma proposta referente a um anúncio")
   @PostMapping("/proposta")
   public ResponseEntity<PropostaResponseDto>criarProposta(@Valid @RequestBody PropostaRequestDto propostaRequestDto);
+
+  @Operation(description = "Endpoint utilizado para denunciar um anúncio")
+  @PostMapping("/denuncia")
+  public ResponseEntity<DenunciaResponseDto> denunciarAnuncio(@Valid @RequestBody DenunciaRequestDto denunciaRequestDto);
 
 }

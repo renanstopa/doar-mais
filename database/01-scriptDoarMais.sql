@@ -57,12 +57,14 @@ create table denuncia(
 	id int not null auto_increment,
     id_tipo_denuncia int,
     id_usuario int,
+    id_usuario_denunciado int,
     id_situacao int,
     descricao text,
     data_criacao datetime,
     primary key (id),
     foreign key (id_tipo_denuncia) references tipo_denuncia (id),
     foreign key (id_usuario) references usuario (id),
+    foreign key (id_usuario_denunciado) references usuario (id),
     foreign key (id_situacao) references situacao (id)
 );
 

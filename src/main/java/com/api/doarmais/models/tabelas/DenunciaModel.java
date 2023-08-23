@@ -30,6 +30,10 @@ public class DenunciaModel {
   private UsuarioModel usuarioModel;
 
   @ManyToOne
+  @JoinColumn(name = "id_usuario_denunciado")
+  private UsuarioModel usuarioModelDenunciado;
+
+  @ManyToOne
   @JoinColumn(name = "id_situacao")
   private SituacaoModel situacaoModel;
 
@@ -37,6 +41,6 @@ public class DenunciaModel {
   private String descricao;
 
   @DateTimeFormat(pattern = "dd/MM/yyyy HH:mm:ss")
-  @Column(name = "data_cricao")
+  @Column(name = "data_criacao")
   private LocalDateTime dataCriacao;
 }
