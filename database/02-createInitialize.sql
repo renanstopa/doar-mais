@@ -6,7 +6,7 @@ insert into tipo_usuario values
 insert into tipo_denuncia values
 (1, 'Melhoria'),
 (2, 'Bug'),
-(3, 'Denunciar usuário');
+(3, 'Denunciar usuário'),
 (4, 'Denunciar anúncio');
 
 insert into situacao values

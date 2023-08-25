@@ -38,9 +38,6 @@ public class ItemAnuncioModel {
   private String descricao;
 
     public Boolean verificarTrocaitem(EditarItemAnuncioRequestDto itemDto) {
-      if(!this.getNome().equals(itemDto.getNome()))
-        return true;
-
-      return !this.getQuantidade().equals(itemDto.getQuantidade());
+      return !this.getNome().equals(itemDto.getNome());
     }
 }
