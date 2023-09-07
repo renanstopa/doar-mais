@@ -226,16 +226,16 @@ where
 create view
 	vw_consulta_anuncio
 as select
-	a.id, a.id_usuario_criador, a.titulo, a.data_inicio_disponibilidade, a.data_fim_disponibilidade,
-    concat(concat_ws(', ', a.logradouro, a.numero, if(a.complemento is not null and a.complemento != '', a.complemento, null)),
-    if(a.ponto_referencia is not null and a.ponto_referencia != '', concat(', ', a.ponto_referencia), ''), ' - ', a.cidade, ', ', a.bairro, ' - ', a.uf) as endereco_completo,
-    u.nome,
+	a.id, a.id_usuario_criador, a.titulo,
+    concat(substring(a.cep, 1, 5), '-', substring(a.cep, 6, 8)) as cep, a.uf, a.cidade, a.bairro, a.logradouro, a.numero, a.complemento,
+    a.ponto_referencia, date_format(a.data_inicio_disponibilidade, '%d/%m/%Y %H:%i:%s') as data_inicio_disponibilidade,
+    date_format(a.data_fim_disponibilidade, '%d/%m/%Y %H:%i:%s') as data_fim_disponibilidade, u.nome,
     case
         when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
         when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
         else u.telefone
     end as
-		telefone
+        telefone
 from
 	anuncio a
 join
@@ -244,5 +244,63 @@ on
 	(a.id_usuario_criador = u.id)
 where
 	a.id_situacao = 21;
+
+-- drop view if exists vw_busca_propostas_agendadas
+create view
+    vw_busca_propostas_agendadas
+as select
+   	p.id, p.id_usuario, u.id_tipo_usuario, p.id_anuncio, u.nome,
+   	case
+        when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
+        when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
+        else u.telefone
+    end as
+   		telefone, a.titulo, a.cidade, date_format(p.data_agendada, '%d/%m/%Y %H:%i:%s') as data_agendada, p.data_agendada as data_filtro
+from
+    proposta p
+join
+    anuncio a
+on
+    (p.id_anuncio = a.id)
+join
+    usuario u
+on
+    (p.id_usuario = u.id)
+where
+     p.id_situacao = 32;
+
+-- drop view if exists vw_consulta_prosposta_confirmada
+create view
+    vw_consulta_prosposta_confirmada
+as select
+   	p.id, uc.id as id_usuario_proposta, uc.nome as nome_usuario_proposta,
+   case
+       when length(uc.telefone) = 11 then concat('(', substring(uc.telefone, 1, 2), ') ', substring(uc.telefone, 3, 5), '-', substring(uc.telefone, 8, 4))
+       when length(uc.telefone) = 10 then concat('(', substring(uc.telefone, 1, 2), ') ', substring(uc.telefone, 3, 4), '-', substring(uc.telefone, 7, 4))
+       else uc.telefone
+   end as
+        telefone_usuario_proposta, ua.id as id_usuario_anuncio, ua.nome as nome_usuario_anuncio,
+   case
+       when length(ua.telefone) = 11 then concat('(', substring(ua.telefone, 1, 2), ') ', substring(ua.telefone, 3, 5), '-', substring(ua.telefone, 8, 4))
+       when length(ua.telefone) = 10 then concat('(', substring(ua.telefone, 1, 2), ') ', substring(ua.telefone, 3, 4), '-', substring(ua.telefone, 7, 4))
+       else ua.telefone
+   end as
+        telefone_usuario_anuncio,
+   a.titulo, concat(substring(a.cep, 1, 5), '-', substring(a.cep, 6, 8)) as cep, a.uf, a.cidade, a.bairro, a.logradouro, a.numero, a.complemento,
+   a.ponto_referencia, date_format(p.data_agendada, '%d/%m/%Y %H:%i:%s') as data_agendada
+from
+    proposta p
+join
+    usuario uc
+on
+    (p.id_usuario = uc.id)
+join
+    usuario ua
+on
+    ((select ac.id_usuario_criador from anuncio ac where ac.id = p.id_anuncio) = ua.id)
+join
+    anuncio a
+on
+    (p.id_anuncio = a.id);
 
 -- FIM DAS VIEWS

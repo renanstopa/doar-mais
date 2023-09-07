@@ -3,34 +3,42 @@ package com.api.doarmais.models.views;
 import com.api.doarmais.dtos.response.ItemAnuncioResponseDto;
 import com.api.doarmais.models.tabelas.ItemAnuncioModel;
 import jakarta.persistence.*;
+import lombok.Data;
+import org.springframework.beans.BeanUtils;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Data;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
-
 @Entity
 @Data
-@Table(name = "vw_consulta_anuncio")
-public class ConsultaAnuncioViewModel {
+@Table(name = "vw_consulta_prosposta_confirmada")
+public class ConsultaPropostaConfirmadaViewModel {
 
   @Id
   @Column(name = "id")
   private Integer id;
 
-  @Column(name = "id_usuario_criador")
-  private Integer idUsuarioCriador;
+  @Column(name = "id_usuario_proposta")
+  private Integer idUsuarioProposta;
+
+  @Column(name = "nome_usuario_proposta")
+  private String nomeUsuarioProposta;
+
+  @Column(name = "telefone_usuario_proposta")
+  private String telefoneUsuarioProposta;
+
+  @Column(name = "id_usuario_anuncio")
+  private Integer idUsuarioAnuncio;
+
+  @Column(name = "nome_usuario_anuncio")
+  private String nomeUsuarioAnuncio;
+
+  @Column(name = "telefone_usuario_anuncio")
+  private String telefoneUsuarioAnuncio;
 
   @Column(name = "titulo")
   private String titulo;
-
-  @Column(name = "data_inicio_disponibilidade")
-  private String dataInicioDisponibilidade;
-
-  @Column(name = "data_fim_disponibilidade")
-  private String dataFimDisponibilidade;
 
   @Column(name = "cep")
   private String cep;
@@ -56,11 +64,8 @@ public class ConsultaAnuncioViewModel {
   @Column(name = "ponto_referencia")
   private String pontoReferencia;
 
-  @Column(name = "nome")
-  private String nome;
-
-  @Column(name = "telefone")
-  private String telefone;
+  @Column(name = "data_agendada")
+  private String dataAgendada;
 
   @Transient
   private List<ItemAnuncioResponseDto> itemList = new ArrayList<>();
