@@ -90,7 +90,7 @@ public class DoacaoControllerImpl implements AnuncioController {
             (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     if (cidade == null || cidade.isBlank()) {
-      var enderecoAtivo = enderecoService.buscarEnderecoAtivo(usuarioLogado.getId());
+      var enderecoAtivo = enderecoService.buscarEndereco(usuarioLogado.getId());
       cidade = enderecoAtivo.getCidade();
     }
 

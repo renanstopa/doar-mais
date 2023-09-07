@@ -71,7 +71,7 @@ public class ResetSenhaControllerImpl implements ResetSenhaController {
     if (!resetSenhaModel.getId().equals(SituacaoModel.TOKEN_UTILIZADO))
       throw new LinkAlreadyUsed("Esse link já foi utilizado para alterar a senha");
 
-    if (!trocarSenhaRequestDto.getSenha().equals(trocarSenhaRequestDto.getConfirmaSenha()))
+    if (!trocarSenhaRequestDto.getNovaSenha().equals(trocarSenhaRequestDto.getConfirmaSenha()))
       throw new PasswordNotEqual("As senhas devem ser iguais");
 
     resetSenhaModel.setId(SituacaoModel.TOKEN_UTILIZADO);
@@ -79,7 +79,7 @@ public class ResetSenhaControllerImpl implements ResetSenhaController {
     UsuarioModel usuarioModel =
         usuarioService.buscarUsuarioPorEmail(resetSenhaModel.getEmailUsuario());
 
-    usuarioModel.setSenha(passwordEncoder.encode(trocarSenhaRequestDto.getSenha()));
+    usuarioModel.setSenha(passwordEncoder.encode(trocarSenhaRequestDto.getNovaSenha()));
     return new ResponseEntity<UsuarioResponseDto>(
         modelMapper.map(usuarioService.gravar(usuarioModel), UsuarioResponseDto.class),
         HttpStatus.OK);

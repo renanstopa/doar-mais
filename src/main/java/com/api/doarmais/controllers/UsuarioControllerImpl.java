@@ -3,17 +3,14 @@ package com.api.doarmais.controllers;
 import com.api.doarmais.controllers.interfaces.UsuarioController;
 import com.api.doarmais.dtos.request.AtualizarDadosRequestDto;
 import com.api.doarmais.dtos.request.EnderecoRequestDto;
-import com.api.doarmais.dtos.request.TrocarSenhaRequestDto;
+import com.api.doarmais.dtos.request.TrocarSenhaLogadoRequestDto;
 import com.api.doarmais.dtos.response.EnderecoResponseDto;
 import com.api.doarmais.dtos.response.UsuarioResponseDto;
-import com.api.doarmais.exceptions.AddressAlreadyExists;
-import com.api.doarmais.exceptions.CantDeleteAddress;
 import com.api.doarmais.exceptions.PasswordNotEqual;
-import com.api.doarmais.models.tabelas.EnderecoModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.models.views.PerfilUsuarioViewModel;
-import com.api.doarmais.services.EnderecoService;
 import com.api.doarmais.services.PerfilUsuarioViewService;
+import com.api.doarmais.services.TrocaEnderecoService;
 import com.api.doarmais.services.UsuarioService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -32,7 +29,7 @@ public class UsuarioControllerImpl implements UsuarioController {
 
   @Autowired private PerfilUsuarioViewService perfilUsuarioViewService;
 
-  @Autowired private EnderecoService enderecoService;
+  @Autowired private TrocaEnderecoService trocaEnderecoService;
 
   @Autowired private PasswordEncoder passwordEncoder;
 
@@ -51,60 +48,33 @@ public class UsuarioControllerImpl implements UsuarioController {
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     BeanUtils.copyProperties(atualizarDadosRequestDto, usuarioModel);
 
-    EnderecoModel enderecoAtual = enderecoService.buscarEnderecoAtivo(usuarioModel.getId());
-    EnderecoModel novoEnderecoAtivo =
-        enderecoService.buscarNovoEndereco(atualizarDadosRequestDto.getIdEndereco()).get();
-
-    enderecoAtual.setAtivo(2);
-    enderecoService.gravar(enderecoAtual);
-
-    novoEnderecoAtivo.setAtivo(1);
-    enderecoService.gravar(novoEnderecoAtivo);
-
     return new ResponseEntity<UsuarioResponseDto>(
         modelMapper.map(usuarioService.gravar(usuarioModel), UsuarioResponseDto.class),
         HttpStatus.OK);
   }
 
-  public ResponseEntity<EnderecoResponseDto> criarEndereco(
+  public ResponseEntity<EnderecoResponseDto> solicitarTrocaEndereco(
       @Valid @RequestBody EnderecoRequestDto enderecoRequestDto) {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    if (enderecoService.verificarEnderecoExistente(
-        enderecoRequestDto.getCep(), enderecoRequestDto.getNumero(), usuarioModel.getId())) {
-      throw new AddressAlreadyExists("Endereço já cadastrado");
-    }
-
-    EnderecoModel enderecoModel = new EnderecoModel();
-    BeanUtils.copyProperties(enderecoRequestDto, enderecoModel);
-    enderecoModel.setAtivo(2);
-    enderecoModel.setUsuarioModel(usuarioModel);
-
     return new ResponseEntity<EnderecoResponseDto>(
-        modelMapper.map(enderecoService.gravar(enderecoModel), EnderecoResponseDto.class),
+        modelMapper.map(trocaEnderecoService.criarSolicitacao(enderecoRequestDto, usuarioModel), EnderecoResponseDto.class),
         HttpStatus.CREATED);
   }
 
-  public ResponseEntity<HttpStatus> deletarEndereco(Integer idEndereco) {
-    UsuarioModel usuarioModel =
-        (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    if (enderecoService.verificarQtdEndereco(usuarioModel.getId()).equals(1))
-      throw new CantDeleteAddress("Esse é seu último endereço cadastrado, impossível excluír");
-
-    enderecoService.deletar(idEndereco);
-
-    return new ResponseEntity<HttpStatus>(HttpStatus.OK);
-  }
-
   public ResponseEntity<UsuarioResponseDto> trocarSenha(
-      @Valid @RequestBody TrocarSenhaRequestDto trocarSenhaRequestDto) {
-    if (!trocarSenhaRequestDto.getSenha().equals(trocarSenhaRequestDto.getConfirmaSenha()))
+          @Valid @RequestBody TrocarSenhaLogadoRequestDto trocarSenhaLogadoRequestDto) {
+    UsuarioModel usuarioModel =
+            (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    if(!usuarioService.verificarSenhaAtual(trocarSenhaLogadoRequestDto.getSenhaAtual(), passwordEncoder, usuarioModel))
+      throw new PasswordNotEqual("Senha atual não corresponde a registrada em seu usuário");
+
+    if (!trocarSenhaLogadoRequestDto.getNovaSenha().equals(trocarSenhaLogadoRequestDto.getConfirmaSenha()))
       throw new PasswordNotEqual("As senhas devem ser iguais");
 
-    UsuarioModel usuarioModel =
-        (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    usuarioModel.setSenha(passwordEncoder.encode(trocarSenhaRequestDto.getSenha()));
+    usuarioModel.setSenha(passwordEncoder.encode(trocarSenhaLogadoRequestDto.getNovaSenha()));
 
     return new ResponseEntity<UsuarioResponseDto>(
         modelMapper.map(usuarioService.gravar(usuarioModel), UsuarioResponseDto.class),

@@ -41,6 +41,9 @@ public class SituacaoModel {
   public static final Integer PUNICAO_NAO_VERIFICADA = 51;
   public static final Integer PUNICAO_VERIFICADA = 52;
 
+  public static final Integer SOLICITACAO_TROCA_ENDERECO_POENDENTE = 61;
+  public static final Integer SOLICITACAO_ANALISADA = 62;
+
   @Id
   @NonNull
   @Column(name = "id")

@@ -11,17 +11,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "endereco")
-public class EnderecoModel {
+@Table(name = "troca_endereco")
+public class TrocaEnderecoModel {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Integer id;
 
-  @ManyToOne
-  @JoinColumn(name = "id_usuario")
-  private UsuarioModel usuarioModel;
+  @Column(name = "id_usuario")
+  private Integer idUsuario;
+
+  @Column(name = "id_situacao")
+  private Integer idSituacao;
 
   @Column(name = "cep")
   private String cep;
@@ -43,5 +45,8 @@ public class EnderecoModel {
 
   @Column(name = "complemento")
   private String complemento;
+
+  @Column(name = "comprovante_residencia")
+  private String comprovanteResidencia;
 
 }

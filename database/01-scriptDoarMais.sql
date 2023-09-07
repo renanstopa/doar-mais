@@ -42,7 +42,6 @@ create table endereco(
     logradouro varchar(200),
     numero int,
     complemento varchar(100),
-    ativo int,
     primary key (id, id_usuario),
     foreign key (id_usuario) references usuario (id)
 );
@@ -164,6 +163,20 @@ create table punicao(
     primary key (id)
 );
 
+create table troca_endereco(
+	id int not null auto_increment,
+    id_usuario int,
+    cep varchar(8),
+    uf char(2),
+    cidade varchar(150),
+    bairro varchar(150),
+    logradouro varchar(200),
+    numero int,
+    complemento varchar(100),
+    comprovante_residencia blob,
+    primary key (id, id_usuario)
+);
+
 -- FIM BANCO
 
 -- CRIAÇÃO DAS VIEWS
@@ -192,9 +205,7 @@ from
 join
 	endereco e
 on
-	(u.id = e.id_usuario)
-where
-	e.ativo = 1;
+	(u.id = e.id_usuario);
 
 -- drop view if exists vw_busca_anuncio
 create view

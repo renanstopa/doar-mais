@@ -2,6 +2,7 @@ package com.api.doarmais.controllers.interfaces;
 
 import com.api.doarmais.dtos.request.AtualizarDadosRequestDto;
 import com.api.doarmais.dtos.request.EnderecoRequestDto;
+import com.api.doarmais.dtos.request.TrocarSenhaLogadoRequestDto;
 import com.api.doarmais.dtos.request.TrocarSenhaRequestDto;
 import com.api.doarmais.dtos.response.EnderecoResponseDto;
 import com.api.doarmais.dtos.response.UsuarioResponseDto;
@@ -31,15 +32,11 @@ public interface UsuarioController {
 
   @Operation(description = "Endpoint utilizado para criar um endereço.")
   @PostMapping("/enderecos")
-  public ResponseEntity<EnderecoResponseDto> criarEndereco(
+  public ResponseEntity<EnderecoResponseDto> solicitarTrocaEndereco(
       @Valid @RequestBody EnderecoRequestDto enderecoRequestDto);
-
-  @Operation(description = "Endpoint utilizado para deletar endereço.")
-  @DeleteMapping("/enderecos/{idEndereco}")
-  public ResponseEntity<HttpStatus> deletarEndereco(@PathVariable("idEndereco") Integer idEndereco);
 
   @Operation(description = "Endpoint utilizado para trocar a senha.")
   @PatchMapping("/senha")
   public ResponseEntity<UsuarioResponseDto> trocarSenha(
-      @Valid @RequestBody TrocarSenhaRequestDto trocarSenhaRequestDto);
+      @Valid @RequestBody TrocarSenhaLogadoRequestDto trocarSenhaLogadoRequestDto);
 }
