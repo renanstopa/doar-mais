@@ -25,19 +25,10 @@ public class EnderecoService {
     enderecoModel.setLogradouro(criarUsuarioRequestDto.getLogradouro());
     enderecoModel.setNumero(criarUsuarioRequestDto.getNumero());
     enderecoModel.setComplemento(criarUsuarioRequestDto.getComplemento());
-    enderecoModel.setAtivo(1);
   }
 
   public EnderecoModel gravar(EnderecoModel enderecoModel) {
     return enderecoRepository.save(enderecoModel);
-  }
-
-  public boolean verificarEnderecoExistente(String cep, Integer numero, Integer usuario) {
-    return enderecoRepository.existsByCepAndNumeroAndUsuarioModelId(cep, numero, usuario);
-  }
-
-  public EnderecoModel buscarEnderecoAtivo(Integer usuario) {
-    return enderecoRepository.findByUsuarioModelIdAndAtivo(usuario, 1);
   }
 
   public Optional<EnderecoModel> buscarNovoEndereco(Integer endereco) {
@@ -50,5 +41,9 @@ public class EnderecoService {
 
   public Integer verificarQtdEndereco(Integer idUsuario) {
     return enderecoRepository.verificarQtdEnderecoQuery(idUsuario);
+  }
+
+  public EnderecoModel buscarEndereco(Integer idUsuario) {
+    return enderecoRepository.findByUsuarioModelId(idUsuario);
   }
 }

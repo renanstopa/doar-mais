@@ -32,7 +32,9 @@ insert into situacao values
 (41, 'Denúncia criada'),
 (42, 'Denúncia gerenciada'),
 (51, 'Punição não verificada'),
-(52, 'Punição verificada');
+(52, 'Punição verificada'),
+(61, 'Solicitação troca de endereço pendente'),
+(62, 'Solicitação analisada');
 
 insert into tipo_anuncio values
 (1, 'Doação'),

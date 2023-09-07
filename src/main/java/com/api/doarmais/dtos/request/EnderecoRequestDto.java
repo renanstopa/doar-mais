@@ -38,4 +38,6 @@ public class EnderecoRequestDto {
 
   @Size(max = 100, message = "Compelemento deve conter no máximo 100 caracteres!")
   private String complemento;
+
+  private String comprovanteResidencia;
 }
