@@ -1,20 +1,16 @@
 package com.api.doarmais.controllers;
 
-import com.api.doarmais.clients.BrasilApiClient;
 import com.api.doarmais.controllers.interfaces.AtividadeController;
-import com.api.doarmais.controllers.interfaces.BrasilApiController;
 import com.api.doarmais.dtos.request.*;
 import com.api.doarmais.dtos.response.AnuncioResponseDto;
-import com.api.doarmais.dtos.response.CepResponseDto;
-import com.api.doarmais.dtos.response.CnpjResponseDto;
 import com.api.doarmais.dtos.response.ItemAnuncioResponseDto;
 import com.api.doarmais.exceptions.EndDateBeforeBeginDate;
-import com.api.doarmais.exceptions.InvalidDate;
 import com.api.doarmais.models.tabelas.*;
-import com.api.doarmais.services.AnuncioService;
-import com.api.doarmais.services.ItemAnuncioPropostaService;
-import com.api.doarmais.services.ItemAnuncioService;
-import com.api.doarmais.services.PropostaService;
+import com.api.doarmais.models.views.BuscaAnuncioViewModel;
+import com.api.doarmais.models.views.BuscaPropostasAgendadasViewModel;
+import com.api.doarmais.models.views.ConsultaAnuncioViewModel;
+import com.api.doarmais.models.views.ConsultaPropostaConfirmadaViewModel;
+import com.api.doarmais.services.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,31 +20,49 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class AtividadeControllerImpl implements AtividadeController {
 
-  @Autowired
-  private AnuncioService anuncioService;
+  @Autowired private AnuncioService anuncioService;
 
-  @Autowired
-  private ItemAnuncioService itemAnuncioService;
+  @Autowired private ItemAnuncioService itemAnuncioService;
 
-  @Autowired
-  private PropostaService propostaService;
+  @Autowired private PropostaService propostaService;
 
-  @Autowired
-  private ItemAnuncioPropostaService itemAnuncioPropostaService;
+  @Autowired private ItemAnuncioPropostaService itemAnuncioPropostaService;
 
-  @Autowired
-  private ApplicationEventPublisher eventPublisher;
+  @Autowired private ConsultaAnuncioViewService consultaAnuncioViewService;
 
-  @Autowired
-  private ModelMapper modelMapper;
+  @Autowired private ConsultaPropostaConfirmadaViewService consultaPropostaConfirmadaViewService;
+
+  @Autowired private AtividadeService atividadeService;
+
+  @Autowired private ApplicationEventPublisher eventPublisher;
+
+  @Autowired private ModelMapper modelMapper;
+
+  //ENDPOINTS UTILIZADOS NA ABA DE ANÚNCIOS
+
+  public ResponseEntity<List<BuscaAnuncioViewModel>> buscarAnuncios(String titulo, String cidade, Integer tipoUsuario, Integer tipoCategoriaItem) {
+    var usuarioLogado =
+            (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    FiltroAnuncioRequestDto filtro =
+            new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, null, tipoCategoriaItem, usuarioLogado.getId());
+
+    return new ResponseEntity<List<BuscaAnuncioViewModel>>(atividadeService.buscarAnuncios(filtro), HttpStatus.OK);
+  }
+
+  public ResponseEntity<ConsultaAnuncioViewModel> consultarAnuncio(Integer id) {
+    ConsultaAnuncioViewModel consultaAnuncioViewModel = consultaAnuncioViewService.consultar(id);
+    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(id);
+    consultaAnuncioViewModel.armazenarItens(listaItens);
+
+    return new ResponseEntity<ConsultaAnuncioViewModel>(consultaAnuncioViewModel, HttpStatus.OK);
+  }
 
   public ResponseEntity<AnuncioResponseDto> editarAnuncio(Integer id, EditarAnuncioRequestDto editarAnuncioRequestDto) {
     if (editarAnuncioRequestDto
@@ -114,4 +128,27 @@ public class AtividadeControllerImpl implements AtividadeController {
 
     return new ResponseEntity<AnuncioResponseDto>(response, HttpStatus.OK);
   }
+
+  //ENDPOINTS UTILIZADOS NA ABA DE CONFIRMAÇÕES
+  //ENDPOINTS UTILIZADOS NA ABA DE AGENDADOS
+
+  public ResponseEntity<List<BuscaPropostasAgendadasViewModel>> buscarAgendados(String titulo, String cidade, Integer tipoUsuario, Integer tipoCategoriaItem) {
+    var usuarioLogado =
+            (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    FiltroAnuncioRequestDto filtro =
+            new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, null, tipoCategoriaItem, usuarioLogado.getId());
+
+    return new ResponseEntity<List<BuscaPropostasAgendadasViewModel>>(atividadeService.buscarAgendados(filtro), HttpStatus.OK);
+  }
+
+  public ResponseEntity<ConsultaPropostaConfirmadaViewModel> consultarAgendado(Integer id) {
+    ConsultaPropostaConfirmadaViewModel consultaPropostasConfirmadasViewModel = consultaPropostaConfirmadaViewService.consultar(id);
+    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(id);
+    consultaPropostasConfirmadasViewModel.armazenarItens(listaItens);
+
+    return new ResponseEntity<ConsultaPropostaConfirmadaViewModel>(consultaPropostasConfirmadasViewModel, HttpStatus.OK);
+  }
+
+  //ENDPOINTS UTILIZADOS NA ABA DE HISTÓRICO
 }
