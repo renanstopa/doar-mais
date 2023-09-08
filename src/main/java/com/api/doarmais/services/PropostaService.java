@@ -123,4 +123,14 @@ public class PropostaService {
       punicaoService.gerarVerificacaoPunicao(proposta, motivoCancelamentoDto);
     }
   }
+
+  public void confirmarProposta(PropostaModel propostaModel) {
+    propostaModel.setSituacaoModel(new SituacaoModel(SituacaoModel.PROPOSTA_CONFIRMADA));
+    propostaRepository.save(propostaModel);
+  }
+
+  public void recusarProposta(PropostaModel propostaModel) {
+    propostaModel.setSituacaoModel(new SituacaoModel(SituacaoModel.PROPOSTA_RECUSADA));
+    propostaRepository.save(propostaModel);
+  }
 }

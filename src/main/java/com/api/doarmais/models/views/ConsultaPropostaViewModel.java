@@ -12,8 +12,8 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "vw_consulta_prosposta_confirmada")
-public class ConsultaPropostaConfirmadaViewModel {
+@Table(name = "vw_consulta_prosposta")
+public class ConsultaPropostaViewModel {
 
   @Id
   @Column(name = "id")
