@@ -4,6 +4,8 @@ import com.api.doarmais.controllers.interfaces.AtividadeController;
 import com.api.doarmais.dtos.request.*;
 import com.api.doarmais.dtos.response.AnuncioResponseDto;
 import com.api.doarmais.dtos.response.ItemAnuncioResponseDto;
+import com.api.doarmais.dtos.response.ItemPropostaResponseDto;
+import com.api.doarmais.dtos.response.PropostaResponseDto;
 import com.api.doarmais.exceptions.EndDateBeforeBeginDate;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
@@ -74,7 +76,7 @@ public class AtividadeControllerImpl implements AtividadeController {
     List<PropostaModel> propostasCanceladas = new ArrayList<>();
     boolean trocouInfoPrincipal = anuncioModel.verficarTrocaInfoPrincipal(editarAnuncioRequestDto);
     if (trocouInfoPrincipal)
-      propostasCanceladas = propostaService.cancelarTodasPropostasDoAnuncio(anuncioModel.getId(), "Foi cancelada, pois a pessoa que criou precisou editar o anúncio!");
+      propostasCanceladas = propostaService.cancelarTodasPropostasDoAnuncio(anuncioModel.getId(), "A pessoa que criou o anúncio precisou editá-lo!");
 
     BeanUtils.copyProperties(editarAnuncioRequestDto, anuncioModel);
     anuncioService.completarInformacoes(anuncioModel, anuncioModel.getTipoAnuncioModel().getId());
@@ -111,7 +113,7 @@ public class AtividadeControllerImpl implements AtividadeController {
     var anuncioModel = anuncioService.buscarPorId(id);
 
     List<PropostaModel> propostasCanceladas = new ArrayList<>();
-    propostasCanceladas = propostaService.cancelarTodasPropostasDoAnuncio(anuncioModel.getId(), "Foi cancelada pelo criador do anúncio!");
+    propostasCanceladas = propostaService.cancelarTodasPropostasDoAnuncio(anuncioModel.getId(), "Anúncio foi cancelado!");
     propostaService.cancelarPropostasEmAnalise();
 
     anuncioService.verificarEnvioPunicao(propostasCanceladas, motivoCancelamentoDto);
@@ -148,6 +150,24 @@ public class AtividadeControllerImpl implements AtividadeController {
     consultaPropostasConfirmadasViewModel.armazenarItens(listaItens);
 
     return new ResponseEntity<ConsultaPropostaConfirmadaViewModel>(consultaPropostasConfirmadasViewModel, HttpStatus.OK);
+  }
+
+  public ResponseEntity<PropostaResponseDto> cancelarAgendado(Integer id, MotivoCancelamentoDto motivoCancelamentoDto){
+    UsuarioModel usuarioModel = (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    PropostaModel propostaModel = propostaService.consultar(id);
+    propostaService.cancelar(propostaModel, (usuarioModel.getEmail().equals(propostaModel.getUsuarioModel().getEmail()) ? propostaModel.getAnuncioModel().getUsuarioModel() : propostaModel.getUsuarioModel()), motivoCancelamentoDto);
+    propostaService.verificarPunicaoCancelamento(propostaModel, motivoCancelamentoDto, (usuarioModel.getEmail().equals(propostaModel.getUsuarioModel().getEmail()) ? propostaModel.getAnuncioModel().getUsuarioModel() : propostaModel.getUsuarioModel()));
+
+    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(propostaModel.getAnuncioModel().getId());
+    List<ItemPropostaResponseDto> listaItensResponse = new ArrayList<ItemPropostaResponseDto>();
+    for (ItemAnuncioModel item : listaItens) {
+      listaItensResponse.add(modelMapper.map(item, ItemPropostaResponseDto.class));
+    }
+
+    PropostaResponseDto response = modelMapper.map(propostaModel, PropostaResponseDto.class);
+    response.setItemList(listaItensResponse);
+
+    return new ResponseEntity<PropostaResponseDto>(response, HttpStatus.OK);
   }
 
   //ENDPOINTS UTILIZADOS NA ABA DE HISTÓRICO

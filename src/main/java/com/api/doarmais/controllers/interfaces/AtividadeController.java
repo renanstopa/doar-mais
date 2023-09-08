@@ -3,6 +3,7 @@ package com.api.doarmais.controllers.interfaces;
 import com.api.doarmais.dtos.request.EditarAnuncioRequestDto;
 import com.api.doarmais.dtos.request.MotivoCancelamentoDto;
 import com.api.doarmais.dtos.response.AnuncioResponseDto;
+import com.api.doarmais.dtos.response.PropostaResponseDto;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.models.views.BuscaPropostasAgendadasViewModel;
 import com.api.doarmais.models.views.ConsultaAnuncioViewModel;
@@ -56,6 +57,10 @@ public interface AtividadeController {
   @Operation(description = "Endpoint utilizado para consultar uma prosposta confirmada")
   @GetMapping("/agendados/{id}")
   public ResponseEntity<ConsultaPropostaConfirmadaViewModel> consultarAgendado(@PathVariable("id") Integer id);
+
+  @Operation(description = "Endpoint utilizado para cancelar uma proposta confirmada")
+  @PatchMapping("/agendados/{id}/cancelar")
+  public ResponseEntity<PropostaResponseDto> cancelarAgendado(@PathVariable("id") Integer id, @Valid @RequestBody MotivoCancelamentoDto motivoCancelamentoDto);
 
   //ENDPOINTS UTILIZADOS NA ABA DE HISTÓRICO
 }
