@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Table(name = "vw_busca_propostas_agendadas")
-public class BuscaPropostasAgendadasViewModel {
+@Table(name = "vw_busca_propostas_pendentes")
+public class BuscaPropostasPendentesViewModel {
 
   @Id
   @Column(name = "id")

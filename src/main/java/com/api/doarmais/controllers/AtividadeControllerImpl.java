@@ -8,10 +8,7 @@ import com.api.doarmais.dtos.response.ItemPropostaResponseDto;
 import com.api.doarmais.dtos.response.PropostaResponseDto;
 import com.api.doarmais.exceptions.EndDateBeforeBeginDate;
 import com.api.doarmais.models.tabelas.*;
-import com.api.doarmais.models.views.BuscaAnuncioViewModel;
-import com.api.doarmais.models.views.BuscaPropostasAgendadasViewModel;
-import com.api.doarmais.models.views.ConsultaAnuncioViewModel;
-import com.api.doarmais.models.views.ConsultaPropostaConfirmadaViewModel;
+import com.api.doarmais.models.views.*;
 import com.api.doarmais.services.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
@@ -38,7 +35,7 @@ public class AtividadeControllerImpl implements AtividadeController {
 
   @Autowired private ConsultaAnuncioViewService consultaAnuncioViewService;
 
-  @Autowired private ConsultaPropostaConfirmadaViewService consultaPropostaConfirmadaViewService;
+  @Autowired private ConsultaPropostaViewService consultaPropostaViewService;
 
   @Autowired private AtividadeService atividadeService;
 
@@ -48,12 +45,12 @@ public class AtividadeControllerImpl implements AtividadeController {
 
   //ENDPOINTS UTILIZADOS NA ABA DE ANÚNCIOS
 
-  public ResponseEntity<List<BuscaAnuncioViewModel>> buscarAnuncios(String titulo, String cidade, Integer tipoUsuario, Integer tipoCategoriaItem) {
+  public ResponseEntity<List<BuscaAnuncioViewModel>> buscarAnuncios(String titulo, String cidade, Integer tipoUsuario, Integer tipoAnuncio, Integer tipoCategoriaItem) {
     var usuarioLogado =
             (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     FiltroAnuncioRequestDto filtro =
-            new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, null, tipoCategoriaItem, usuarioLogado.getId());
+            new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, tipoAnuncio, tipoCategoriaItem, usuarioLogado.getId());
 
     return new ResponseEntity<List<BuscaAnuncioViewModel>>(atividadeService.buscarAnuncios(filtro), HttpStatus.OK);
   }
@@ -132,24 +129,57 @@ public class AtividadeControllerImpl implements AtividadeController {
   }
 
   //ENDPOINTS UTILIZADOS NA ABA DE CONFIRMAÇÕES
-  //ENDPOINTS UTILIZADOS NA ABA DE AGENDADOS
 
-  public ResponseEntity<List<BuscaPropostasAgendadasViewModel>> buscarAgendados(String titulo, String cidade, Integer tipoUsuario, Integer tipoCategoriaItem) {
+  public ResponseEntity<List<BuscaPropostasPendentesViewModel>> buscarPendentes(String titulo, String cidade, Integer tipoAnuncio, Integer tipoCategoriaItem) {
     var usuarioLogado =
             (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     FiltroAnuncioRequestDto filtro =
-            new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, null, tipoCategoriaItem, usuarioLogado.getId());
+            new FiltroAnuncioRequestDto(titulo, cidade, null, tipoAnuncio, tipoCategoriaItem, usuarioLogado.getId());
+
+    return new ResponseEntity<List<BuscaPropostasPendentesViewModel>>(atividadeService.buscarPendentes(filtro), HttpStatus.OK);
+  }
+
+  public ResponseEntity<ConsultaPropostaViewModel> consultarPendente(Integer id) {
+    ConsultaPropostaViewModel consultaPropostaViewModel = consultaPropostaViewService.consultar(id);
+    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(id);
+    consultaPropostaViewModel.armazenarItens(listaItens);
+
+    return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewModel, HttpStatus.OK);
+  }
+
+  public ResponseEntity<ConsultaPropostaViewModel> confirmarPropostaPendente(Integer id){
+    PropostaModel propostaModel = propostaService.consultar(id);
+    propostaService.confirmarProposta(propostaModel);
+
+    return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewService.consultar(id), HttpStatus.OK);
+  }
+
+  public ResponseEntity<ConsultaPropostaViewModel> recusarPropostaPendente(Integer id){
+    PropostaModel propostaModel = propostaService.consultar(id);
+    propostaService.recusarProposta(propostaModel);
+
+    return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewService.consultar(id), HttpStatus.OK);
+  }
+
+  //ENDPOINTS UTILIZADOS NA ABA DE AGENDADOS
+
+  public ResponseEntity<List<BuscaPropostasAgendadasViewModel>> buscarAgendados(String titulo, String cidade, Integer tipoUsuario, Integer tipoAnuncio, Integer tipoCategoriaItem) {
+    var usuarioLogado =
+            (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    FiltroAnuncioRequestDto filtro =
+            new FiltroAnuncioRequestDto(titulo, cidade, tipoUsuario, tipoAnuncio, tipoCategoriaItem, usuarioLogado.getId());
 
     return new ResponseEntity<List<BuscaPropostasAgendadasViewModel>>(atividadeService.buscarAgendados(filtro), HttpStatus.OK);
   }
 
-  public ResponseEntity<ConsultaPropostaConfirmadaViewModel> consultarAgendado(Integer id) {
-    ConsultaPropostaConfirmadaViewModel consultaPropostasConfirmadasViewModel = consultaPropostaConfirmadaViewService.consultar(id);
+  public ResponseEntity<ConsultaPropostaViewModel> consultarAgendado(Integer id) {
+    ConsultaPropostaViewModel consultaPropostaViewModel = consultaPropostaViewService.consultar(id);
     List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(id);
-    consultaPropostasConfirmadasViewModel.armazenarItens(listaItens);
+    consultaPropostaViewModel.armazenarItens(listaItens);
 
-    return new ResponseEntity<ConsultaPropostaConfirmadaViewModel>(consultaPropostasConfirmadasViewModel, HttpStatus.OK);
+    return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewModel, HttpStatus.OK);
   }
 
   public ResponseEntity<PropostaResponseDto> cancelarAgendado(Integer id, MotivoCancelamentoDto motivoCancelamentoDto){
