@@ -1,9 +1,13 @@
 package com.api.doarmais.services;
 
+import com.api.doarmais.dtos.request.MotivoCancelamentoDto;
 import com.api.doarmais.dtos.request.PropostaRequestDto;
 import com.api.doarmais.dtos.response.ItemPropostaResponseDto;
 import com.api.doarmais.dtos.response.PropostaResponseDto;
+import com.api.doarmais.events.PossivelPunicaoAgendadoEvent;
+import com.api.doarmais.events.PossivelPunicaoEvent;
 import com.api.doarmais.events.PropostaCanceladaAnuncioEvent;
+import com.api.doarmais.events.PropostaConfirmadaCanceladaEvent;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -23,6 +29,8 @@ public class PropostaService {
   @Autowired private ItemAnuncioRepository itemAnuncioRepository;
 
   @Autowired private ItemAnuncioPropostaRepository itemAnuncioPropostaRepository;
+
+  @Autowired private PunicaoService punicaoService;
 
   @Autowired private ApplicationEventPublisher eventPublisher;
 
@@ -51,7 +59,7 @@ public class PropostaService {
       List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList = itemAnuncioPropostaRepository.findByPropostaModelId(proposta.getId());
       for (ItemAnuncioPropostaModel item : itemAnuncioPropostaModelList) {
         ItemPropostaResponseDto itemPropostaResponseDto = new ItemPropostaResponseDto();
-        itemPropostaResponseDto.setIdItem(item.getItemAnuncioModel().getId());
+        itemPropostaResponseDto.setId(item.getItemAnuncioModel().getId());
         itemPropostaResponseDto.setQuantidade(item.getQuantidadeSolicitada());
         response.getItemList().add(itemPropostaResponseDto);
       }
@@ -59,9 +67,11 @@ public class PropostaService {
       return response;
     }
 
-  public void cancelar(PropostaModel proposta) {
+  public void cancelar(PropostaModel proposta, UsuarioModel usuario, MotivoCancelamentoDto motivoCancelamentoDto) {
     proposta.setSituacaoModel(new SituacaoModel(SituacaoModel.PROPOSTA_CANCELADA));
     propostaRepository.save(proposta);
+
+    eventPublisher.publishEvent(new PropostaConfirmadaCanceladaEvent(proposta, usuario, motivoCancelamentoDto.getMotivo()));
   }
 
   public List<PropostaModel> cancelarTodasPropostasDoAnuncio(Integer id, String motivo) {
@@ -101,5 +111,16 @@ public class PropostaService {
     }
 
     propostaRepository.cancelarPropostaQuery();
+  }
+
+    public PropostaModel consultar(Integer id) {
+      return propostaRepository.findById(id).get();
+    }
+
+  public void verificarPunicaoCancelamento(PropostaModel proposta, MotivoCancelamentoDto motivoCancelamentoDto, UsuarioModel usuario) {
+    if(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).isAfter(proposta.getDataAgendada().minusHours(3))){
+      eventPublisher.publishEvent(new PossivelPunicaoAgendadoEvent(proposta, usuario));
+      punicaoService.gerarVerificacaoPunicao(proposta, motivoCancelamentoDto);
+    }
   }
 }

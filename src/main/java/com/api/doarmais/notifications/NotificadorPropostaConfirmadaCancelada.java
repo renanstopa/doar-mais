@@ -1,8 +1,10 @@
 package com.api.doarmais.notifications;
 
 import com.api.doarmais.events.PropostaCanceladaAnuncioEvent;
+import com.api.doarmais.events.PropostaConfirmadaCanceladaEvent;
 import com.api.doarmais.models.tabelas.ItemAnuncioPropostaModel;
 import com.api.doarmais.models.tabelas.PropostaModel;
+import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.services.ItemAnuncioPropostaService;
 import com.api.doarmais.services.UsuarioService;
 import jakarta.mail.MessagingException;
@@ -20,7 +22,7 @@ import java.util.List;
 
 @EnableAsync
 @Configuration
-public class NotificadorPropostaCanceladaAnuncio implements Notificador<PropostaCanceladaAnuncioEvent> {
+public class NotificadorPropostaConfirmadaCancelada implements Notificador<PropostaConfirmadaCanceladaEvent> {
 
   @Autowired private JavaMailSender sender;
 
@@ -30,12 +32,13 @@ public class NotificadorPropostaCanceladaAnuncio implements Notificador<Proposta
 
   @EventListener
   @Async
-  public void enviar(PropostaCanceladaAnuncioEvent propostaCanceladaEdicaoAnuncioEvent) throws MessagingException {
+  public void enviar(PropostaConfirmadaCanceladaEvent propostaConfirmadaCanceladaEvent) throws MessagingException {
     SimpleMailMessage message = new SimpleMailMessage();
 
-    PropostaModel proposta = propostaCanceladaEdicaoAnuncioEvent.getPropostaModel();
+    PropostaModel proposta = propostaConfirmadaCanceladaEvent.getPropostaModel();
+    UsuarioModel usuario = propostaConfirmadaCanceladaEvent.getUsuarioModel();
 
-    message.setTo(proposta.getUsuarioModel().getEmail());
+    message.setTo(usuario.getEmail());
     message.setFrom("doar.mais@outlook.com");
     message.setSubject("Doar+ - Proposta cancelada");
 
@@ -48,7 +51,7 @@ public class NotificadorPropostaCanceladaAnuncio implements Notificador<Proposta
     message.setText("Olá, " + proposta.getUsuarioModel().getNome() + "!\n\n" +
                     "Sua proposta - " + proposta.getAnuncioModel().getTitulo() + "\n\n" + itens +
                     "Agendada para - " + proposta.getDataAgendada().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) + "\n" +
-                    "Foi cancelada pelo seguinte motivo: " + propostaCanceladaEdicaoAnuncioEvent.getMotivo());
+                    "Foi cancelada pelo seguinte motivo: " + propostaConfirmadaCanceladaEvent.getMotivo());
 
     try {
       sender.send(message);

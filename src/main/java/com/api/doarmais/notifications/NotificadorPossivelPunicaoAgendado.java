@@ -1,7 +1,7 @@
 package com.api.doarmais.notifications;
 
+import com.api.doarmais.events.PossivelPunicaoAgendadoEvent;
 import com.api.doarmais.events.PossivelPunicaoEvent;
-import com.api.doarmais.events.ResetCriadoEvent;
 import com.api.doarmais.models.tabelas.PropostaModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.services.UsuarioService;
@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableAsync
 @Configuration
-public class NotificadorPossivelPunicao implements Notificador<PossivelPunicaoEvent> {
+public class NotificadorPossivelPunicaoAgendado implements Notificador<PossivelPunicaoAgendadoEvent> {
 
   @Autowired private UsuarioService usuarioService;
 
@@ -24,10 +24,10 @@ public class NotificadorPossivelPunicao implements Notificador<PossivelPunicaoEv
 
   @EventListener
   @Async
-  public void enviar(PossivelPunicaoEvent possivelPunicaoEvent) {
-    PropostaModel proposta = possivelPunicaoEvent.getPropostaModel();
+  public void enviar(PossivelPunicaoAgendadoEvent possivelPunicaoAgendadoEvent) {
+    PropostaModel proposta = possivelPunicaoAgendadoEvent.getPropostaModel();
     SimpleMailMessage message = new SimpleMailMessage();
-    UsuarioModel usuario = proposta.getAnuncioModel().getUsuarioModel();
+    UsuarioModel usuario = possivelPunicaoAgendadoEvent.getUsuarioModel();
 
     message.setSubject("Doar+ - Possível punição");
     message.setText("Olá, " + usuario.getNome() + "!\n\n" +
