@@ -269,11 +269,63 @@ on
 where
      p.id_situacao = 32;
 
+-- drop view if exists vw_busca_propostas_pendentes
+create view
+    vw_busca_propostas_pendentes
+as select
+   	p.id, p.id_usuario, u.id_tipo_usuario, p.id_anuncio, a.id_tipo_anuncio, u.nome,
+   	case
+        when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
+        when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
+        else u.telefone
+    end as
+   		telefone, a.titulo, a.cidade, date_format(p.data_agendada, '%d/%m/%Y %H:%i:%s') as data_agendada, p.data_agendada as data_filtro
+from
+    proposta p
+join
+    anuncio a
+on
+    (p.id_anuncio = a.id)
+join
+    usuario u
+on
+    (p.id_usuario = u.id)
+where
+     p.id_situacao = 31;
+
+-- drop view if exists vw_busca_propostas_historico
+create view
+    vw_busca_propostas_historico
+as select
+    p.id, p.id_usuario, u.id_tipo_usuario, p.id_anuncio, a.id_tipo_anuncio, p.id_situacao, s.descricao, u.nome,
+    case
+       when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
+       when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
+       else u.telefone
+    end as
+        telefone, a.titulo, a.cidade, date_format(p.data_agendada, '%d/%m/%Y %H:%i:%s') as data_agendada, p.data_agendada as data_filtro
+from
+    proposta p
+join
+    anuncio a
+on
+    (p.id_anuncio = a.id)
+join
+    usuario u
+on
+    (p.id_usuario = u.id)
+join
+    situacao s
+on
+    (p.id_situacao = s.id)
+where
+    p.id_situacao in (33, 34, 36, 37);
+
 -- drop view if exists vw_consulta_prosposta
 create view
     vw_consulta_prosposta
 as select
-   	p.id, uc.id as id_usuario_proposta, uc.nome as nome_usuario_proposta,
+   	p.id, s.descricao, uc.id as id_usuario_proposta, uc.nome as nome_usuario_proposta,
    case
        when length(uc.telefone) = 11 then concat('(', substring(uc.telefone, 1, 2), ') ', substring(uc.telefone, 3, 5), '-', substring(uc.telefone, 8, 4))
        when length(uc.telefone) = 10 then concat('(', substring(uc.telefone, 1, 2), ') ', substring(uc.telefone, 3, 4), '-', substring(uc.telefone, 7, 4))
@@ -301,30 +353,10 @@ on
 join
     anuncio a
 on
-    (p.id_anuncio = a.id);
-
--- drop view if exists vw_busca_propostas_pendentes
-create view
-    vw_busca_propostas_pendentes
-as select
-   	p.id, p.id_usuario, u.id_tipo_usuario, p.id_anuncio, a.id_tipo_anuncio, u.nome,
-   	case
-        when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
-        when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
-        else u.telefone
-    end as
-   		telefone, a.titulo, a.cidade, date_format(p.data_agendada, '%d/%m/%Y %H:%i:%s') as data_agendada, p.data_agendada as data_filtro
-from
-    proposta p
-join
-    anuncio a
-on
     (p.id_anuncio = a.id)
 join
-    usuario u
+    situacao s
 on
-    (p.id_usuario = u.id)
-where
-     p.id_situacao = 31;
+    (p.id_situacao = s.id);
 
 -- FIM DAS VIEWS

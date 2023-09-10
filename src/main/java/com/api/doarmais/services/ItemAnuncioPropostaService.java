@@ -6,11 +6,10 @@ import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.repositories.AnuncioRepository;
 import com.api.doarmais.repositories.ItemAnuncioPropostaRepository;
 import com.api.doarmais.repositories.ItemAnuncioRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ItemAnuncioPropostaService {
@@ -37,27 +36,27 @@ public class ItemAnuncioPropostaService {
     }
   }
 
-    public List<ItemAnuncioPropostaModel> buscarPorProposta(Integer id) {
-      return itemAnuncioPropostaRepository.findByPropostaModelId(id);
-    }
+  public List<ItemAnuncioPropostaModel> buscarPorProposta(Integer id) {
+    return itemAnuncioPropostaRepository.findByPropostaModelId(id);
+  }
 
-    public void adicionarQuantidadeitem(PropostaModel proposta, Boolean editouItem) {
-      AnuncioModel anuncio = anuncioRepository.findById(proposta.getAnuncioModel().getId()).get();
-      List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList = itemAnuncioPropostaRepository.findByPropostaModelId(proposta.getId());
+  public void adicionarQuantidadeitem(PropostaModel proposta, Boolean editouItem) {
+    AnuncioModel anuncio = anuncioRepository.findById(proposta.getAnuncioModel().getId()).get();
+    List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList =
+        itemAnuncioPropostaRepository.findByPropostaModelId(proposta.getId());
 
-      if(!editouItem){
-        if(anuncio.getSituacaoModel().getId().equals(22)){
-          anuncio.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CRIADO));
-          anuncioRepository.save(anuncio);
-        }
-
-        for (ItemAnuncioPropostaModel itemProposta : itemAnuncioPropostaModelList) {
-          ItemAnuncioModel item = itemAnuncioRepository.findById(itemProposta.getItemAnuncioModel().getId()).get();
-          item.setQuantidade(item.getQuantidade() + itemProposta.getQuantidadeSolicitada());
-          itemAnuncioRepository.save(item);
-        }
+    if (!editouItem) {
+      if (anuncio.getSituacaoModel().getId().equals(22)) {
+        anuncio.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CRIADO));
+        anuncioRepository.save(anuncio);
       }
 
-
+      for (ItemAnuncioPropostaModel itemProposta : itemAnuncioPropostaModelList) {
+        ItemAnuncioModel item =
+            itemAnuncioRepository.findById(itemProposta.getItemAnuncioModel().getId()).get();
+        item.setQuantidade(item.getQuantidade() + itemProposta.getQuantidadeSolicitada());
+        itemAnuncioRepository.save(item);
+      }
     }
+  }
 }

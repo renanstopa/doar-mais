@@ -74,16 +74,14 @@ public class AnuncioModel {
   @Column(name = "quantidade_proposta")
   private Integer quantidadeProposta;
 
-    public boolean verficarTrocaInfoPrincipal(EditarAnuncioRequestDto anuncioEditado) {
-      if(!this.cep.equals(anuncioEditado.getCep()))
-        return true;
+  public boolean verficarTrocaInfoPrincipal(EditarAnuncioRequestDto anuncioEditado) {
+    if (!this.cep.equals(anuncioEditado.getCep())) return true;
 
-      if(!this.getNumero().equals(anuncioEditado.getNumero()))
-        return true;
+    if (!this.getNumero().equals(anuncioEditado.getNumero())) return true;
 
-      if(!this.getDataInicioDisponibilidade().equals(anuncioEditado.getDataInicioDisponibilidade()))
-        return true;
+    if (!this.getDataInicioDisponibilidade().equals(anuncioEditado.getDataInicioDisponibilidade()))
+      return true;
 
-      return !this.getDataFimDisponibilidade().equals(anuncioEditado.getDataFimDisponibilidade());
-    }
+    return !this.getDataFimDisponibilidade().equals(anuncioEditado.getDataFimDisponibilidade());
+  }
 }

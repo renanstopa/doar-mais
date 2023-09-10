@@ -59,19 +59,24 @@ public class UsuarioControllerImpl implements UsuarioController {
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
     return new ResponseEntity<EnderecoResponseDto>(
-        modelMapper.map(trocaEnderecoService.criarSolicitacao(enderecoRequestDto, usuarioModel), EnderecoResponseDto.class),
+        modelMapper.map(
+            trocaEnderecoService.criarSolicitacao(enderecoRequestDto, usuarioModel),
+            EnderecoResponseDto.class),
         HttpStatus.CREATED);
   }
 
   public ResponseEntity<UsuarioResponseDto> trocarSenha(
-          @Valid @RequestBody TrocarSenhaLogadoRequestDto trocarSenhaLogadoRequestDto) {
+      @Valid @RequestBody TrocarSenhaLogadoRequestDto trocarSenhaLogadoRequestDto) {
     UsuarioModel usuarioModel =
-            (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    if(!usuarioService.verificarSenhaAtual(trocarSenhaLogadoRequestDto.getSenhaAtual(), passwordEncoder, usuarioModel))
+    if (!usuarioService.verificarSenhaAtual(
+        trocarSenhaLogadoRequestDto.getSenhaAtual(), passwordEncoder, usuarioModel))
       throw new PasswordNotEqual("Senha atual não corresponde a registrada em seu usuário");
 
-    if (!trocarSenhaLogadoRequestDto.getNovaSenha().equals(trocarSenhaLogadoRequestDto.getConfirmaSenha()))
+    if (!trocarSenhaLogadoRequestDto
+        .getNovaSenha()
+        .equals(trocarSenhaLogadoRequestDto.getConfirmaSenha()))
       throw new PasswordNotEqual("As senhas devem ser iguais");
 
     usuarioModel.setSenha(passwordEncoder.encode(trocarSenhaLogadoRequestDto.getNovaSenha()));

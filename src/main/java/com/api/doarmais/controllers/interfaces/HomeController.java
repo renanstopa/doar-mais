@@ -10,10 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(
-    name = "Home",
-    description =
-        "Endpoints responsáveis pela funcionalidades da página home.")
+@Tag(name = "Home", description = "Endpoints responsáveis pela funcionalidades da página home.")
 @RequestMapping("/home")
 public interface HomeController {
 

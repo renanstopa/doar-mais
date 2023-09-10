@@ -2,7 +2,6 @@ package com.api.doarmais.services;
 
 import com.api.doarmais.dtos.request.*;
 import com.api.doarmais.events.PossivelPunicaoEvent;
-import com.api.doarmais.events.PropostaCanceladaAnuncioEvent;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.repositories.AnuncioRepository;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,8 +41,7 @@ public class AnuncioService {
     anuncioModel.setDataCriacao(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
     anuncioModel.setTipoAnuncioModel(new TipoAnuncioModel(tipoAnuncio));
     anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CRIADO));
-    if(anuncioModel.getQuantidadeProposta() == null)
-      anuncioModel.setQuantidadeProposta(0);
+    if (anuncioModel.getQuantidadeProposta() == null) anuncioModel.setQuantidadeProposta(0);
   }
 
   public List<BuscaAnuncioViewModel> buscar(FiltroAnuncioRequestDto filtro) {
@@ -94,18 +91,19 @@ public class AnuncioService {
     query.orderBy(builder.asc(root.get("dataInicioDisponibilidade")));
   }
 
-    public boolean verificarDataAgendada(PropostaRequestDto propostaRequestDto) {
-        AnuncioModel anuncioModel = anuncioRepository.findById(propostaRequestDto.getIdAnuncio()).get();
-        LocalDateTime data = propostaRequestDto.getDataAgendada();
+  public boolean verificarDataAgendada(PropostaRequestDto propostaRequestDto) {
+    AnuncioModel anuncioModel = anuncioRepository.findById(propostaRequestDto.getIdAnuncio()).get();
+    LocalDateTime data = propostaRequestDto.getDataAgendada();
 
-        return (data.isAfter(anuncioModel.getDataInicioDisponibilidade()) && data.isBefore(anuncioModel.getDataFimDisponibilidade()));
-    }
+    return (data.isAfter(anuncioModel.getDataInicioDisponibilidade())
+        && data.isBefore(anuncioModel.getDataFimDisponibilidade()));
+  }
 
   public boolean verificarQuantidadeItem(PropostaRequestDto propostaRequestDto) {
     for (ItemPropostaRequestDto itemProposta : propostaRequestDto.getItemPropostaRequestDtoList()) {
-      ItemAnuncioModel itemAnuncioModel = itemAnuncioRepository.findById(itemProposta.getIdItem()).get();
-      if(itemProposta.getQuantidade() > itemAnuncioModel.getQuantidade())
-        return false;
+      ItemAnuncioModel itemAnuncioModel =
+          itemAnuncioRepository.findById(itemProposta.getIdItem()).get();
+      if (itemProposta.getQuantidade() > itemAnuncioModel.getQuantidade()) return false;
     }
 
     return true;
@@ -116,47 +114,54 @@ public class AnuncioService {
   }
 
   public void atualizarSituacao(AnuncioModel anuncioModel) {
-    List<ItemAnuncioModel> itemAnuncioModelList = itemAnuncioRepository.findByAnuncioModelId(anuncioModel.getId());
+    List<ItemAnuncioModel> itemAnuncioModelList =
+        itemAnuncioRepository.findByAnuncioModelId(anuncioModel.getId());
 
     for (ItemAnuncioModel item : itemAnuncioModelList) {
-      if(!item.getQuantidade().equals(0))
-        return;
+      if (!item.getQuantidade().equals(0)) return;
     }
 
     anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_ITENS_ESGOTADOS));
     anuncioRepository.save(anuncioModel);
   }
 
-    public void voltarQuantidadeOriginalItem(ItemAnuncioModel itemAnuncioModel, List<PropostaModel> propostasCanceladas, EditarItemAnuncioRequestDto itemDto) {
-      for (PropostaModel proposta : propostasCanceladas) {
-        List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList = itemAnuncioPropostaRepository.findByPropostaModelId(proposta.getId());
+  public void voltarQuantidadeOriginalItem(
+      ItemAnuncioModel itemAnuncioModel,
+      List<PropostaModel> propostasCanceladas,
+      EditarItemAnuncioRequestDto itemDto) {
+    for (PropostaModel proposta : propostasCanceladas) {
+      List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList =
+          itemAnuncioPropostaRepository.findByPropostaModelId(proposta.getId());
 
-        for (ItemAnuncioPropostaModel itemProposta : itemAnuncioPropostaModelList) {
-          if(itemProposta.getItemAnuncioModel().equals(itemAnuncioModel)){
-            itemAnuncioModel.setQuantidade(itemAnuncioModel.getQuantidade() + itemProposta.getQuantidadeSolicitada());
-            itemDto.setQuantidade(itemAnuncioModel.getQuantidade());
-            itemAnuncioRepository.save(itemAnuncioModel);
-          }
-        }
-
-        AnuncioModel anuncioModel = proposta.getAnuncioModel();
-        if(!anuncioModel.getSituacaoModel().getId().equals(22)){
-          anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CRIADO));
-          anuncioRepository.save(anuncioModel);
+      for (ItemAnuncioPropostaModel itemProposta : itemAnuncioPropostaModelList) {
+        if (itemProposta.getItemAnuncioModel().equals(itemAnuncioModel)) {
+          itemAnuncioModel.setQuantidade(
+              itemAnuncioModel.getQuantidade() + itemProposta.getQuantidadeSolicitada());
+          itemDto.setQuantidade(itemAnuncioModel.getQuantidade());
+          itemAnuncioRepository.save(itemAnuncioModel);
         }
       }
-    }
 
-    public void cancelarAnuncio(AnuncioModel anuncioModel) {
-      anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CANCELADO));
-      anuncioRepository.save(anuncioModel);
+      AnuncioModel anuncioModel = proposta.getAnuncioModel();
+      if (!anuncioModel.getSituacaoModel().getId().equals(22)) {
+        anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CRIADO));
+        anuncioRepository.save(anuncioModel);
+      }
     }
+  }
 
-  public void verificarEnvioPunicao(List<PropostaModel> propostasCanceladas, MotivoCancelamentoDto motivo) {
+  public void cancelarAnuncio(AnuncioModel anuncioModel) {
+    anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CANCELADO));
+    anuncioRepository.save(anuncioModel);
+  }
+
+  public void verificarEnvioPunicao(
+      List<PropostaModel> propostasCanceladas, MotivoCancelamentoDto motivo) {
     boolean envioEmail = false;
     for (PropostaModel proposta : propostasCanceladas) {
-      if(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).isAfter(proposta.getDataAgendada().minusHours(3))){
-        if(!envioEmail){
+      if (LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))
+          .isAfter(proposta.getDataAgendada().minusHours(3))) {
+        if (!envioEmail) {
           eventPublisher.publishEvent(new PossivelPunicaoEvent(proposta));
           envioEmail = true;
         }

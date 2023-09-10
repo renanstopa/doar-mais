@@ -7,7 +7,6 @@ import com.api.doarmais.repositories.UsuarioRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -88,7 +87,8 @@ public class UsuarioService {
     }
   }
 
-    public boolean verificarSenhaAtual(String senhaAtual, PasswordEncoder passwordEncoder, UsuarioModel usuarioLogado) {
-      return (passwordEncoder.matches(senhaAtual, usuarioLogado.getSenha()));
-    }
+  public boolean verificarSenhaAtual(
+      String senhaAtual, PasswordEncoder passwordEncoder, UsuarioModel usuarioLogado) {
+    return (passwordEncoder.matches(senhaAtual, usuarioLogado.getSenha()));
+  }
 }

@@ -2,7 +2,6 @@ package com.api.doarmais.services;
 
 import com.api.doarmais.models.tabelas.ResetSenhaModel;
 import com.api.doarmais.models.tabelas.SituacaoModel;
-import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.repositories.ResetSenhaRepository;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -11,8 +10,6 @@ import java.util.TimeZone;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -65,5 +62,4 @@ public class ResetSenhaService {
         .getDataValidade()
         .isBefore(LocalDateTime.now(ZoneId.of(TimeZone.getDefault().getID())));
   }
-
 }
