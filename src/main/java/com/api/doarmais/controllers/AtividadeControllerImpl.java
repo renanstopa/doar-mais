@@ -6,6 +6,8 @@ import com.api.doarmais.dtos.response.AnuncioResponseDto;
 import com.api.doarmais.dtos.response.ItemAnuncioResponseDto;
 import com.api.doarmais.dtos.response.ItemPropostaResponseDto;
 import com.api.doarmais.dtos.response.PropostaResponseDto;
+import com.api.doarmais.events.PropostaConfirmadaEvent;
+import com.api.doarmais.events.PropostaRecusadaEvent;
 import com.api.doarmais.exceptions.EndDateBeforeBeginDate;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.models.views.*;
@@ -151,6 +153,7 @@ public class AtividadeControllerImpl implements AtividadeController {
   public ResponseEntity<ConsultaPropostaViewModel> confirmarPropostaPendente(Integer id){
     PropostaModel propostaModel = propostaService.consultar(id);
     propostaService.confirmarProposta(propostaModel);
+    eventPublisher.publishEvent(new PropostaConfirmadaEvent(propostaModel));
 
     return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewService.consultar(id), HttpStatus.OK);
   }
@@ -158,6 +161,7 @@ public class AtividadeControllerImpl implements AtividadeController {
   public ResponseEntity<ConsultaPropostaViewModel> recusarPropostaPendente(Integer id){
     PropostaModel propostaModel = propostaService.consultar(id);
     propostaService.recusarProposta(propostaModel);
+    eventPublisher.publishEvent(new PropostaRecusadaEvent(propostaModel));
 
     return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewService.consultar(id), HttpStatus.OK);
   }
