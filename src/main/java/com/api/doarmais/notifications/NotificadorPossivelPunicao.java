@@ -1,7 +1,6 @@
 package com.api.doarmais.notifications;
 
 import com.api.doarmais.events.PossivelPunicaoEvent;
-import com.api.doarmais.events.ResetCriadoEvent;
 import com.api.doarmais.models.tabelas.PropostaModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.services.UsuarioService;
@@ -30,9 +29,12 @@ public class NotificadorPossivelPunicao implements Notificador<PossivelPunicaoEv
     UsuarioModel usuario = proposta.getAnuncioModel().getUsuarioModel();
 
     message.setSubject("Doar+ - Possível punição");
-    message.setText("Olá, " + usuario.getNome() + "!\n\n" +
-                    "Uma punição pode ser aplicada na sua conta por conta de um cancelamento de proposta!\n" +
-                    "O administrador irá verificar a data/horário do cancelamento com a data agendada para a proposta.");
+    message.setText(
+        "Olá, "
+            + usuario.getNome()
+            + "!\n\n"
+            + "Uma punição pode ser aplicada na sua conta por conta de um cancelamento de proposta!\n"
+            + "O administrador irá verificar a data/horário do cancelamento com a data agendada para a proposta.");
     message.setTo(usuario.getEmail());
     message.setFrom("doar.mais@outlook.com");
 

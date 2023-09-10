@@ -5,19 +5,17 @@ import com.api.doarmais.dtos.request.PropostaRequestDto;
 import com.api.doarmais.dtos.response.ItemPropostaResponseDto;
 import com.api.doarmais.dtos.response.PropostaResponseDto;
 import com.api.doarmais.events.PossivelPunicaoAgendadoEvent;
-import com.api.doarmais.events.PossivelPunicaoEvent;
 import com.api.doarmais.events.PropostaCanceladaAnuncioEvent;
 import com.api.doarmais.events.PropostaConfirmadaCanceladaEvent;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.repositories.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.*;
 
 @Service
 public class PropostaService {
@@ -43,35 +41,38 @@ public class PropostaService {
     propostaModel.setAnuncioModel(anuncio);
 
     var usuarioCriador =
-            (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     propostaModel.setUsuarioModel(usuarioCriador);
     propostaModel.setSituacaoModel(new SituacaoModel(SituacaoModel.PROPOSTA_ENVIADA));
     return propostaRepository.save(propostaModel);
   }
 
-    public PropostaResponseDto gerarResponse(PropostaModel proposta) {
-      PropostaResponseDto response = new PropostaResponseDto();
+  public PropostaResponseDto gerarResponse(PropostaModel proposta) {
+    PropostaResponseDto response = new PropostaResponseDto();
 
-      response.setId(proposta.getId());
-      response.setDataAgendada(proposta.getDataAgendada());
-      response.setItemList(new ArrayList<>());
+    response.setId(proposta.getId());
+    response.setDataAgendada(proposta.getDataAgendada());
+    response.setItemList(new ArrayList<>());
 
-      List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList = itemAnuncioPropostaRepository.findByPropostaModelId(proposta.getId());
-      for (ItemAnuncioPropostaModel item : itemAnuncioPropostaModelList) {
-        ItemPropostaResponseDto itemPropostaResponseDto = new ItemPropostaResponseDto();
-        itemPropostaResponseDto.setId(item.getItemAnuncioModel().getId());
-        itemPropostaResponseDto.setQuantidade(item.getQuantidadeSolicitada());
-        response.getItemList().add(itemPropostaResponseDto);
-      }
-
-      return response;
+    List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList =
+        itemAnuncioPropostaRepository.findByPropostaModelId(proposta.getId());
+    for (ItemAnuncioPropostaModel item : itemAnuncioPropostaModelList) {
+      ItemPropostaResponseDto itemPropostaResponseDto = new ItemPropostaResponseDto();
+      itemPropostaResponseDto.setId(item.getItemAnuncioModel().getId());
+      itemPropostaResponseDto.setQuantidade(item.getQuantidadeSolicitada());
+      response.getItemList().add(itemPropostaResponseDto);
     }
 
-  public void cancelar(PropostaModel proposta, UsuarioModel usuario, MotivoCancelamentoDto motivoCancelamentoDto) {
+    return response;
+  }
+
+  public void cancelar(
+      PropostaModel proposta, UsuarioModel usuario, MotivoCancelamentoDto motivoCancelamentoDto) {
     proposta.setSituacaoModel(new SituacaoModel(SituacaoModel.PROPOSTA_CANCELADA));
     propostaRepository.save(proposta);
 
-    eventPublisher.publishEvent(new PropostaConfirmadaCanceladaEvent(proposta, usuario, motivoCancelamentoDto.getMotivo()));
+    eventPublisher.publishEvent(
+        new PropostaConfirmadaCanceladaEvent(proposta, usuario, motivoCancelamentoDto.getMotivo()));
   }
 
   public List<PropostaModel> cancelarTodasPropostasDoAnuncio(Integer id, String motivo) {
@@ -86,17 +87,20 @@ public class PropostaService {
   }
 
   public List<PropostaModel> cancelarPropostaPorItem(Integer id) {
-    List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList = itemAnuncioPropostaRepository.buscarPorItemAnuncioIdQuery(id);
+    List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList =
+        itemAnuncioPropostaRepository.buscarPorItemAnuncioIdQuery(id);
     List<PropostaModel> propostaModelList = new ArrayList<>();
 
     for (ItemAnuncioPropostaModel itemProposta : itemAnuncioPropostaModelList) {
-      PropostaModel propostaModel = propostaRepository.findById(itemProposta.getPropostaModel().getId()).get();
+      PropostaModel propostaModel =
+          propostaRepository.findById(itemProposta.getPropostaModel().getId()).get();
       propostaModelList.add(propostaModel);
 
       propostaRepository.propostaEmAnaliseQuery(propostaModel.getId());
 
-      eventPublisher.publishEvent(new PropostaCanceladaAnuncioEvent(propostaModel, "Foi cancelada, pois a pessoa que criou precisou editar o anúncio!"));
-
+      eventPublisher.publishEvent(
+          new PropostaCanceladaAnuncioEvent(
+              propostaModel, "Foi cancelada, pois a pessoa que criou precisou editar o anúncio!"));
     }
 
     return propostaModelList;
@@ -113,12 +117,14 @@ public class PropostaService {
     propostaRepository.cancelarPropostaQuery();
   }
 
-    public PropostaModel consultar(Integer id) {
-      return propostaRepository.findById(id).get();
-    }
+  public PropostaModel consultar(Integer id) {
+    return propostaRepository.findById(id).get();
+  }
 
-  public void verificarPunicaoCancelamento(PropostaModel proposta, MotivoCancelamentoDto motivoCancelamentoDto, UsuarioModel usuario) {
-    if(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).isAfter(proposta.getDataAgendada().minusHours(3))){
+  public void verificarPunicaoCancelamento(
+      PropostaModel proposta, MotivoCancelamentoDto motivoCancelamentoDto, UsuarioModel usuario) {
+    if (LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))
+        .isAfter(proposta.getDataAgendada().minusHours(3))) {
       eventPublisher.publishEvent(new PossivelPunicaoAgendadoEvent(proposta, usuario));
       punicaoService.gerarVerificacaoPunicao(proposta, motivoCancelamentoDto);
     }

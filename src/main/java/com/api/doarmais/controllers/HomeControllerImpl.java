@@ -28,7 +28,8 @@ public class HomeControllerImpl implements HomeController {
     BeanUtils.copyProperties(denunciaRequestDto, denunciaModel);
     denunciaModel.setSituacaoModel(new SituacaoModel(SituacaoModel.DENUNCIA_CRIADA));
     denunciaModel.setDataCriacao(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
-    var usuarioLogado = (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    var usuarioLogado =
+        (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     denunciaModel.setUsuarioModel(usuarioLogado);
 
     return new ResponseEntity<DenunciaResponseDto>(

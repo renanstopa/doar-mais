@@ -13,4 +13,5 @@ public class FiltroAnuncioRequestDto {
   private Integer tipoAnuncio;
   private Integer tipoCategoriaItem;
   private Integer idUsuario;
+  private Integer situacao;
 }

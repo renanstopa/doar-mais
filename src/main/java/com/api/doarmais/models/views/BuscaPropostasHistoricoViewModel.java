@@ -9,8 +9,8 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "vw_busca_propostas_agendadas")
-public class BuscaPropostasAgendadasViewModel {
+@Table(name = "vw_busca_propostas_historico")
+public class BuscaPropostasHistoricoViewModel {
 
   @Id
   @Column(name = "id")
@@ -27,6 +27,12 @@ public class BuscaPropostasAgendadasViewModel {
 
   @Column(name = "id_tipo_anuncio")
   private Integer idTipoAnuncio;
+
+  @Column(name = "id_situacao")
+  private Integer idSituacao;
+
+  @Column(name = "descricao")
+  private String descricao;
 
   @Column(name = "nome")
   private String nome;

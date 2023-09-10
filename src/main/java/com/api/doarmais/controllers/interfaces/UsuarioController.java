@@ -3,14 +3,12 @@ package com.api.doarmais.controllers.interfaces;
 import com.api.doarmais.dtos.request.AtualizarDadosRequestDto;
 import com.api.doarmais.dtos.request.EnderecoRequestDto;
 import com.api.doarmais.dtos.request.TrocarSenhaLogadoRequestDto;
-import com.api.doarmais.dtos.request.TrocarSenhaRequestDto;
 import com.api.doarmais.dtos.response.EnderecoResponseDto;
 import com.api.doarmais.dtos.response.UsuarioResponseDto;
 import com.api.doarmais.models.views.PerfilUsuarioViewModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

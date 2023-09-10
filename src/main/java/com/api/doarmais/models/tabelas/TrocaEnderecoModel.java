@@ -48,5 +48,4 @@ public class TrocaEnderecoModel {
 
   @Column(name = "comprovante_residencia")
   private String comprovanteResidencia;
-
 }

@@ -21,7 +21,7 @@ public interface AnuncioController {
   @Operation(description = "Endpoint utilizado para criar um anúncio.")
   @PostMapping("")
   public ResponseEntity<AnuncioResponseDto> criarAnuncio(
-          @Valid @RequestBody AnuncioRequestDto anuncioRequestDto);
+      @Valid @RequestBody AnuncioRequestDto anuncioRequestDto);
 
   @Operation(description = "Endpoint utilizado para buscar os anúncio através de filtros")
   @GetMapping("")
@@ -37,10 +37,11 @@ public interface AnuncioController {
 
   @Operation(description = "Endpoint utilizado para criar uma proposta referente a um anúncio")
   @PostMapping("/proposta")
-  public ResponseEntity<PropostaResponseDto>criarProposta(@Valid @RequestBody PropostaRequestDto propostaRequestDto);
+  public ResponseEntity<PropostaResponseDto> criarProposta(
+      @Valid @RequestBody PropostaRequestDto propostaRequestDto);
 
   @Operation(description = "Endpoint utilizado para denunciar um anúncio")
   @PostMapping("/denuncia")
-  public ResponseEntity<DenunciaResponseDto> denunciarAnuncio(@Valid @RequestBody DenunciaRequestDto denunciaRequestDto);
-
+  public ResponseEntity<DenunciaResponseDto> denunciarAnuncio(
+      @Valid @RequestBody DenunciaRequestDto denunciaRequestDto);
 }

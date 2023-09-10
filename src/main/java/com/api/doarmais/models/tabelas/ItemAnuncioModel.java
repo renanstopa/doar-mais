@@ -37,7 +37,7 @@ public class ItemAnuncioModel {
   @Column(name = "descricao")
   private String descricao;
 
-    public Boolean verificarTrocaitem(EditarItemAnuncioRequestDto itemDto) {
-      return !this.getNome().equals(itemDto.getNome());
-    }
+  public Boolean verificarTrocaitem(EditarItemAnuncioRequestDto itemDto) {
+    return !this.getNome().equals(itemDto.getNome());
+  }
 }
