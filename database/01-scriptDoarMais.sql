@@ -26,7 +26,8 @@ create table usuario(
     telefone varchar(11),
     documento varchar(14),
     cargo varchar(45),
-    comprovante_residencia blob,
+    arquivo text,
+    caminho_arquivo text,
     primary key (id),
     foreign key (id_tipo_usuario) references tipo_usuario (id),
     foreign key (id_situacao) references situacao (id)

@@ -68,6 +68,8 @@ public class ConsultaPropostaViewModel {
   @Column(name = "data_agendada")
   private String dataAgendada;
 
+  @Transient private Integer podeConfirmarEncontro;
+
   @Transient private List<ItemAnuncioResponseDto> itemList = new ArrayList<>();
 
   public void armazenarItens(List<ItemAnuncioModel> itemAnuncioModelList) {

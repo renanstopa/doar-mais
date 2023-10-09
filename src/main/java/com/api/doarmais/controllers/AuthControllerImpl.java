@@ -59,6 +59,7 @@ public class AuthControllerImpl implements AuthController {
     var usuarioModel = new UsuarioModel();
     BeanUtils.copyProperties(criarUsuarioRequestDto, usuarioModel);
     usuarioService.completarInfoUsuario(usuarioModel, passwordEncoder, 1);
+    usuarioService.armazenarDocumento(criarUsuarioRequestDto.getComprovante(), usuarioModel);
     usuarioModel = usuarioService.gravar(usuarioModel);
 
     var enderecoModel = new EnderecoModel();
@@ -86,6 +87,7 @@ public class AuthControllerImpl implements AuthController {
     var usuarioModel = new UsuarioModel();
     BeanUtils.copyProperties(criarUsuarioRequestDto, usuarioModel);
     usuarioService.completarInfoUsuario(usuarioModel, passwordEncoder, 2);
+    usuarioService.armazenarDocumento(criarUsuarioRequestDto.getComprovante(), usuarioModel);
     usuarioModel = usuarioService.gravar(usuarioModel);
 
     var enderecoModel = new EnderecoModel();
