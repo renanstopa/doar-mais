@@ -95,6 +95,14 @@ public interface AtividadeController {
       @PathVariable("id") Integer id,
       @Valid @RequestBody MotivoCancelamentoDto motivoCancelamentoDto);
 
+  @Operation(description = "Endpoint utilizado para gravar a ocorrência do encontro")
+  @PatchMapping("agendados/{id}/ocorrenciaencontro")
+  public ResponseEntity<ConsultaPropostaViewModel> ocorreuEncontro(@PathVariable("id") Integer idProposta);
+
+  @Operation(description = "Endpoint utilizado para gravar a não ocorrência do encontro")
+  @PatchMapping("agendados/{id}/naoocorrenciaencontro")
+  public ResponseEntity<ConsultaPropostaViewModel> naoOcorreuEncontro(@PathVariable("id") Integer idProposta);
+
   // ENDPOINTS UTILIZADOS NA ABA DE HISTÓRICO
 
   @Operation(

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class CriarUsuarioRequestDto {
@@ -63,4 +64,7 @@ public class CriarUsuarioRequestDto {
 
   @Size(max = 100, message = "Compelemento deve conter no máximo 100 caracteres!")
   private String complemento;
+
+  @NotNull(message = "Comprovante deve ser informado!")
+  private MultipartFile comprovante;
 }

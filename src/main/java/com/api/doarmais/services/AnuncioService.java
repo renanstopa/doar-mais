@@ -1,7 +1,6 @@
 package com.api.doarmais.services;
 
 import com.api.doarmais.dtos.request.*;
-import com.api.doarmais.events.PossivelPunicaoEvent;
 import com.api.doarmais.models.tabelas.*;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.repositories.AnuncioRepository;
@@ -161,10 +160,6 @@ public class AnuncioService {
     for (PropostaModel proposta : propostasCanceladas) {
       if (LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))
           .isAfter(proposta.getDataAgendada().minusHours(3))) {
-        if (!envioEmail) {
-          eventPublisher.publishEvent(new PossivelPunicaoEvent(proposta));
-          envioEmail = true;
-        }
         punicaoService.gerarVerificacaoPunicao(proposta, motivo);
       }
     }

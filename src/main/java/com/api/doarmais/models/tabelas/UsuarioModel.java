@@ -50,8 +50,11 @@ public class UsuarioModel implements UserDetails {
   @Column(name = "cargo")
   private String cargo;
 
-  @Column(name = "comprovante_residencia")
-  private String comprovanteResidencia;
+  @Column(name = "arquivo")
+  private String arquivo;
+
+  @Column(name = "caminho_arquivo")
+  private String caminhoArquivo;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

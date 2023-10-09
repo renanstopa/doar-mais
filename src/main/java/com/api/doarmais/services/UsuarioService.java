@@ -4,11 +4,19 @@ import com.api.doarmais.models.tabelas.SituacaoModel;
 import com.api.doarmais.models.tabelas.TipoUsuarioModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.repositories.UsuarioRepository;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UsuarioService {
@@ -91,4 +99,35 @@ public class UsuarioService {
       String senhaAtual, PasswordEncoder passwordEncoder, UsuarioModel usuarioLogado) {
     return (passwordEncoder.matches(senhaAtual, usuarioLogado.getSenha()));
   }
+
+    public void armazenarDocumento(MultipartFile comprovante, UsuarioModel usuarioModel) {
+      try {
+        String originalFileName = comprovante.getOriginalFilename();
+        String pathDir = "doarmais/comprovantes/";
+
+        File destinationFile = new File(pathDir);
+        if(!destinationFile.exists())
+          destinationFile.mkdirs();
+
+        UUID codigoArquivo = UUID.randomUUID();
+        File arquivo = new File(pathDir + codigoArquivo);
+
+        usuarioModel.setArquivo(originalFileName);
+        usuarioModel.setCaminhoArquivo(pathDir + codigoArquivo);
+
+        FileOutputStream outputStream = null;
+        byte[] bufferedBytes = new byte[1024];
+
+        BufferedInputStream fileInputStream = new BufferedInputStream(comprovante.getInputStream());
+        outputStream = new FileOutputStream(arquivo);
+        int count = 0;
+        while((count = fileInputStream.read(bufferedBytes)) != -1){
+          outputStream.write(bufferedBytes, 0, count);
+        }
+        outputStream.close();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+
+    }
 }

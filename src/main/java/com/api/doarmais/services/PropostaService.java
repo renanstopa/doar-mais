@@ -4,7 +4,6 @@ import com.api.doarmais.dtos.request.MotivoCancelamentoDto;
 import com.api.doarmais.dtos.request.PropostaRequestDto;
 import com.api.doarmais.dtos.response.ItemPropostaResponseDto;
 import com.api.doarmais.dtos.response.PropostaResponseDto;
-import com.api.doarmais.events.PossivelPunicaoAgendadoEvent;
 import com.api.doarmais.events.PropostaCanceladaAnuncioEvent;
 import com.api.doarmais.events.PropostaConfirmadaCanceladaEvent;
 import com.api.doarmais.models.tabelas.*;
@@ -125,7 +124,6 @@ public class PropostaService {
       PropostaModel proposta, MotivoCancelamentoDto motivoCancelamentoDto, UsuarioModel usuario) {
     if (LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))
         .isAfter(proposta.getDataAgendada().minusHours(3))) {
-      eventPublisher.publishEvent(new PossivelPunicaoAgendadoEvent(proposta, usuario));
       punicaoService.gerarVerificacaoPunicao(proposta, motivoCancelamentoDto);
     }
   }
@@ -137,6 +135,10 @@ public class PropostaService {
 
   public void recusarProposta(PropostaModel propostaModel) {
     propostaModel.setSituacaoModel(new SituacaoModel(SituacaoModel.PROPOSTA_RECUSADA));
+    propostaRepository.save(propostaModel);
+  }
+
+  public void gravarOcorrenciaEncontro(PropostaModel propostaModel) {
     propostaRepository.save(propostaModel);
   }
 }
