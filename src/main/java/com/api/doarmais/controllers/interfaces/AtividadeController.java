@@ -97,16 +97,18 @@ public interface AtividadeController {
 
   @Operation(description = "Endpoint utilizado para gravar a ocorrência do encontro")
   @PatchMapping("agendados/{id}/ocorrenciaencontro")
-  public ResponseEntity<ConsultaPropostaViewModel> ocorreuEncontro(@PathVariable("id") Integer idProposta);
+  public ResponseEntity<ConsultaPropostaViewModel> ocorreuEncontro(
+      @PathVariable("id") Integer idProposta);
 
   @Operation(description = "Endpoint utilizado para gravar a não ocorrência do encontro")
   @PatchMapping("agendados/{id}/naoocorrenciaencontro")
-  public ResponseEntity<ConsultaPropostaViewModel> naoOcorreuEncontro(@PathVariable("id") Integer idProposta);
+  public ResponseEntity<ConsultaPropostaViewModel> naoOcorreuEncontro(
+      @PathVariable("id") Integer idProposta);
 
   // ENDPOINTS UTILIZADOS NA ABA DE HISTÓRICO
 
   @Operation(
-      description = "Endpoint utilizado para buscar as propostas od histórico através de filtros")
+      description = "Endpoint utilizado para buscar as propostas do histórico através de filtros")
   @GetMapping("/historico")
   public ResponseEntity<List<BuscaPropostasHistoricoViewModel>> buscarHistorico(
       @RequestParam(value = "titulo", required = false) String titulo,

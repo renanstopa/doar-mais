@@ -360,4 +360,22 @@ join
 on
     (p.id_situacao = s.id);
 
+-- drop view if exists vw_busca_gerenciar_contas
+create view
+	vw_busca_gerenciar_contas
+as select
+	u.id, tu.id as id_tipo_usuario, u.id_situacao, u.nome, tu.descricao as desc_tipo_usuario,
+    case
+       when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
+       when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
+       else u.telefone
+   end as
+        telefone
+from
+	usuario u
+join
+	tipo_usuario tu
+on
+	(u.id_tipo_usuario = tu.id);
+
 -- FIM DAS VIEWS
