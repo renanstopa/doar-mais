@@ -222,8 +222,9 @@ public class AtividadeControllerImpl implements AtividadeController {
     consultaPropostaViewModel.armazenarItens(listaItens);
 
     UsuarioModel usuarioModel =
-            (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    consultaPropostaViewModel.setPodeConfirmarEncontro(usuarioModel.getId().equals(consultaPropostaViewModel.getIdUsuarioAnuncio()) ? 1 : 2);
+        (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    consultaPropostaViewModel.setPodeConfirmarEncontro(
+        usuarioModel.getId().equals(consultaPropostaViewModel.getIdUsuarioAnuncio()) ? 1 : 2);
 
     return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewModel, HttpStatus.OK);
   }
@@ -262,25 +263,33 @@ public class AtividadeControllerImpl implements AtividadeController {
   public ResponseEntity<ConsultaPropostaViewModel> ocorreuEncontro(Integer idProposta) {
     PropostaModel propostaModel = propostaService.consultar(idProposta);
 
-    if(propostaModel.getDataAgendada().isAfter((LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))))
-      throw new CantConfirmProposta("A data agendada para a proposta ainda está anterior a data atual");
+    if (propostaModel
+        .getDataAgendada()
+        .isAfter((LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))))
+      throw new CantConfirmProposta(
+          "A data agendada para a proposta ainda está anterior a data atual");
 
     propostaModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ENCONTRO_REALIZADO));
     propostaService.gravarOcorrenciaEncontro(propostaModel);
 
-    return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewService.consultar(idProposta), HttpStatus.OK);
+    return new ResponseEntity<ConsultaPropostaViewModel>(
+        consultaPropostaViewService.consultar(idProposta), HttpStatus.OK);
   }
 
   public ResponseEntity<ConsultaPropostaViewModel> naoOcorreuEncontro(Integer idProposta) {
     PropostaModel propostaModel = propostaService.consultar(idProposta);
 
-    if(propostaModel.getDataAgendada().isAfter((LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))))
-      throw new CantConfirmProposta("A data agendada para a proposta ainda está anterior a data atual");
+    if (propostaModel
+        .getDataAgendada()
+        .isAfter((LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))))
+      throw new CantConfirmProposta(
+          "A data agendada para a proposta ainda está anterior a data atual");
 
     propostaModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ENCONTRO_NAO_REALIZADO));
     propostaService.gravarOcorrenciaEncontro(propostaModel);
 
-    return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewService.consultar(idProposta), HttpStatus.OK);
+    return new ResponseEntity<ConsultaPropostaViewModel>(
+        consultaPropostaViewService.consultar(idProposta), HttpStatus.OK);
   }
 
   // ENDPOINTS UTILIZADOS NA ABA DE HISTÓRICO
