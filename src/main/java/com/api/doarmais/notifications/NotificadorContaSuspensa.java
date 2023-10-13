@@ -1,6 +1,7 @@
 package com.api.doarmais.notifications;
 
-import com.api.doarmais.events.ContaRecusadaEvent;
+import com.api.doarmais.events.ContaAceitaEvent;
+import com.api.doarmais.events.ContaSuspensaEvent;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -13,18 +14,18 @@ import org.springframework.scheduling.annotation.EnableAsync;
 
 @EnableAsync
 @Configuration
-public class NotificadorContaRecusada implements Notificador<ContaRecusadaEvent> {
+public class NotificadorContaSuspensa implements Notificador<ContaSuspensaEvent> {
 
   @Autowired private JavaMailSender sender;
 
   @EventListener
   @Async
-  public void enviar(ContaRecusadaEvent contaRecusadaEvent) {
+  public void enviar(ContaSuspensaEvent contaSuspensaEvent) {
     SimpleMailMessage message = new SimpleMailMessage();
-    UsuarioModel usuario = contaRecusadaEvent.getUsuarioModel();
+    UsuarioModel usuario = contaSuspensaEvent.getUsuarioModel();
 
-    message.setSubject("Doar+ - Conta recusada");
-    message.setText("Olá, " + usuario.getNome() + "\n\nSua conta foi recusada, tente criar outra ou entrar em contato com o site.");
+    message.setSubject("Doar+ - Conta suspensa");
+    message.setText("Olá, " + usuario.getNome() + "\n\nSua conta foi bloqueada por tempo indeterminado por causa de recentes cancelamentos de propostas perto da data agendada.");
     message.setTo(usuario.getEmail());
     message.setFrom("doar.mais@outlook.com");
 

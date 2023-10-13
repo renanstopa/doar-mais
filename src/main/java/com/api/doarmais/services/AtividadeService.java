@@ -1,7 +1,8 @@
 package com.api.doarmais.services;
 
 import com.api.doarmais.dtos.request.*;
-import com.api.doarmais.models.tabelas.*;
+import com.api.doarmais.models.tabelas.AnuncioModel;
+import com.api.doarmais.models.tabelas.ItemAnuncioModel;
 import com.api.doarmais.models.views.BuscaAnuncioViewModel;
 import com.api.doarmais.models.views.BuscaPropostasAgendadasViewModel;
 import com.api.doarmais.models.views.BuscaPropostasHistoricoViewModel;

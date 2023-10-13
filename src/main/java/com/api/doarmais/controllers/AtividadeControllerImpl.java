@@ -89,10 +89,10 @@ public class AtividadeControllerImpl implements AtividadeController {
     var anuncioModel = anuncioService.buscarPorId(id);
     List<PropostaModel> propostasCanceladas = new ArrayList<>();
     boolean trocouInfoPrincipal = anuncioModel.verficarTrocaInfoPrincipal(editarAnuncioRequestDto);
-    if (trocouInfoPrincipal)
-      propostasCanceladas =
-          propostaService.cancelarTodasPropostasDoAnuncio(
-              anuncioModel.getId(), "A pessoa que criou o anúncio precisou editá-lo!");
+    if (trocouInfoPrincipal) {
+      propostasCanceladas =  propostaService.cancelarTodasPropostasDoAnuncio(anuncioModel.getId(), "A pessoa que criou o anúncio precisou editá-lo!");
+      anuncioService.verificarEnvioPunicao(propostasCanceladas, "A pessoa que criou o anúncio precisou editá-lo!");
+    }
 
     BeanUtils.copyProperties(editarAnuncioRequestDto, anuncioModel);
     anuncioService.completarInformacoes(anuncioModel, anuncioModel.getTipoAnuncioModel().getId());
@@ -101,8 +101,10 @@ public class AtividadeControllerImpl implements AtividadeController {
     for (EditarItemAnuncioRequestDto itemDto : editarAnuncioRequestDto.getListaItens()) {
       var itemAnuncioModel = itemAnuncioService.buscarPorId(itemDto.getId());
 
-      if (!trocouInfoPrincipal && itemAnuncioModel.verificarTrocaitem(itemDto))
+      if (!trocouInfoPrincipal && itemAnuncioModel.verificarTrocaitem(itemDto)) {
         propostasCanceladas = propostaService.cancelarPropostaPorItem(itemAnuncioModel.getId());
+        anuncioService.verificarEnvioPunicao(propostasCanceladas, "A pessoa que criou o anúncio precisou editá-lo!");
+      }
 
       if (!propostasCanceladas.isEmpty() && !itemAnuncioModel.verificarTrocaitem(itemDto))
         anuncioService.voltarQuantidadeOriginalItem(itemAnuncioModel, propostasCanceladas, itemDto);

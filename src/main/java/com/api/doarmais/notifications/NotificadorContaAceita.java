@@ -1,9 +1,7 @@
 package com.api.doarmais.notifications;
 
 import com.api.doarmais.events.ContaAceitaEvent;
-import com.api.doarmais.events.ResetCriadoEvent;
 import com.api.doarmais.models.tabelas.UsuarioModel;
-import com.api.doarmais.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;

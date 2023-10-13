@@ -158,6 +158,7 @@ create table autenticacao_email(
 create table punicao(
     id int not null auto_increment,
     id_usuario int,
+    id_situacao int,
     data_agendada datetime,
     data_cancelamento datetime,
     motivo text,
@@ -404,5 +405,30 @@ join
     usuario u
 on
     (te.id_usuario = u.id);
+
+-- drop view if exists vw_busca_gerenciar_punicao
+create view
+    vw_busca_gerenciar_punicao
+as select
+   	p.id, p.id_situacao, u.nome, date_format(p.data_cancelamento, '%d/%m/%Y %H:%i:%s') as data_cancelamento
+from
+    punicao p
+join
+    usuario u
+on
+    (p.id_usuario = u.id);
+
+-- drop view if exists vw_consulta_gerenciar_punicao
+create view
+    vw_consulta_gerenciar_punicao
+as select
+   	p.id, p.id_situacao, u.nome, date_format(p.data_agendada, '%d/%m/%Y %H:%i:%s') as data_agendada,
+    date_format(p.data_cancelamento, '%d/%m/%Y %H:%i:%s') as data_cancelamento, p.motivo
+from
+    punicao p
+join
+    usuario u
+on
+    (p.id_usuario = u.id);
 
 -- FIM DAS VIEWS
