@@ -13,4 +13,8 @@ public class DenunciaService {
   public DenunciaModel gravar(DenunciaModel denunciaModel) {
     return denunciaRepository.save(denunciaModel);
   }
+
+    public DenunciaModel consultar(Integer id) {
+      return denunciaRepository.findById(id).get();
+    }
 }

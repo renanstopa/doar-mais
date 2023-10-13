@@ -53,21 +53,6 @@ create table tipo_denuncia(
     primary key (id)
 );
 
-create table denuncia(
-	id int not null auto_increment,
-    id_tipo_denuncia int,
-    id_usuario int,
-    id_usuario_denunciado int,
-    id_situacao int,
-    descricao text,
-    data_criacao datetime,
-    primary key (id),
-    foreign key (id_tipo_denuncia) references tipo_denuncia (id),
-    foreign key (id_usuario) references usuario (id),
-    foreign key (id_usuario_denunciado) references usuario (id),
-    foreign key (id_situacao) references situacao (id)
-);
-
 create table tipo_anuncio(
 	id int not null,
     descricao varchar(45),
@@ -95,6 +80,23 @@ create table anuncio(
     primary key (id),
     foreign key (id_tipo_anuncio) references tipo_anuncio (id),
     foreign key (id_usuario_criador) references usuario (id),
+    foreign key (id_situacao) references situacao (id)
+);
+
+create table denuncia(
+	id int not null auto_increment,
+    id_tipo_denuncia int,
+    id_usuario int,
+    id_usuario_denunciado int,
+    id_anuncio int,
+    id_situacao int,
+    descricao text,
+    data_criacao datetime,
+    primary key (id),
+    foreign key (id_tipo_denuncia) references tipo_denuncia (id),
+    foreign key (id_usuario) references usuario (id),
+    foreign key (id_usuario_denunciado) references usuario (id),
+    foreign key (id_anuncio) references anuncio (id),
     foreign key (id_situacao) references situacao (id)
 );
 
@@ -430,5 +432,80 @@ join
     usuario u
 on
     (p.id_usuario = u.id);
+
+-- drop view if exists vw_busca_gerenciar_denuncia
+create view
+    vw_busca_gerenciar_denuncia
+as select
+   	d.id, d.id_tipo_denuncia, d.id_situacao, td.descricao, u.nome, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_cricao
+from
+    denuncia d
+join
+    tipo_denuncia td
+on
+    (d.id_tipo_denuncia = td.id)
+join
+    usuario u
+on
+    (d.id_usuario = u.id);
+
+-- drop view if exists vw_consulta_gerenciar_usuario_denunciado
+create view
+    vw_consulta_gerenciar_usuario_denunciado
+as select
+   	d.id, d.id_tipo_denuncia, td.descricao, u.nome, ud.nome as usuario_denunciado,
+    d.descricao as descricao_denuncia, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_cricao
+from
+    denuncia d
+join
+    tipo_denuncia td
+on
+    (d.id_tipo_denuncia = td.id)
+join
+    usuario u
+on
+    (d.id_usuario = u.id)
+join
+    usuario ud
+on
+    (d.id_usuario = ud.id);
+
+-- drop view if exists vw_consulta_gerenciar_anuncio_denunciado
+create view
+    vw_consulta_gerenciar_anuncio_denunciado
+as select
+   	d.id, d.id_tipo_denuncia, d.id_anuncio, td.descricao, u.nome, a.titulo,
+    d.descricao as descricao_denuncia, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_cricao
+from
+    denuncia d
+join
+    tipo_denuncia td
+on
+    (d.id_tipo_denuncia = td.id)
+join
+    usuario u
+on
+    (d.id_usuario= u.id)
+join
+    anuncio a
+on
+    (d.id_anuncio = a.id);
+
+-- drop view if exists vw_consulta_gerenciar_melhoria_bug
+create view
+    vw_consulta_gerenciar_melhoria_bug
+as select
+   	d.id, d.id_tipo_denuncia, td.descricao, u.nome,
+    d.descricao as descricao_denuncia, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_cricao
+from
+    denuncia d
+join
+    tipo_denuncia td
+on
+    (d.id_tipo_denuncia = td.id)
+join
+    usuario u
+on
+    (d.id_usuario= u.id);
 
 -- FIM DAS VIEWS
