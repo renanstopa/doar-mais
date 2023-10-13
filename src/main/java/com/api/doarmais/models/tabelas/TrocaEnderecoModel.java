@@ -46,6 +46,10 @@ public class TrocaEnderecoModel {
   @Column(name = "complemento")
   private String complemento;
 
-  @Column(name = "comprovante_residencia")
-  private String comprovanteResidencia;
+  @Column(name = "arquivo")
+  private String arquivo;
+
+  @Column(name = "caminho_arquivo")
+  private String caminhoArquivo;
+
 }
