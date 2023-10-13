@@ -1,6 +1,5 @@
 package com.api.doarmais.repositories;
 
-import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.models.views.BuscaGerenciarTrocaEnderecoViewModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

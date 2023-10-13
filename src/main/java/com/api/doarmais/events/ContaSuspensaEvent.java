@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ContaAceitaEvent {
+public class ContaSuspensaEvent {
 
   private UsuarioModel usuarioModel;
 }

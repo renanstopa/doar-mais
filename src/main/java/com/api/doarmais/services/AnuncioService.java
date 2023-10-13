@@ -171,7 +171,6 @@ public class AnuncioService {
 
   public void verificarEnvioPunicao(
       List<PropostaModel> propostasCanceladas, MotivoCancelamentoDto motivo) {
-    boolean envioEmail = false;
     for (PropostaModel proposta : propostasCanceladas) {
       if (LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))
           .isAfter(proposta.getDataAgendada().minusHours(3))) {
@@ -180,4 +179,12 @@ public class AnuncioService {
     }
   }
 
+  public void verificarEnvioPunicao(List<PropostaModel> propostasCanceladas, String motivo) {
+    for (PropostaModel proposta : propostasCanceladas) {
+      if (LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))
+              .isAfter(proposta.getDataAgendada().minusHours(3))) {
+        punicaoService.gerarVerificacaoPunicao(proposta, motivo);
+      }
+    }
+  }
 }

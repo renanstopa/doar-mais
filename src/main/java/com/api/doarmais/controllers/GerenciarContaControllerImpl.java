@@ -2,11 +2,12 @@ package com.api.doarmais.controllers;
 
 import com.api.doarmais.controllers.interfaces.GerenciarContaController;
 import com.api.doarmais.dtos.request.*;
-import com.api.doarmais.dtos.response.*;
 import com.api.doarmais.events.ContaAceitaEvent;
 import com.api.doarmais.events.ContaRecusadaEvent;
-import com.api.doarmais.models.tabelas.*;
-import com.api.doarmais.models.views.*;
+import com.api.doarmais.models.tabelas.SituacaoModel;
+import com.api.doarmais.models.tabelas.UsuarioModel;
+import com.api.doarmais.models.views.BuscaGerenciarContasViewModel;
+import com.api.doarmais.models.views.PerfilUsuarioViewModel;
 import com.api.doarmais.services.*;
 import java.io.File;
 import java.io.FileInputStream;
