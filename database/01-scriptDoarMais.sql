@@ -167,6 +167,7 @@ create table punicao(
 create table troca_endereco(
 	id int not null auto_increment,
     id_usuario int,
+    id_situacao int,
     cep varchar(8),
     uf char(2),
     cidade varchar(150),
@@ -174,7 +175,8 @@ create table troca_endereco(
     logradouro varchar(200),
     numero int,
     complemento varchar(100),
-    comprovante_residencia blob,
+    arquivo text,
+    caminho_arquivo text,
     primary key (id, id_usuario)
 );
 
@@ -377,5 +379,30 @@ join
 	tipo_usuario tu
 on
 	(u.id_tipo_usuario = tu.id);
+
+-- drop view if exists vw_busca_gerenciar_troca_endereco
+create view
+    vw_busca_gerenciar_troca_endereco
+as select
+   	te.id, te.id_situacao, u.nome, concat(substring(te.cep, 1, 5), '-', substring(te.cep, 6, 3)) as cep
+from
+    troca_endereco te
+join
+    usuario u
+on
+    (te.id_usuario = u.id);
+
+-- drop view if exists vw_consultar_troca_endereco
+create view
+    vw_consultar_troca_endereco
+as select
+   	te.id, u.nome, concat(substring(te.cep, 1, 5), '-', substring(te.cep, 6, 3)) as cep,
+    te.uf, te.cidade, te.bairro, te.logradouro, te.numero, te.complemento
+from
+    troca_endereco te
+join
+    usuario u
+on
+    (te.id_usuario = u.id);
 
 -- FIM DAS VIEWS

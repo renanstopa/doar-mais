@@ -149,7 +149,22 @@ public class AnuncioService {
     }
   }
 
-  public void cancelarAnuncio(AnuncioModel anuncioModel) {
+  public void voltarQuantidadeOriginalItem(PropostaModel propostaModel) {
+    List<ItemAnuncioModel> itemAnuncioModel = itemAnuncioRepository.findByAnuncioModelId(propostaModel.getAnuncioModel().getId());
+    List<ItemAnuncioPropostaModel> itemAnuncioPropostaModel = itemAnuncioPropostaRepository.findByPropostaModelId(propostaModel.getId());
+
+    for (ItemAnuncioPropostaModel itemProposta : itemAnuncioPropostaModel) {
+      for (ItemAnuncioModel itemAnuncio : itemAnuncioModel) {
+        if(itemProposta.getItemAnuncioModel().getId().equals(itemAnuncio.getId())){
+          itemAnuncio.setQuantidade(itemAnuncio.getQuantidade() + itemProposta.getQuantidadeSolicitada());
+          itemAnuncioRepository.save(itemAnuncio);
+        }
+      }
+    }
+  }
+
+
+    public void cancelarAnuncio(AnuncioModel anuncioModel) {
     anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CANCELADO));
     anuncioRepository.save(anuncioModel);
   }
@@ -164,4 +179,5 @@ public class AnuncioService {
       }
     }
   }
+
 }

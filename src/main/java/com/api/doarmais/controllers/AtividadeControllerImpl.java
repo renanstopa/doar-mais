@@ -187,6 +187,8 @@ public class AtividadeControllerImpl implements AtividadeController {
     propostaService.recusarProposta(propostaModel);
     eventPublisher.publishEvent(new PropostaRecusadaEvent(propostaModel));
 
+    anuncioService.voltarQuantidadeOriginalItem(propostaModel);
+
     return new ResponseEntity<ConsultaPropostaViewModel>(
         consultaPropostaViewService.consultar(id), HttpStatus.OK);
   }
@@ -246,6 +248,8 @@ public class AtividadeControllerImpl implements AtividadeController {
         (usuarioModel.getEmail().equals(propostaModel.getUsuarioModel().getEmail())
             ? propostaModel.getAnuncioModel().getUsuarioModel()
             : propostaModel.getUsuarioModel()));
+
+    anuncioService.voltarQuantidadeOriginalItem(propostaModel);
 
     List<ItemAnuncioModel> listaItens =
         itemAnuncioService.buscaPorAnuncio(propostaModel.getAnuncioModel().getId());
