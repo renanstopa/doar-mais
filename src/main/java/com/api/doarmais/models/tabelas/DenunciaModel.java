@@ -34,6 +34,10 @@ public class DenunciaModel {
   private UsuarioModel usuarioModelDenunciado;
 
   @ManyToOne
+  @JoinColumn(name = "id_anuncio")
+  private AnuncioModel anuncioModel;
+
+  @ManyToOne
   @JoinColumn(name = "id_situacao")
   private SituacaoModel situacaoModel;
 

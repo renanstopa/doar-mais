@@ -1,31 +1,19 @@
 package com.api.doarmais.controllers;
 
-import com.api.doarmais.controllers.interfaces.GerenciarContaController;
 import com.api.doarmais.controllers.interfaces.GerenciarPunicaoController;
-import com.api.doarmais.dtos.request.FiltroGerenciarContaRequestDto;
-import com.api.doarmais.events.ContaAceitaEvent;
-import com.api.doarmais.events.ContaRecusadaEvent;
 import com.api.doarmais.events.ContaSuspensaEvent;
 import com.api.doarmais.models.tabelas.PunicaoModel;
 import com.api.doarmais.models.tabelas.SituacaoModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
-import com.api.doarmais.models.views.BuscaGerenciarContasViewModel;
 import com.api.doarmais.models.views.BuscaGerenciarPunicaoViewModel;
 import com.api.doarmais.models.views.ConsultaGerenciarPunicaoViewModel;
-import com.api.doarmais.models.views.PerfilUsuarioViewModel;
 import com.api.doarmais.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.List;
 
 @RestController
