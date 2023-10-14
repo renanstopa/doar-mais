@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "vw_consulta_gerenciar_usuario_denunciado")
+@Table(name = "vw_consulta_gerenciar_anuncio_denunciado")
 public class ConsultaGerenciarAnuncioDenunciadoViewModel {
 
   @Id
@@ -33,7 +33,7 @@ public class ConsultaGerenciarAnuncioDenunciadoViewModel {
   @Column(name = "descricao_denuncia")
   private String descricaoDenuncia;
 
-  @Column(name = "data_crica")
+  @Column(name = "data_criacao")
   private String dataCriacao;
 
 }

@@ -27,6 +27,6 @@ public class BuscaGerenciarDenunciaViewModel {
   @Column(name = "nome")
   private String nome;
 
-  @Column(name = "data_cricao")
+  @Column(name = "data_criacao")
   private String dataCriacao;
 }
