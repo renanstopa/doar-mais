@@ -47,12 +47,6 @@ create table endereco(
     foreign key (id_usuario) references usuario (id)
 );
 
-create table tipo_denuncia(
-	id int not null,
-    descricao varchar(45),
-    primary key (id)
-);
-
 create table tipo_anuncio(
 	id int not null,
     descricao varchar(45),
@@ -81,6 +75,12 @@ create table anuncio(
     foreign key (id_tipo_anuncio) references tipo_anuncio (id),
     foreign key (id_usuario_criador) references usuario (id),
     foreign key (id_situacao) references situacao (id)
+);
+
+create table tipo_denuncia(
+	id int not null,
+    descricao varchar(45),
+    primary key (id)
 );
 
 create table denuncia(
@@ -374,7 +374,7 @@ as select
        when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
        when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
        else u.telefone
-   end as
+    end as
         telefone
 from
 	usuario u
@@ -437,7 +437,7 @@ on
 create view
     vw_busca_gerenciar_denuncia
 as select
-   	d.id, d.id_tipo_denuncia, d.id_situacao, td.descricao, u.nome, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_cricao
+   	d.id, d.id_tipo_denuncia, d.id_situacao, td.descricao, u.nome, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_criacao
 from
     denuncia d
 join
@@ -454,7 +454,7 @@ create view
     vw_consulta_gerenciar_usuario_denunciado
 as select
    	d.id, d.id_tipo_denuncia, td.descricao, u.nome, ud.nome as usuario_denunciado,
-    d.descricao as descricao_denuncia, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_cricao
+    d.descricao as descricao_denuncia, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_criacao
 from
     denuncia d
 join
@@ -475,7 +475,7 @@ create view
     vw_consulta_gerenciar_anuncio_denunciado
 as select
    	d.id, d.id_tipo_denuncia, d.id_anuncio, td.descricao, u.nome, a.titulo,
-    d.descricao as descricao_denuncia, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_cricao
+    d.descricao as descricao_denuncia, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_criacao
 from
     denuncia d
 join
@@ -496,7 +496,7 @@ create view
     vw_consulta_gerenciar_melhoria_bug
 as select
    	d.id, d.id_tipo_denuncia, td.descricao, u.nome,
-    d.descricao as descricao_denuncia, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_cricao
+    d.descricao as descricao_denuncia, date_format(d.data_criacao, '%d/%m/%Y %H:%i:%s') as data_criacao
 from
     denuncia d
 join
@@ -507,5 +507,21 @@ join
     usuario u
 on
     (d.id_usuario= u.id);
+
+-- drop view if exists vw_busca_gerenciar_contas_bloqueadas
+create view
+    vw_busca_gerenciar_contas_bloqueadas
+as select
+   	id, nome,
+    case
+      when length(telefone) = 11 then concat('(', substring(telefone, 1, 2), ') ', substring(telefone, 3, 5), '-', substring(telefone, 8, 4))
+      when length(telefone) = 10 then concat('(', substring(telefone, 1, 2), ') ', substring(telefone, 3, 4), '-', substring(telefone, 7, 4))
+      else telefone
+end as
+    telefone
+from
+    usuario
+where
+    id_situacao = 14;
 
 -- FIM DAS VIEWS

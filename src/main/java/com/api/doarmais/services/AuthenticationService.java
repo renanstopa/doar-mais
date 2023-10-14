@@ -53,11 +53,11 @@ public class AuthenticationService {
     if (user.getSituacaoModel().getId().equals(SituacaoModel.CONTA_SEM_APROVACAO_DO_ADM))
       throw new AccountNotVerifiedByAdm("O administrador ainda não aprovou sua conta");
 
-    if (user.getSituacaoModel().getId().equals(SituacaoModel.CONTA_SUSPENSA))
-      throw new SuspendedAccount("Essa conta não pode mais ser utilizada pois foi excluída");
+    if (user.getSituacaoModel().getId().equals(SituacaoModel.CONTA_BANIDA))
+      throw new SuspendedAccount("Essa conta não pode mais ser utilizada pois foi banida");
 
     if (user.getSituacaoModel().getId().equals(SituacaoModel.CONTA_BLOQUEADA))
-      throw new BlockedAccount("Sua conta foi bloqueada por determinado tempo");
+      throw new BlockedAccount("Sua conta foi bloqueada por tempo indeterminado");
 
     var jwtToken = jwtService.generateToken(user);
     return ResponseDto.builder().token(jwtToken).build();

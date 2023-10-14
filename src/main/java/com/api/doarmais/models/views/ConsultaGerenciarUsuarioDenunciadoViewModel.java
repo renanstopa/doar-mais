@@ -30,7 +30,7 @@ public class ConsultaGerenciarUsuarioDenunciadoViewModel {
   @Column(name = "descricao_denuncia")
   private String descricaoDenuncia;
 
-  @Column(name = "data_crica")
+  @Column(name = "data_criacao")
   private String dataCriacao;
 
 }
