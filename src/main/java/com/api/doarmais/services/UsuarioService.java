@@ -36,11 +36,11 @@ public class UsuarioService {
   }
 
   public boolean verificarUsuarioPorEmail(String email) {
-    return usuarioRepository.existsByEmail(email);
+    return usuarioRepository.existsByEmailAndSituacaoModelIdNot(email, 16);
   }
 
   public boolean verificarUsuarioPorDocumento(String documento) {
-    return usuarioRepository.existsByDocumento(documento);
+    return usuarioRepository.existsByDocumentoAndSituacaoModelIdNot(documento, 16);
   }
 
   public List<UsuarioModel> listarUsuarios() {
@@ -105,7 +105,7 @@ public class UsuarioService {
   public void armazenarDocumento(MultipartFile comprovante, UsuarioModel usuarioModel) {
     try {
       String originalFileName = comprovante.getOriginalFilename();
-      String pathDir = "doarmais/comprovantes/";
+      String pathDir = "comprovantes/";
 
       File destinationFile = new File(pathDir);
       if (!destinationFile.exists()) destinationFile.mkdirs();

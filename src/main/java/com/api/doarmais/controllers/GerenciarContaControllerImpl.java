@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,7 +56,8 @@ public class GerenciarContaControllerImpl implements GerenciarContaController {
       InputStreamResource resource = new InputStreamResource(new FileInputStream(destinationFile));
 
       return ResponseEntity.ok()
-          .header("Content-Disposition", "attacghment;filename=" + usuarioModel.getArquivo())
+          .header("Content-Disposition", "attachment;filename=" + usuarioModel.getArquivo())
+          .contentType(usuarioModel.getArquivo().substring(usuarioModel.getArquivo().lastIndexOf(".") + 1, usuarioModel.getArquivo().length()).equals("png") ? MediaType.IMAGE_PNG : MediaType.IMAGE_JPEG)
           .contentLength(destinationFile.length())
           .body(resource);
     } catch (FileNotFoundException e) {
@@ -75,7 +77,7 @@ public class GerenciarContaControllerImpl implements GerenciarContaController {
 
   public ResponseEntity<PerfilUsuarioViewModel> recusarConta(Integer id) {
     UsuarioModel usuarioModel = usuarioService.buscarUsuarioPorId(id).get();
-    usuarioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.CONTA_SEM_APROVACAO_DO_ADM));
+    usuarioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.CONTA_RECUSADA));
     usuarioService.gravar(usuarioModel);
     eventPublisher.publishEvent(new ContaRecusadaEvent(usuarioModel));
 

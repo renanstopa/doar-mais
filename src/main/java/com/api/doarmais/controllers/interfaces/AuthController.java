@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,12 +22,12 @@ public interface AuthController {
   @Operation(description = "Endpoint utilizado para criar usuário do tipo -> Pessoa.")
   @PostMapping("/registrarusuario")
   public ResponseEntity<UsuarioResponseDto> registrarUsuario(
-      @RequestBody @Valid CriarUsuarioRequestDto criarUsuarioRequestDto);
+      @ModelAttribute @Valid CriarUsuarioRequestDto criarUsuarioRequestDto);
 
   @Operation(description = "Endpoint utilizado para criar usuário do tipo -> ONG.")
   @PostMapping("/registrarong")
   public ResponseEntity<UsuarioResponseDto> registrarOng(
-      @RequestBody @Valid CriarUsuarioRequestDto criarUsuarioRequestDto);
+      @ModelAttribute @Valid CriarUsuarioRequestDto criarUsuarioRequestDto);
 
   @Operation(description = "Endpoint utilizado para realizar login no sistema.")
   @PostMapping("/autenticar")
