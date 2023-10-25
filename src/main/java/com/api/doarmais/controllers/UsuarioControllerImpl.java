@@ -42,8 +42,7 @@ public class UsuarioControllerImpl implements UsuarioController {
         perfilUsuarioViewService.consultarPerfil(usuarioModel.getId()).get(), HttpStatus.FOUND);
   }
 
-  public ResponseEntity<UsuarioResponseDto> atualizarDados(
-      @Valid @RequestBody AtualizarDadosRequestDto atualizarDadosRequestDto) {
+  public ResponseEntity<UsuarioResponseDto> atualizarDados(AtualizarDadosRequestDto atualizarDadosRequestDto) {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     BeanUtils.copyProperties(atualizarDadosRequestDto, usuarioModel);
@@ -53,8 +52,7 @@ public class UsuarioControllerImpl implements UsuarioController {
         HttpStatus.OK);
   }
 
-  public ResponseEntity<EnderecoResponseDto> solicitarTrocaEndereco(
-      @Valid @RequestBody EnderecoRequestDto enderecoRequestDto) {
+  public ResponseEntity<EnderecoResponseDto> solicitarTrocaEndereco(EnderecoRequestDto enderecoRequestDto) {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -65,8 +63,7 @@ public class UsuarioControllerImpl implements UsuarioController {
         HttpStatus.CREATED);
   }
 
-  public ResponseEntity<UsuarioResponseDto> trocarSenha(
-      @Valid @RequestBody TrocarSenhaLogadoRequestDto trocarSenhaLogadoRequestDto) {
+  public ResponseEntity<UsuarioResponseDto> trocarSenha(TrocarSenhaLogadoRequestDto trocarSenhaLogadoRequestDto) {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

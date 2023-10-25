@@ -21,6 +21,7 @@ public class SituacaoModel {
   public static final Integer CONTA_APTA_PARA_USO = 13;
   public static final Integer CONTA_BLOQUEADA = 14;
   public static final Integer CONTA_BANIDA = 15;
+  public static final Integer CONTA_RECUSADA = 16;
 
   public static final Integer ANUNCIO_CRIADO = 21;
   public static final Integer ANUNCIO_ITENS_ESGOTADOS = 22;

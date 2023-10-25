@@ -31,7 +31,7 @@ public interface UsuarioController {
   @Operation(description = "Endpoint utilizado para criar um endereço.")
   @PostMapping("/enderecos")
   public ResponseEntity<EnderecoResponseDto> solicitarTrocaEndereco(
-      @Valid @RequestBody EnderecoRequestDto enderecoRequestDto);
+      @Valid @ModelAttribute EnderecoRequestDto enderecoRequestDto);
 
   @Operation(description = "Endpoint utilizado para trocar a senha.")
   @PatchMapping("/senha")

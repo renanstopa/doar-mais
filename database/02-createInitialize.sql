@@ -18,6 +18,7 @@ insert into situacao values
 (13, 'Conta apta para uso'),
 (14, 'Conta bloqueada'),
 (15, 'Conta banida'),
+(16, 'Conta recusada'),
 (21, 'Anúncio ativo'),
 (22, 'Anúncio sem itens'),
 (23, 'Anúncio cancelado'),

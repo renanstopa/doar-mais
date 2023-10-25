@@ -1,6 +1,7 @@
 package com.api.doarmais.dtos.response;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class EnderecoResponseDto {

@@ -34,3 +34,6 @@ build/
 
 ### Secrets ###
 /database/secrets/*.txt
+
+### Directory ###
+/comprovantes/*
