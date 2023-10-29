@@ -24,7 +24,7 @@ public class NotificadorAutenticacaoEmailOng implements Notificador<OngCriadaEve
   @Async
   public void enviar(OngCriadaEvent ongCriadaEvent) {
     String url =
-        "https://localhost:8080/autenticacaoemail?token="
+        "https://localhost:3000/autenticacaoemail?token="
             + ongCriadaEvent.getAutenticacaoEmailModel().getToken();
     SimpleMailMessage message = new SimpleMailMessage();
     UsuarioModel usuario =

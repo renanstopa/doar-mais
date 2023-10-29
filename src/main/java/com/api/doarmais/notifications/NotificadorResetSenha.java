@@ -24,7 +24,7 @@ public class NotificadorResetSenha implements Notificador<ResetCriadoEvent> {
   @Async
   public void enviar(ResetCriadoEvent resetCriadoEvent) {
     String url =
-        "https://localhost:8080/senha/?token=" + resetCriadoEvent.getPedidoGerado().getToken();
+        "https://localhost:3000/senha/?token=" + resetCriadoEvent.getPedidoGerado().getToken();
     SimpleMailMessage message = new SimpleMailMessage();
     UsuarioModel usuario =
         usuarioService.buscarUsuarioPorEmail(resetCriadoEvent.getPedidoGerado().getEmailUsuario());
