@@ -10,16 +10,16 @@ insert into anuncio values
 (6, 1, 5, 21, now(), 'Itens pet', now(), date_add(now(),interval 5 day), '11065120', 'SP', 'Santos', 'Gonzaga', 'Rua Alagoas', 1056, '', 'Casa abandonada ao lado', 0);
 
 insert into item_anuncio values
-(1, 1, 4, 'Blusa preta', 7, 'Blusa branca tamanho G'),
-(2, 1, 1, 'Macarrão', 7, 'Macarrão de 700g'),
-(3, 2, 4, 'Blusa branca', 7, 'Blusa branca tamanho M'),
-(4, 3, 3, 'Notebook Acer', 1, 'Melhor que o da Positivo'),
-(5, 4, 6, 'Mortal Kombat 11', 1, 'Jogo original'),
-(6, 4, 6, 'GTA V', 1, 'Jogo pirata'),
-(7, 5, 7, 'Golden Special', 3, 'Pacote de 5kg de ração para cachorros de porte médio'),
-(8, 6, 7, 'Casinha média', 1, 'Aproximadamente 1 metro de altura e 1,5 metros de largura'),
-(9, 6, 7, 'Bolinhas', 14, 'Bolinhas de diversos tipos para seu pet morder, na hora do encontro você pode escolher!'),
-(10, 6, 7, 'Roupas', 1, 'Roupas para animais de porte pequeno');
+(1, 1, 4, 71, 'Blusa preta', 7, 'Blusa branca tamanho G'),
+(2, 1, 1, 71, 'Macarrão', 7, 'Macarrão de 700g'),
+(3, 2, 4, 71, 'Blusa branca', 7, 'Blusa branca tamanho M'),
+(4, 3, 3, 71, 'Notebook Acer', 1, 'Melhor que o da Positivo'),
+(5, 4, 6, 71, 'Mortal Kombat 11', 1, 'Jogo original'),
+(6, 4, 6, 71, 'GTA V', 1, 'Jogo pirata'),
+(7, 5, 7, 71, 'Golden Special', 3, 'Pacote de 5kg de ração para cachorros de porte médio'),
+(8, 6, 7, 71, 'Casinha média', 1, 'Aproximadamente 1 metro de altura e 1,5 metros de largura'),
+(9, 6, 7, 71, 'Bolinhas', 14, 'Bolinhas de diversos tipos para seu pet morder, na hora do encontro você pode escolher!'),
+(10, 6, 7, 71, 'Roupas', 1, 'Roupas para animais de porte pequeno');
 
 -- Pedidos
 insert into anuncio values
@@ -31,19 +31,19 @@ insert into anuncio values
 (12, 2, 8, 21, now(), 'Periféricos', now(), date_add(now(),interval 5 day), '03350005', 'SP', 'São Paulo', 'Vial Invernada', 'Rua Doutor Gabriel De Resende', 122, '', '', 0);
 
 insert into item_anuncio values
-(11, 7, 4, 'Blusa branca', 3, 'Blusa branca tamanho M sem estampa'),
-(12, 8, 3, 'Macbook', 1, 'Se possível, um da última geração seria perfeito'),
-(13, 9, 1, 'Cesta básica padrão', 20, 'Cestas básicas para realizar doações para quem precisa'),
-(14, 10,6, 'Max Steel', 3, 'Se possível, de roupas diferentes'),
-(15, 10, 6, 'Barbie', 5, 'Se possível,  de profissões diferentes'),
-(16, 10, 6, 'Jogos de tabuleiro', 2, 'Jogos para crianças'),
-(17, 11, 4, 'Vestido longo preto', 1, 'Tamanho G'),
-(18, 11, 4, 'Vestido curto vermelho', 1, 'Tamanho P'),
-(19, 12, 2, 'Mouse', 6, 'Mouse com no máximo 2000 de DPI'),
-(20, 12, 2, 'Teclado', 6, 'Teclado mecânico com switch azul'),
-(21, 12, 2, 'Headset', 6, 'Headset som 8D'),
-(22, 12, 2, 'Monitor', 6, 'Monitor 144Hz'),
-(23, 12, 2, 'Webcam', 6, 'Webcam full HD 4K');
+(11, 7, 4, 71, 'Blusa branca', 3, 'Blusa branca tamanho M sem estampa'),
+(12, 8, 3, 71, 'Macbook', 1, 'Se possível, um da última geração seria perfeito'),
+(13, 9, 1, 71, 'Cesta básica padrão', 20, 'Cestas básicas para realizar doações para quem precisa'),
+(14, 10, 6, 71, 'Max Steel', 3, 'Se possível, de roupas diferentes'),
+(15, 10, 6, 71, 'Barbie', 5, 'Se possível,  de profissões diferentes'),
+(16, 10, 6, 71, 'Jogos de tabuleiro', 2, 'Jogos para crianças'),
+(17, 11, 4, 71, 'Vestido longo preto', 1, 'Tamanho G'),
+(18, 11, 4, 71, 'Vestido curto vermelho', 1, 'Tamanho P'),
+(19, 12, 2, 71, 'Mouse', 6, 'Mouse com no máximo 2000 de DPI'),
+(20, 12, 2, 71, 'Teclado', 6, 'Teclado mecânico com switch azul'),
+(21, 12, 2, 71, 'Headset', 6, 'Headset som 8D'),
+(22, 12, 2, 71, 'Monitor', 6, 'Monitor 144Hz'),
+(23, 12, 2, 71, 'Webcam', 6, 'Webcam full HD 4K');
 
 -- Doações rápidas
 insert into anuncio values
@@ -52,6 +52,6 @@ insert into anuncio values
 (15, 3, 6, 21, now(), 'Guarda roupa', now(), date_add(now(),interval 3 day), '08551040', 'SP', 'Cubatão', 'Centro', 'Praça da Independência', '10', '', '', 0);
 
 insert into item_anuncio values
-(24, 13, 4, 'Blusa branca', 7, 'Blusa branca tamanho M'),
-(25, 14, 3, 'Notebook Acer', 1, 'Melhor que o da Positivo'),
-(26, 15, 5, 'Guarda roupa de madeira de carvalho', 1, '3 divisórias bem espaçosas');
+(24, 13, 4, 71, 'Blusa branca', 7, 'Blusa branca tamanho M'),
+(25, 14, 3, 71, 'Notebook Acer', 1, 'Melhor que o da Positivo'),
+(26, 15, 5, 71, 'Guarda roupa de madeira de carvalho', 1, '3 divisórias bem espaçosas');

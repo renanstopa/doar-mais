@@ -45,6 +45,9 @@ public class SituacaoModel {
   public static final Integer SOLICITACAO_TROCA_ENDERECO_POENDENTE = 61;
   public static final Integer SOLICITACAO_ANALISADA = 62;
 
+  public static final Integer ITEM_ATIVO = 71;
+  public static final Integer ITEM_INATIVO = 72;
+
   @Id
   @NonNull
   @Column(name = "id")

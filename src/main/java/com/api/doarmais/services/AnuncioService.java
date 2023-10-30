@@ -114,7 +114,7 @@ public class AnuncioService {
 
   public void atualizarSituacao(AnuncioModel anuncioModel) {
     List<ItemAnuncioModel> itemAnuncioModelList =
-        itemAnuncioRepository.findByAnuncioModelId(anuncioModel.getId());
+        itemAnuncioRepository.buscarItensAtivosAnuncioQuery(anuncioModel.getId());
 
     for (ItemAnuncioModel item : itemAnuncioModelList) {
       if (!item.getQuantidade().equals(0)) return;
@@ -150,7 +150,7 @@ public class AnuncioService {
   }
 
   public void voltarQuantidadeOriginalItem(PropostaModel propostaModel) {
-    List<ItemAnuncioModel> itemAnuncioModel = itemAnuncioRepository.findByAnuncioModelId(propostaModel.getAnuncioModel().getId());
+    List<ItemAnuncioModel> itemAnuncioModel = itemAnuncioRepository.buscarItensAtivosAnuncioQuery(propostaModel.getAnuncioModel().getId());
     List<ItemAnuncioPropostaModel> itemAnuncioPropostaModel = itemAnuncioPropostaRepository.findByPropostaModelId(propostaModel.getId());
 
     for (ItemAnuncioPropostaModel itemProposta : itemAnuncioPropostaModel) {

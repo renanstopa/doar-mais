@@ -28,6 +28,10 @@ public class ItemAnuncioModel {
   @JoinColumn(name = "id_categoria_item")
   private CategoriaItemModel categoriaItemModel;
 
+  @ManyToOne
+  @JoinColumn(name = "id_situacao")
+  private SituacaoModel situacaoModel;
+
   @Column(name = "nome")
   private String nome;
 
