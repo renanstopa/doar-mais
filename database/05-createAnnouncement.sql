@@ -2,10 +2,10 @@ set time_zone='America/Sao_Paulo';
 
 -- Doações
 insert into anuncio values
-(1, 1, 3, 21, now(), 'Roupa e comida', now(), date_add(now(),interval 1 day), '11533040', 'SP', 'Cubatão', 'Jardim Casqueiro', 'Rua Estados Unidos', 530, '', 'Final da rua do Kalabalis', 0),
-(2, 1, 3, 21, now(), 'Roupa', now(), date_add(now(),interval 2 day), '11533040', 'SP', 'Cubatão', 'Jardim Casqueiro', 'Rua Estados Unidos', 530, '', 'Final da rua do Kalabalis', 0),
-(3, 1, 3, 21, now(), 'Notebook', now(), date_add(now(),interval 3 day), '11050050', 'SP', 'Santos', 'Boqueirão', 'Rua Alberto Baccarat', 10, '', '', 0),
-(4, 1, 4, 21, now(), 'Jogos Xbox One', now(), date_add(now(),interval 10 day), '11025050', 'SP', 'Santos', 'Boqueirão', 'Rua Barão de Cotegipe', 64, 'Casa 2', 'Poste colorido', 0),
+(1, 1, 3, 21, now(), 'Roupa e comida', now(), date_add(now(),interval 1 day), '11533040', 'SP', 'Cubatão', 'Jardim Casqueiro', 'Rua Estados Unidos', 530, '', 'Final da rua do Kalabalis', 2),
+(2, 1, 3, 21, now(), 'Roupa', now(), date_add(now(),interval 2 day), '11533040', 'SP', 'Cubatão', 'Jardim Casqueiro', 'Rua Estados Unidos', 530, '', 'Final da rua do Kalabalis', 2),
+(3, 1, 3, 21, now(), 'Notebook', now(), date_add(now(),interval 3 day), '11050050', 'SP', 'Santos', 'Boqueirão', 'Rua Alberto Baccarat', 10, '', '', 2),
+(4, 1, 4, 21, now(), 'Jogos Xbox One', now(), date_add(now(),interval 10 day), '11025050', 'SP', 'Santos', 'Boqueirão', 'Rua Barão de Cotegipe', 64, 'Casa 2', 'Poste colorido', 1),
 (5, 1, 10, 21, now(), 'Ração cachorro', now(), date_add(now(),interval 5 day), '11075390', 'SP', 'Santos', 'Campo Grande', 'Rua Espírito Santo', 54, '', '', 0),
 (6, 1, 5, 21, now(), 'Itens pet', now(), date_add(now(),interval 5 day), '11065120', 'SP', 'Santos', 'Gonzaga', 'Rua Alagoas', 1056, '', 'Casa abandonada ao lado', 0);
 
@@ -24,7 +24,7 @@ insert into item_anuncio values
 -- Pedidos
 insert into anuncio values
 (7, 2, 3, 21, now(), 'Roupa', now(), date_add(now(),interval 2 day), '11020000', 'SP', 'Santos', 'Boqueirão', 'Avenida Affonso Penna', 12, 'Segunda casa', '', 0),
-(8, 2, 3, 21, now(), 'Notebook', now(), date_add(now(),interval 3 day), '11020000', 'SP', 'Santos', 'Boqueirão', 'Avenida Affonso Penna', 12, 'Segunda casa', '', 0),
+(8, 2, 3, 21, now(), 'Notebook', now(), date_add(now(),interval 3 day), '11020000', 'SP', 'Santos', 'Boqueirão', 'Avenida Affonso Penna', 12, 'Segunda casa', '', 1),
 (9, 2, 9, 21, now(), 'Cesta básica', now(), date_add(now(),interval 3 day), '20220690', 'RJ', 'Rio de Janeiro', 'Gamboa', 'Rua Barão de Gamboa', 98, 'Com numeração uplementar pela Rua da Gamboa 227', '', 0),
 (10, 2, 7, 21, now(), 'Brinquedos', now(), date_add(now(),interval 2 day), '05854020', 'SP', 'São Paulo', 'Parque Maria Helena', 'Rua Analia Dolacio Albino', 333, '', '', 0),
 (11, 2, 6, 21, now(), 'Vestidos', now(), date_add(now(),interval 20 day), '11065401', 'SP', 'Santos', 'Gonzaga', 'Avenida General Francisco Glicério', 100, 'Casa dos fundos', '', 0),
