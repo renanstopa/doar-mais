@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(
     name = "Atividade",
-    description = "Endpoints responsáveis por gerenciar as ações das minhas atividades.")
+    description = "Endpoints responsáveis por gerenciar as ações das minhas atividades")
 @RequestMapping("/atividades")
 public interface AtividadeController {
 
@@ -35,17 +35,21 @@ public interface AtividadeController {
   @GetMapping("/anuncios/{id}")
   public ResponseEntity<ConsultaAnuncioViewModel> consultarAnuncio(@PathVariable("id") Integer id);
 
-  @Operation(description = "Endpoint utilizado para editar um anúncio.")
+  @Operation(description = "Endpoint utilizado para editar um anúncio")
   @PatchMapping("/anuncios/{id}")
   public ResponseEntity<AnuncioResponseDto> editarAnuncio(
       @PathVariable("id") Integer id,
       @Valid @RequestBody EditarAnuncioRequestDto editarAnuncioRequestDto);
 
-  @Operation(description = "Endpoint utilizado para cancelar um anúncio.")
+  @Operation(description = "Endpoint utilizado para cancelar um anúncio")
   @PatchMapping("/anuncios/{id}/cancelar")
   public ResponseEntity<AnuncioResponseDto> cancelarAnuncio(
       @PathVariable("id") Integer id,
       @Valid @RequestBody MotivoCancelamentoDto motivoCancelamentoDto);
+
+  @Operation(description = "Endpoint utilizado para deleter um item do anúncio")
+  @DeleteMapping("/anuncios/{idItem}")
+  public ResponseEntity<AnuncioResponseDto> deletarItemAnuncio(@PathVariable("idItem") Integer idItem);
 
   // ENDPOINTS UTILIZADOS NA ABA DE CONFIRMAÇÕES
 

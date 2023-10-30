@@ -12,6 +12,7 @@ import com.api.doarmais.models.views.*;
 import com.api.doarmais.services.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.modelmapper.ModelMapper;
@@ -102,7 +103,7 @@ public class AtividadeControllerImpl implements AtividadeController {
       var itemAnuncioModel = itemAnuncioService.buscarPorId(itemDto.getId());
 
       if (!trocouInfoPrincipal && itemAnuncioModel.verificarTrocaitem(itemDto)) {
-        propostasCanceladas = propostaService.cancelarPropostaPorItem(itemAnuncioModel.getId());
+        propostasCanceladas = propostaService.cancelarPropostaPorItem(itemAnuncioModel.getId(), "Foi cancelada, pois a pessoa que criou precisou editar o anúncio!");
         anuncioService.verificarEnvioPunicao(propostasCanceladas, "A pessoa que criou o anúncio precisou editá-lo!");
       }
 
@@ -139,6 +140,27 @@ public class AtividadeControllerImpl implements AtividadeController {
 
     anuncioService.verificarEnvioPunicao(propostasCanceladas, motivoCancelamentoDto);
     anuncioService.cancelarAnuncio(anuncioModel);
+
+    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(anuncioModel.getId());
+    List<ItemAnuncioResponseDto> listaItensResponse = new ArrayList<ItemAnuncioResponseDto>();
+    for (ItemAnuncioModel item : listaItens) {
+      listaItensResponse.add(modelMapper.map(item, ItemAnuncioResponseDto.class));
+    }
+
+    AnuncioResponseDto response = modelMapper.map(anuncioModel, AnuncioResponseDto.class);
+    response.setItens(listaItensResponse);
+
+    return new ResponseEntity<AnuncioResponseDto>(response, HttpStatus.OK);
+  }
+
+  public ResponseEntity<AnuncioResponseDto> deletarItemAnuncio(Integer idItem) {
+    ItemAnuncioModel itemAnuncioModel = itemAnuncioService.buscarPorId(idItem);
+    AnuncioModel anuncioModel = itemAnuncioModel.getAnuncioModel();
+
+    List<PropostaModel> propostasCanceladas = propostaService.cancelarPropostaPorItem(itemAnuncioModel.getId(), "Foi cancelada, pois a pessoa que criou excluiu um que você tinha escolhido!");
+    anuncioService.verificarEnvioPunicao(propostasCanceladas, "A pessoa que criou o anúncio excluiu um item!");
+    propostaService.cancelarPropostasEmAnalise();
+    itemAnuncioService.deletarItem(itemAnuncioModel);
 
     List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(anuncioModel.getId());
     List<ItemAnuncioResponseDto> listaItensResponse = new ArrayList<ItemAnuncioResponseDto>();
@@ -227,8 +249,12 @@ public class AtividadeControllerImpl implements AtividadeController {
 
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
     consultaPropostaViewModel.setPodeConfirmarEncontro(
         usuarioModel.getId().equals(consultaPropostaViewModel.getIdUsuarioAnuncio()) ? 1 : 2);
+
+    LocalDateTime dataAgendada = LocalDateTime.parse(consultaPropostaViewModel.getDataAgendada(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+    consultaPropostaViewModel.setPodeCancelarProposta(dataAgendada.isAfter(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))) ? 1 : 2);
 
     return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewModel, HttpStatus.OK);
   }

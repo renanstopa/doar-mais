@@ -69,6 +69,7 @@ public class PedidoControllerImpl implements AnuncioController {
       var itemAnuncioModel = new ItemAnuncioModel();
       itemAnuncioModel.setAnuncioModel(anuncioModel);
       BeanUtils.copyProperties(itemDto, itemAnuncioModel);
+      itemAnuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ITEM_ATIVO));
       itemAnuncioService.gravar(itemAnuncioModel);
     }
 

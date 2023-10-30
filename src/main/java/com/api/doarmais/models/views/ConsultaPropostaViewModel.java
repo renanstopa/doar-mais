@@ -70,6 +70,8 @@ public class ConsultaPropostaViewModel {
 
   @Transient private Integer podeConfirmarEncontro;
 
+  @Transient private Integer podeCancelarProposta;
+
   @Transient private List<ItemAnuncioResponseDto> itemList = new ArrayList<>();
 
   public void armazenarItens(List<ItemAnuncioModel> itemAnuncioModelList) {

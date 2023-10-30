@@ -85,7 +85,7 @@ public class PropostaService {
     return propostaModelList;
   }
 
-  public List<PropostaModel> cancelarPropostaPorItem(Integer id) {
+  public List<PropostaModel> cancelarPropostaPorItem(Integer id, String motivo) {
     List<ItemAnuncioPropostaModel> itemAnuncioPropostaModelList =
         itemAnuncioPropostaRepository.buscarPorItemAnuncioIdQuery(id);
     List<PropostaModel> propostaModelList = new ArrayList<>();
@@ -99,7 +99,7 @@ public class PropostaService {
 
       eventPublisher.publishEvent(
           new PropostaCanceladaAnuncioEvent(
-              propostaModel, "Foi cancelada, pois a pessoa que criou precisou editar o anúncio!"));
+              propostaModel, motivo));
     }
 
     return propostaModelList;

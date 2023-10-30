@@ -122,12 +122,14 @@ create table item_anuncio(
 	id int not null auto_increment,
     id_anuncio int,
     id_categoria_item int,
+    id_situacao int,
     nome varchar(60),
     quantidade int,
     descricao text,
     primary key (id),
     foreign key (id_anuncio) references anuncio (id),
-    foreign key (id_categoria_item) references categoria_item (id)
+    foreign key (id_categoria_item) references categoria_item (id),
+    foreign key (id_situacao) references situacao (id)
 );
 
 create table item_anuncio_proposta(

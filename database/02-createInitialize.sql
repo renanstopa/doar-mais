@@ -35,7 +35,9 @@ insert into situacao values
 (51, 'Punição não verificada'),
 (52, 'Punição verificada'),
 (61, 'Solicitação troca de endereço pendente'),
-(62, 'Solicitação analisada');
+(62, 'Solicitação analisada'),
+(71, 'Item ativo'),
+(72, 'Item inativo');
 
 insert into tipo_anuncio values
 (1, 'Doação'),
