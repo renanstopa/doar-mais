@@ -12,7 +12,6 @@ import com.api.doarmais.models.views.PerfilUsuarioViewModel;
 import com.api.doarmais.services.PerfilUsuarioViewService;
 import com.api.doarmais.services.TrocaEnderecoService;
 import com.api.doarmais.services.UsuarioService;
-import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,8 @@ public class UsuarioControllerImpl implements UsuarioController {
         perfilUsuarioViewService.consultarPerfil(usuarioModel.getId()).get(), HttpStatus.FOUND);
   }
 
-  public ResponseEntity<UsuarioResponseDto> atualizarDados(AtualizarDadosRequestDto atualizarDadosRequestDto) {
+  public ResponseEntity<UsuarioResponseDto> atualizarDados(
+      AtualizarDadosRequestDto atualizarDadosRequestDto) {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     BeanUtils.copyProperties(atualizarDadosRequestDto, usuarioModel);
@@ -52,7 +52,8 @@ public class UsuarioControllerImpl implements UsuarioController {
         HttpStatus.OK);
   }
 
-  public ResponseEntity<EnderecoResponseDto> solicitarTrocaEndereco(EnderecoRequestDto enderecoRequestDto) {
+  public ResponseEntity<EnderecoResponseDto> solicitarTrocaEndereco(
+      EnderecoRequestDto enderecoRequestDto) {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -63,7 +64,8 @@ public class UsuarioControllerImpl implements UsuarioController {
         HttpStatus.CREATED);
   }
 
-  public ResponseEntity<UsuarioResponseDto> trocarSenha(TrocarSenhaLogadoRequestDto trocarSenhaLogadoRequestDto) {
+  public ResponseEntity<UsuarioResponseDto> trocarSenha(
+      TrocarSenhaLogadoRequestDto trocarSenhaLogadoRequestDto) {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

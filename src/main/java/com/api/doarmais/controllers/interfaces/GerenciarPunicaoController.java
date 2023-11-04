@@ -4,14 +4,14 @@ import com.api.doarmais.models.views.BuscaGerenciarPunicaoViewModel;
 import com.api.doarmais.models.views.ConsultaGerenciarPunicaoViewModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Tag(
     name = "Gerenciar possíveis punições",
-    description = "Endpoints responsáveis para o adm gerenciar os pedidos de punições gerados pelo sistema")
+    description =
+        "Endpoints responsáveis para o adm gerenciar os pedidos de punições gerados pelo sistema")
 @RequestMapping("/gerenciarpunicoes")
 public interface GerenciarPunicaoController {
 
@@ -21,7 +21,8 @@ public interface GerenciarPunicaoController {
 
   @Operation(description = "Endpoint utilizado para consultar uma punição")
   @GetMapping("/{id}")
-  public ResponseEntity<ConsultaGerenciarPunicaoViewModel> consultar(@PathVariable("id") Integer id);
+  public ResponseEntity<ConsultaGerenciarPunicaoViewModel> consultar(
+      @PathVariable("id") Integer id);
 
   @Operation(description = "Endpoint utilizado para punir o usuário")
   @PatchMapping("/{id}/punir")

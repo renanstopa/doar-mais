@@ -8,13 +8,12 @@ import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.models.views.BuscaGerenciarPunicaoViewModel;
 import com.api.doarmais.models.views.ConsultaGerenciarPunicaoViewModel;
 import com.api.doarmais.services.*;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 public class GerenciarPunicaoControllerImpl implements GerenciarPunicaoController {
@@ -30,16 +29,19 @@ public class GerenciarPunicaoControllerImpl implements GerenciarPunicaoControlle
   @Autowired private UsuarioService usuarioService;
 
   public ResponseEntity<List<BuscaGerenciarPunicaoViewModel>> buscar() {
-    return new ResponseEntity<List<BuscaGerenciarPunicaoViewModel>>(buscaGerenciarPunicaoViewService.buscar(), HttpStatus.OK);
+    return new ResponseEntity<List<BuscaGerenciarPunicaoViewModel>>(
+        buscaGerenciarPunicaoViewService.buscar(), HttpStatus.OK);
   }
 
   public ResponseEntity<ConsultaGerenciarPunicaoViewModel> consultar(Integer id) {
-    return new ResponseEntity<ConsultaGerenciarPunicaoViewModel>(consultaGerenciarPunicaoViewService.consultar(id), HttpStatus.OK);
+    return new ResponseEntity<ConsultaGerenciarPunicaoViewModel>(
+        consultaGerenciarPunicaoViewService.consultar(id), HttpStatus.OK);
   }
 
   public ResponseEntity<ConsultaGerenciarPunicaoViewModel> punir(Integer id) {
     PunicaoModel punicaoModel = punicaoService.consultar(id);
-    UsuarioModel usuarioModel = usuarioService.buscarUsuarioPorId(punicaoModel.getIdUsuario()).get();
+    UsuarioModel usuarioModel =
+        usuarioService.buscarUsuarioPorId(punicaoModel.getIdUsuario()).get();
 
     punicaoModel.setIdSituacao(SituacaoModel.PUNICAO_VERIFICADA);
     punicaoService.gravar(punicaoModel);
@@ -49,7 +51,8 @@ public class GerenciarPunicaoControllerImpl implements GerenciarPunicaoControlle
 
     eventPublisher.publishEvent(new ContaSuspensaEvent(usuarioModel));
 
-    return new ResponseEntity<ConsultaGerenciarPunicaoViewModel>(consultaGerenciarPunicaoViewService.consultar(id), HttpStatus.OK);
+    return new ResponseEntity<ConsultaGerenciarPunicaoViewModel>(
+        consultaGerenciarPunicaoViewService.consultar(id), HttpStatus.OK);
   }
 
   public ResponseEntity<ConsultaGerenciarPunicaoViewModel> naopunir(Integer id) {
@@ -57,6 +60,7 @@ public class GerenciarPunicaoControllerImpl implements GerenciarPunicaoControlle
     punicaoModel.setIdSituacao(SituacaoModel.PUNICAO_VERIFICADA);
     punicaoService.gravar(punicaoModel);
 
-    return new ResponseEntity<ConsultaGerenciarPunicaoViewModel>(consultaGerenciarPunicaoViewService.consultar(id), HttpStatus.OK);
+    return new ResponseEntity<ConsultaGerenciarPunicaoViewModel>(
+        consultaGerenciarPunicaoViewService.consultar(id), HttpStatus.OK);
   }
 }

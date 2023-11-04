@@ -1,14 +1,12 @@
 package com.api.doarmais.controllers.interfaces;
 
 import com.api.doarmais.models.views.BuscaGerenciarContaBloqueadaViewModel;
-import com.api.doarmais.models.views.ConsultaGerenciarTrocaEnderecoViewModel;
 import com.api.doarmais.models.views.PerfilUsuarioViewModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(
     name = "Gerenciar contas bloqueadas",
@@ -31,5 +29,4 @@ public interface GerenciarContaBloqueadaController {
   @Operation(description = "Endpoint responsável por banir a conta")
   @PatchMapping("/{id}/banir")
   public ResponseEntity<PerfilUsuarioViewModel> banir(@PathVariable("id") Integer id);
-
 }

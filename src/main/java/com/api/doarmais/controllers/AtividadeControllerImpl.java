@@ -91,8 +91,11 @@ public class AtividadeControllerImpl implements AtividadeController {
     List<PropostaModel> propostasCanceladas = new ArrayList<>();
     boolean trocouInfoPrincipal = anuncioModel.verficarTrocaInfoPrincipal(editarAnuncioRequestDto);
     if (trocouInfoPrincipal) {
-      propostasCanceladas =  propostaService.cancelarTodasPropostasDoAnuncio(anuncioModel.getId(), "A pessoa que criou o anúncio precisou editá-lo!");
-      anuncioService.verificarEnvioPunicao(propostasCanceladas, "A pessoa que criou o anúncio precisou editá-lo!");
+      propostasCanceladas =
+          propostaService.cancelarTodasPropostasDoAnuncio(
+              anuncioModel.getId(), "A pessoa que criou o anúncio precisou editá-lo!");
+      anuncioService.verificarEnvioPunicao(
+          propostasCanceladas, "A pessoa que criou o anúncio precisou editá-lo!");
     }
 
     BeanUtils.copyProperties(editarAnuncioRequestDto, anuncioModel);
@@ -103,8 +106,12 @@ public class AtividadeControllerImpl implements AtividadeController {
       var itemAnuncioModel = itemAnuncioService.buscarPorId(itemDto.getId());
 
       if (!trocouInfoPrincipal && itemAnuncioModel.verificarTrocaitem(itemDto)) {
-        propostasCanceladas = propostaService.cancelarPropostaPorItem(itemAnuncioModel.getId(), "Foi cancelada, pois a pessoa que criou precisou editar o anúncio!");
-        anuncioService.verificarEnvioPunicao(propostasCanceladas, "A pessoa que criou o anúncio precisou editá-lo!");
+        propostasCanceladas =
+            propostaService.cancelarPropostaPorItem(
+                itemAnuncioModel.getId(),
+                "Foi cancelada, pois a pessoa que criou precisou editar o anúncio!");
+        anuncioService.verificarEnvioPunicao(
+            propostasCanceladas, "A pessoa que criou o anúncio precisou editá-lo!");
       }
 
       if (!propostasCanceladas.isEmpty() && !itemAnuncioModel.verificarTrocaitem(itemDto))
@@ -157,8 +164,12 @@ public class AtividadeControllerImpl implements AtividadeController {
     ItemAnuncioModel itemAnuncioModel = itemAnuncioService.buscarPorId(idItem);
     AnuncioModel anuncioModel = itemAnuncioModel.getAnuncioModel();
 
-    List<PropostaModel> propostasCanceladas = propostaService.cancelarPropostaPorItem(itemAnuncioModel.getId(), "Foi cancelada, pois a pessoa que criou excluiu um que você tinha escolhido!");
-    anuncioService.verificarEnvioPunicao(propostasCanceladas, "A pessoa que criou o anúncio excluiu um item!");
+    List<PropostaModel> propostasCanceladas =
+        propostaService.cancelarPropostaPorItem(
+            itemAnuncioModel.getId(),
+            "Foi cancelada, pois a pessoa que criou excluiu um que você tinha escolhido!");
+    anuncioService.verificarEnvioPunicao(
+        propostasCanceladas, "A pessoa que criou o anúncio excluiu um item!");
     propostaService.cancelarPropostasEmAnalise();
     itemAnuncioService.deletarItem(itemAnuncioModel);
 
@@ -253,8 +264,12 @@ public class AtividadeControllerImpl implements AtividadeController {
     consultaPropostaViewModel.setPodeConfirmarEncontro(
         usuarioModel.getId().equals(consultaPropostaViewModel.getIdUsuarioAnuncio()) ? 1 : 2);
 
-    LocalDateTime dataAgendada = LocalDateTime.parse(consultaPropostaViewModel.getDataAgendada(), DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-    consultaPropostaViewModel.setPodeCancelarProposta(dataAgendada.isAfter(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))) ? 1 : 2);
+    LocalDateTime dataAgendada =
+        LocalDateTime.parse(
+            consultaPropostaViewModel.getDataAgendada(),
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+    consultaPropostaViewModel.setPodeCancelarProposta(
+        dataAgendada.isAfter(LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))) ? 1 : 2);
 
     return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewModel, HttpStatus.OK);
   }

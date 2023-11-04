@@ -14,5 +14,10 @@ insert into endereco values
 insert into endereco values
 (7, 7, '05854020', 'SP', 'São Paulo', 'Parque Maria Helena', 'Rua Analia Dolacio Albino', 333, ''),
 (8, 8, '03350005', 'SP', 'São Paulo', 'Vila Invernada', 'Rua Doutor Gabriel De Resende', 122, ''),
-(9, 9, '20220690', 'RJ', 'Rio de Janeiro', 'Gamboa', 'Rua Barão da Gamboa', 98, 'Com numeração uplementar pela Rua da Gamboa 227'),
+(9, 9, '20220690', 'RJ', 'Rio de Janeiro', 'Gamboa', 'Rua Barão da Gamboa', 98, 'Com numeração suplementar pela Rua da Gamboa 227'),
 (10, 10, '04636000', 'SP', 'São Paulo', 'Jardim Petrópoles', 'Rua Professor Vicente Rao', 519, '');
+
+-- Endereços contas pendentes
+insert into endereco values
+(11, 11, '20220690', 'RJ', 'Rio de Janeiro', 'Gamboa', 'Rua Barão da Gamboa', 98, 'Com numeração suplementar pela Rua da Gamboa 227'),
+(12, 12, '04636000', 'SP', 'São Paulo', 'Jardim Petrópoles', 'Rua Professor Vicente Rao', 519, '');

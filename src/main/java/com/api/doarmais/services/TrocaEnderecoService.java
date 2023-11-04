@@ -5,16 +5,15 @@ import com.api.doarmais.models.tabelas.SituacaoModel;
 import com.api.doarmais.models.tabelas.TrocaEnderecoModel;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import com.api.doarmais.repositories.TrocaEnderecoRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.UUID;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class TrocaEnderecoService {
@@ -31,7 +30,8 @@ public class TrocaEnderecoService {
     return trocaEnderecoRepository.save(trocaEnderecoModel);
   }
 
-  private void armazenarDocumento(MultipartFile comprovante, TrocaEnderecoModel trocaEnderecoModel) {
+  private void armazenarDocumento(
+      MultipartFile comprovante, TrocaEnderecoModel trocaEnderecoModel) {
     try {
       String originalFileName = comprovante.getOriginalFilename();
       String pathDir = "doarmais/comprovantes/";
@@ -60,9 +60,9 @@ public class TrocaEnderecoService {
     }
   }
 
-    public TrocaEnderecoModel consultar(Integer id) {
-      return trocaEnderecoRepository.findById(id).get();
-    }
+  public TrocaEnderecoModel consultar(Integer id) {
+    return trocaEnderecoRepository.findById(id).get();
+  }
 
   public void gravar(TrocaEnderecoModel trocaEnderecoModel) {
     trocaEnderecoRepository.save(trocaEnderecoModel);

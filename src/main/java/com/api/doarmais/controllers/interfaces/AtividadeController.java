@@ -49,7 +49,8 @@ public interface AtividadeController {
 
   @Operation(description = "Endpoint utilizado para deleter um item do anúncio")
   @DeleteMapping("/anuncios/{idItem}")
-  public ResponseEntity<AnuncioResponseDto> deletarItemAnuncio(@PathVariable("idItem") Integer idItem);
+  public ResponseEntity<AnuncioResponseDto> deletarItemAnuncio(
+      @PathVariable("idItem") Integer idItem);
 
   // ENDPOINTS UTILIZADOS NA ABA DE CONFIRMAÇÕES
 

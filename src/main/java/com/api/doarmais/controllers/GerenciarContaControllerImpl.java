@@ -57,7 +57,15 @@ public class GerenciarContaControllerImpl implements GerenciarContaController {
 
       return ResponseEntity.ok()
           .header("Content-Disposition", "attachment;filename=" + usuarioModel.getArquivo())
-          .contentType(usuarioModel.getArquivo().substring(usuarioModel.getArquivo().lastIndexOf(".") + 1, usuarioModel.getArquivo().length()).equals("png") ? MediaType.IMAGE_PNG : MediaType.IMAGE_JPEG)
+          .contentType(
+              usuarioModel
+                      .getArquivo()
+                      .substring(
+                          usuarioModel.getArquivo().lastIndexOf(".") + 1,
+                          usuarioModel.getArquivo().length())
+                      .equals("png")
+                  ? MediaType.IMAGE_PNG
+                  : MediaType.IMAGE_JPEG)
           .contentLength(destinationFile.length())
           .body(resource);
     } catch (FileNotFoundException e) {

@@ -16,3 +16,8 @@ insert into usuario values
 (8, 2, 13, 'Amigos do bem', 'amigosdobem@email.com', '$2a$10$vsYALfY0kC30Ver/tyy38OBHaLfzhqQj.Ql.lT0JfoItD5Iv1RROy', '13995846358', '05108918000172', 'USER', '', ''),
 (9, 2, 13, 'Ação da Cidadania', 'acaocidadania@email.com', '$2a$10$vsYALfY0kC30Ver/tyy38OBHaLfzhqQj.Ql.lT0JfoItD5Iv1RROy', '13995847685', '00346076000173', 'USER', '', ''),
 (10, 2, 13, 'Instituição Ampara Animal', 'amparaanimal@email.com', '$2a$10$vsYALfY0kC30Ver/tyy38OBHaLfzhqQj.Ql.lT0JfoItD5Iv1RROy', '13991352647', '12791298000265', 'USER', '', '');
+
+-- Contas pendentes
+insert into usuario values
+(11, 1, 12, 'Carla', 'carla@email.com', '$2a$10$vsYALfY0kC30Ver/tyy38OBHaLfzhqQj.Ql.lT0JfoItD5Iv1RROy', '13995842635', '48564895714', 'USER', '', ''),
+(12, 1, 12, 'Manuela', 'manuela@email.com', '$2a$10$vsYALfY0kC30Ver/tyy38OBHaLfzhqQj.Ql.lT0JfoItD5Iv1RROy', '13995632547', '48753264852', 'USER', '', '');
