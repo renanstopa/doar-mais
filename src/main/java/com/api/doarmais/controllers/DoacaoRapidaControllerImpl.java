@@ -96,7 +96,7 @@ public class DoacaoRapidaControllerImpl implements AnuncioController {
 
     FiltroAnuncioRequestDto filtro =
         new FiltroAnuncioRequestDto(
-            titulo, cidade, tipoUsuario, 1, tipoCategoriaItem, usuarioLogado.getId(), null);
+            titulo, cidade, tipoUsuario, 3, tipoCategoriaItem, usuarioLogado.getId(), null);
 
     return new ResponseEntity<List<BuscaAnuncioViewModel>>(
         anuncioService.buscar(filtro), HttpStatus.OK);
