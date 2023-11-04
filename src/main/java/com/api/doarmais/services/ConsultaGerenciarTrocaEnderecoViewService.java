@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConsultaGerenciarTrocaEnderecoViewService {
 
-  @Autowired private ConsultaGerenciarTrocaEnderecoRepository consultaGerenciarTrocaEnderecoRepository;
+  @Autowired
+  private ConsultaGerenciarTrocaEnderecoRepository consultaGerenciarTrocaEnderecoRepository;
 
   public ConsultaGerenciarTrocaEnderecoViewModel consultar(Integer id) {
     return consultaGerenciarTrocaEnderecoRepository.findById(id).get();

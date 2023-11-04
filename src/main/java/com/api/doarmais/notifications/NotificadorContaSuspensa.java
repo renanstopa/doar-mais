@@ -1,6 +1,5 @@
 package com.api.doarmais.notifications;
 
-import com.api.doarmais.events.ContaAceitaEvent;
 import com.api.doarmais.events.ContaSuspensaEvent;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,10 @@ public class NotificadorContaSuspensa implements Notificador<ContaSuspensaEvent>
     UsuarioModel usuario = contaSuspensaEvent.getUsuarioModel();
 
     message.setSubject("Doar+ - Conta suspensa");
-    message.setText("Olá, " + usuario.getNome() + "\n\nSua conta foi bloqueada por tempo indeterminado por causa de recentes cancelamentos de propostas perto da data agendada.");
+    message.setText(
+        "Olá, "
+            + usuario.getNome()
+            + "\n\nSua conta foi bloqueada por tempo indeterminado por causa de recentes cancelamentos de propostas perto da data agendada.");
     message.setTo(usuario.getEmail());
     message.setFrom("doar.mais@outlook.com");
 

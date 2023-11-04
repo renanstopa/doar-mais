@@ -173,7 +173,7 @@ public class AtividadeService {
       }
     }
 
-    predicate.add(builder.equal(root.get("idUsuario"), filtro.getIdUsuario()));
+    predicate.add(builder.equal(root.get("idUsuarioAnuncio"), filtro.getIdUsuario()));
 
     query.where(builder.and(predicate.toArray(new Predicate[predicate.size()])));
     query.orderBy(builder.asc(root.get("dataFiltro")));

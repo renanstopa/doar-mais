@@ -1,7 +1,6 @@
 package com.api.doarmais.notifications;
 
 import com.api.doarmais.events.ContaBanidaEvent;
-import com.api.doarmais.events.ContaDesbloqueadaEvent;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

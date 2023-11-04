@@ -97,9 +97,7 @@ public class PropostaService {
 
       propostaRepository.propostaEmAnaliseQuery(propostaModel.getId());
 
-      eventPublisher.publishEvent(
-          new PropostaCanceladaAnuncioEvent(
-              propostaModel, motivo));
+      eventPublisher.publishEvent(new PropostaCanceladaAnuncioEvent(propostaModel, motivo));
     }
 
     return propostaModelList;

@@ -1,7 +1,6 @@
 package com.api.doarmais.services;
 
 import com.api.doarmais.models.views.ConsultaGerenciarMelhoriaBugViewModel;
-import com.api.doarmais.repositories.ConsultaGerenciarAnuncioDenunciadoRepository;
 import com.api.doarmais.repositories.ConsultaGerenciarMelhoriaBugRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

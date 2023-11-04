@@ -24,7 +24,10 @@ public class NotificadorContaRecusada implements Notificador<ContaRecusadaEvent>
     UsuarioModel usuario = contaRecusadaEvent.getUsuarioModel();
 
     message.setSubject("Doar+ - Conta recusada");
-    message.setText("Olá, " + usuario.getNome() + "\n\nSua conta foi recusada, tente criar outra ou entrar em contato com o site.");
+    message.setText(
+        "Olá, "
+            + usuario.getNome()
+            + "\n\nSua conta foi recusada, tente criar outra ou entrar em contato com o site.");
     message.setTo(usuario.getEmail());
     message.setFrom("doar.mais@outlook.com");
 

@@ -24,8 +24,8 @@ public class ItemAnuncioService {
     return itemAnuncioRepository.findById(id).get();
   }
 
-    public void deletarItem(ItemAnuncioModel itemAnuncioModel) {
-     itemAnuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ITEM_INATIVO));
-     itemAnuncioRepository.save(itemAnuncioModel);
-    }
+  public void deletarItem(ItemAnuncioModel itemAnuncioModel) {
+    itemAnuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ITEM_INATIVO));
+    itemAnuncioRepository.save(itemAnuncioModel);
+  }
 }

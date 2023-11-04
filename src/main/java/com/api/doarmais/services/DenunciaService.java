@@ -14,7 +14,7 @@ public class DenunciaService {
     return denunciaRepository.save(denunciaModel);
   }
 
-    public DenunciaModel consultar(Integer id) {
-      return denunciaRepository.findById(id).get();
-    }
+  public DenunciaModel consultar(Integer id) {
+    return denunciaRepository.findById(id).get();
+  }
 }

@@ -1,6 +1,5 @@
 package com.api.doarmais.notifications;
 
-import com.api.doarmais.events.ContaAceitaEvent;
 import com.api.doarmais.events.ContaDesbloqueadaEvent;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,8 @@ public class NotificadorContaDesbloqueada implements Notificador<ContaDesbloquea
     UsuarioModel usuario = contaDesbloqueadaEvent.getUsuarioModel();
 
     message.setSubject("Doar+ - Conta desbloqueada");
-    message.setText("Olá, " + usuario.getNome() + "\n\nSua conta foi desbloqueada e está apta para uso.");
+    message.setText(
+        "Olá, " + usuario.getNome() + "\n\nSua conta foi desbloqueada e está apta para uso.");
     message.setTo(usuario.getEmail());
     message.setFrom("doar.mais@outlook.com");
 

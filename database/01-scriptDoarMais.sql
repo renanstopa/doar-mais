@@ -281,7 +281,7 @@ where
 create view
     vw_busca_propostas_pendentes
 as select
-   	p.id, p.id_usuario, u.id_tipo_usuario, p.id_anuncio, a.id_tipo_anuncio, u.nome,
+   	p.id, p.id_usuario, a.id_usuario_criador as id_usuario_anuncio, u.id_tipo_usuario, p.id_anuncio, a.id_tipo_anuncio, u.nome,
    	case
         when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
         when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))

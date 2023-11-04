@@ -35,5 +35,4 @@ public class ConsultaGerenciarTrocaEnderecoViewModel {
 
   @Column(name = "complemento")
   private String complemento;
-
 }

@@ -150,21 +150,24 @@ public class AnuncioService {
   }
 
   public void voltarQuantidadeOriginalItem(PropostaModel propostaModel) {
-    List<ItemAnuncioModel> itemAnuncioModel = itemAnuncioRepository.buscarItensAtivosAnuncioQuery(propostaModel.getAnuncioModel().getId());
-    List<ItemAnuncioPropostaModel> itemAnuncioPropostaModel = itemAnuncioPropostaRepository.findByPropostaModelId(propostaModel.getId());
+    List<ItemAnuncioModel> itemAnuncioModel =
+        itemAnuncioRepository.buscarItensAtivosAnuncioQuery(
+            propostaModel.getAnuncioModel().getId());
+    List<ItemAnuncioPropostaModel> itemAnuncioPropostaModel =
+        itemAnuncioPropostaRepository.findByPropostaModelId(propostaModel.getId());
 
     for (ItemAnuncioPropostaModel itemProposta : itemAnuncioPropostaModel) {
       for (ItemAnuncioModel itemAnuncio : itemAnuncioModel) {
-        if(itemProposta.getItemAnuncioModel().getId().equals(itemAnuncio.getId())){
-          itemAnuncio.setQuantidade(itemAnuncio.getQuantidade() + itemProposta.getQuantidadeSolicitada());
+        if (itemProposta.getItemAnuncioModel().getId().equals(itemAnuncio.getId())) {
+          itemAnuncio.setQuantidade(
+              itemAnuncio.getQuantidade() + itemProposta.getQuantidadeSolicitada());
           itemAnuncioRepository.save(itemAnuncio);
         }
       }
     }
   }
 
-
-    public void cancelarAnuncio(AnuncioModel anuncioModel) {
+  public void cancelarAnuncio(AnuncioModel anuncioModel) {
     anuncioModel.setSituacaoModel(new SituacaoModel(SituacaoModel.ANUNCIO_CANCELADO));
     anuncioRepository.save(anuncioModel);
   }
@@ -182,7 +185,7 @@ public class AnuncioService {
   public void verificarEnvioPunicao(List<PropostaModel> propostasCanceladas, String motivo) {
     for (PropostaModel proposta : propostasCanceladas) {
       if (LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))
-              .isAfter(proposta.getDataAgendada().minusHours(3))) {
+          .isAfter(proposta.getDataAgendada().minusHours(3))) {
         punicaoService.gerarVerificacaoPunicao(proposta, motivo);
       }
     }

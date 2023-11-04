@@ -35,5 +35,4 @@ public class ConsultaGerenciarAnuncioDenunciadoViewModel {
 
   @Column(name = "data_criacao")
   private String dataCriacao;
-
 }

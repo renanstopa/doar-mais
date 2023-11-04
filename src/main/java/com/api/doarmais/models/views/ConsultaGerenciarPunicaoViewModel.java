@@ -26,5 +26,4 @@ public class ConsultaGerenciarPunicaoViewModel {
 
   @Column(name = "motivo")
   private String motivo;
-
 }

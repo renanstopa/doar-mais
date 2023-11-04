@@ -29,5 +29,4 @@ public class ConsultaGerenciarMelhoriaBugViewModel {
 
   @Column(name = "data_criacao")
   private String dataCriacao;
-
 }

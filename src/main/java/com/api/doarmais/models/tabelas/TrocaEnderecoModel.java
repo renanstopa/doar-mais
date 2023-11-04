@@ -51,5 +51,4 @@ public class TrocaEnderecoModel {
 
   @Column(name = "caminho_arquivo")
   private String caminhoArquivo;
-
 }

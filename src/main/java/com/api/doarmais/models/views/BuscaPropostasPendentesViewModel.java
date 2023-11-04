@@ -19,6 +19,9 @@ public class BuscaPropostasPendentesViewModel {
   @Column(name = "id_usuario")
   private Integer idUsuario;
 
+  @Column(name = "id_usuario_anuncio")
+  private Integer idUsuarioAnuncio;
+
   @Column(name = "id_tipo_usuario")
   private Integer idTipoUsuario;
 

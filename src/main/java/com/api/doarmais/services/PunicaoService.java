@@ -32,7 +32,7 @@ public class PunicaoService {
 
   public void gerarVerificacaoPunicao(PropostaModel proposta, String motivo) {
     UsuarioModel usuarioModel =
-            (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     PunicaoModel punicaoModel = new PunicaoModel();
 
     punicaoModel.setIdUsuario(usuarioModel.getId());
@@ -43,9 +43,9 @@ public class PunicaoService {
     punicaoRepository.save(punicaoModel);
   }
 
-    public PunicaoModel consultar(Integer id) {
-      return punicaoRepository.findById(id).get();
-    }
+  public PunicaoModel consultar(Integer id) {
+    return punicaoRepository.findById(id).get();
+  }
 
   public void gravar(PunicaoModel punicaoModel) {
     punicaoRepository.save(punicaoModel);

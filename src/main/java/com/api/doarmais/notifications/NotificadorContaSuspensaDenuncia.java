@@ -1,7 +1,6 @@
 package com.api.doarmais.notifications;
 
 import com.api.doarmais.events.ContaSuspensaDenunciaEvent;
-import com.api.doarmais.events.ContaSuspensaEvent;
 import com.api.doarmais.models.tabelas.UsuarioModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +24,11 @@ public class NotificadorContaSuspensaDenuncia implements Notificador<ContaSuspen
     UsuarioModel usuario = contaSuspensaDenunciaEvent.getUsuarioModel();
 
     message.setSubject("Doar+ - Conta suspensa");
-    message.setText("Olá, " + usuario.getNome() + "\n\nSua conta foi bloqueada pelo motivo apontado pelo usuário: \n\n" + contaSuspensaDenunciaEvent.getMotivo());
+    message.setText(
+        "Olá, "
+            + usuario.getNome()
+            + "\n\nSua conta foi bloqueada pelo motivo apontado pelo usuário: \n\n"
+            + contaSuspensaDenunciaEvent.getMotivo());
     message.setTo(usuario.getEmail());
     message.setFrom("doar.mais@outlook.com");
 
