@@ -28,11 +28,17 @@ public class BuscaPropostasAgendadasViewModel {
   @Column(name = "id_tipo_anuncio")
   private Integer idTipoAnuncio;
 
-  @Column(name = "nome")
-  private String nome;
+  @Column(name = "nome_proposta")
+  private String nomeProposta;
 
-  @Column(name = "telefone")
-  private String telefone;
+  @Column(name = "telefone_proposta")
+  private String telefoneProposta;
+
+  @Column(name = "nome_anuncio")
+  private String nomeAnuncio;
+
+  @Column(name = "telefone_anuncio")
+  private String telefoneAnuncio;
 
   @Column(name = "titulo")
   private String titulo;
