@@ -257,19 +257,13 @@ where
 create view
     vw_busca_propostas_agendadas
 as select
-    p.id, p.id_usuario, up.id_tipo_usuario, p.id_anuncio, a.id_tipo_anuncio, up.nome as nome_proposta,
+    p.id, p.id_usuario, u.id_tipo_usuario, p.id_anuncio, a.id_tipo_anuncio, u.nome,
     case
-       when length(up.telefone) = 11 then concat('(', substring(up.telefone, 1, 2), ') ', substring(up.telefone, 3, 5), '-', substring(up.telefone, 8, 4))
-       when length(up.telefone) = 10 then concat('(', substring(up.telefone, 1, 2), ') ', substring(up.telefone, 3, 4), '-', substring(up.telefone, 7, 4))
-       else up.telefone
+       when length(u.telefone) = 11 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 5), '-', substring(u.telefone, 8, 4))
+       when length(u.telefone) = 10 then concat('(', substring(u.telefone, 1, 2), ') ', substring(u.telefone, 3, 4), '-', substring(u.telefone, 7, 4))
+       else u.telefone
    end as
-        telefone_proposta, ua.nome as nome_anuncio,
-case
-       when length(ua.telefone) = 11 then concat('(', substring(ua.telefone, 1, 2), ') ', substring(ua.telefone, 3, 5), '-', substring(ua.telefone, 8, 4))
-       when length(ua.telefone) = 10 then concat('(', substring(ua.telefone, 1, 2), ') ', substring(ua.telefone, 3, 4), '-', substring(ua.telefone, 7, 4))
-       else ua.telefone
-   end as
-       telefone_anuncio, a.titulo, a.cidade, date_format(p.data_agendada, '%d/%m/%Y %H:%i:%s') as data_agendada, p.data_agendada as data_filtro
+        telefone, a.titulo, a.cidade, date_format(p.data_agendada, '%d/%m/%Y %H:%i:%s') as data_agendada, p.data_agendada as data_filtro
 from
    proposta p
 join
@@ -277,13 +271,9 @@ join
 on
    (p.id_anuncio = a.id)
 join
-   usuario up
+   usuario u
 on
-   (p.id_usuario = up.id)
-join
-usuario ua
-on
-(a.id_usuario_criador = ua.id)
+   (p.id_usuario = u.id)
 where
     p.id_situacao = 32;
 
