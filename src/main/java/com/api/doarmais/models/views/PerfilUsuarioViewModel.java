@@ -39,6 +39,9 @@ public class PerfilUsuarioViewModel {
   @Column(name = "bairro")
   private String bairro;
 
+  @Column(name = "logradouro")
+  private String logradouro;
+
   @Column(name = "numero")
   private Integer numero;
 
