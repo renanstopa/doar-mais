@@ -41,7 +41,7 @@ public class NotificadorPropostaCriada implements Notificador<PropostaCriadaEven
             proposta.getAnuncioModel().getUsuarioModel().getEmail());
 
     helper.setTo(usuario.getEmail());
-    helper.setFrom("doar.mais@outlook.com");
+    helper.setFrom("doarmaistcc@gmail.com");
     helper.setSubject("Doar+ - Proposta recebida");
 
     String titulo = "Olá, " + usuario.getNome() + "!<br><br>";

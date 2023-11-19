@@ -30,7 +30,7 @@ public class NotificadorContaSuspensaDenuncia implements Notificador<ContaSuspen
             + "\n\nSua conta foi bloqueada pelo motivo apontado pelo usuário: \n\n"
             + contaSuspensaDenunciaEvent.getMotivo());
     message.setTo(usuario.getEmail());
-    message.setFrom("doar.mais@outlook.com");
+    message.setFrom("doarmaistcc@gmail.com");
 
     try {
       sender.send(message);

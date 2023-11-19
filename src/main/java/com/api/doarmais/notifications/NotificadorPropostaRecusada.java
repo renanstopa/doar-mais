@@ -37,7 +37,7 @@ public class NotificadorPropostaRecusada implements Notificador<PropostaRecusada
     UsuarioModel usuario = propostaRecusadaEvent.getPropostaModel().getUsuarioModel();
 
     message.setTo(usuario.getEmail());
-    message.setFrom("doar.mais@outlook.com");
+    message.setFrom("doarmaistcc@gmail.com");
     message.setSubject("Doar+ - Proposta recusada");
 
     StringBuilder itens = new StringBuilder();

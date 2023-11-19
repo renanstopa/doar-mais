@@ -24,7 +24,7 @@ public class NotificadorAutenticacaoEmailUsuario implements Notificador<UsuarioC
   @Async
   public void enviar(UsuarioCriadoEvent usuarioCriadoEvent) {
     String url =
-        "https://localhost:3000/autenticacaoemail?token="
+        "http://localhost:3000/autenticacaoemail?token="
             + usuarioCriadoEvent.getAutenticacaoEmailModel().getToken();
     SimpleMailMessage message = new SimpleMailMessage();
     UsuarioModel usuario =
@@ -35,7 +35,7 @@ public class NotificadorAutenticacaoEmailUsuario implements Notificador<UsuarioC
     message.setText(
         "Olá, " + usuario.getNome() + "!\n" + "Para validar seu email entre nesse link " + url);
     message.setTo(usuario.getEmail());
-    message.setFrom("doar.mais@outlook.com");
+    message.setFrom("doarmaistcc@gmail.com");
 
     try {
       sender.send(message);

@@ -26,7 +26,7 @@ public class NotificadorContaAceita implements Notificador<ContaAceitaEvent> {
     message.setSubject("Doar+ - Conta aceita");
     message.setText("Olá, " + usuario.getNome() + "\n\nSua conta foi aceita e está apta para uso.");
     message.setTo(usuario.getEmail());
-    message.setFrom("doar.mais@outlook.com");
+    message.setFrom("doarmaistcc@gmail.com");
 
     try {
       sender.send(message);

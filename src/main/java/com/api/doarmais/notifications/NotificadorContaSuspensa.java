@@ -29,7 +29,7 @@ public class NotificadorContaSuspensa implements Notificador<ContaSuspensaEvent>
             + usuario.getNome()
             + "\n\nSua conta foi bloqueada por tempo indeterminado por causa de recentes cancelamentos de propostas perto da data agendada.");
     message.setTo(usuario.getEmail());
-    message.setFrom("doar.mais@outlook.com");
+    message.setFrom("doarmaistcc@gmail.com");
 
     try {
       sender.send(message);

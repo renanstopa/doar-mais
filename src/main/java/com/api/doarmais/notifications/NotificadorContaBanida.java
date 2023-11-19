@@ -26,7 +26,7 @@ public class NotificadorContaBanida implements Notificador<ContaBanidaEvent> {
     message.setSubject("Doar+ - Conta desbloqueada");
     message.setText("Olá, " + usuario.getNome() + "\n\nSua conta foi banida permanentemente.");
     message.setTo(usuario.getEmail());
-    message.setFrom("doar.mais@outlook.com");
+    message.setFrom("doarmaistcc@gmail.com");
 
     try {
       sender.send(message);

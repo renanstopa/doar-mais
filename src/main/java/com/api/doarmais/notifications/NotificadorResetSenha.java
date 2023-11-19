@@ -24,7 +24,7 @@ public class NotificadorResetSenha implements Notificador<ResetCriadoEvent> {
   @Async
   public void enviar(ResetCriadoEvent resetCriadoEvent) {
     String url =
-        "https://localhost:3000/senha/?token=" + resetCriadoEvent.getPedidoGerado().getToken();
+        "http://localhost:3000/senha/?token=" + resetCriadoEvent.getPedidoGerado().getToken();
     SimpleMailMessage message = new SimpleMailMessage();
     UsuarioModel usuario =
         usuarioService.buscarUsuarioPorEmail(resetCriadoEvent.getPedidoGerado().getEmailUsuario());
@@ -37,7 +37,7 @@ public class NotificadorResetSenha implements Notificador<ResetCriadoEvent> {
             + "Para realizar a alteração de sua senha entre nesse link "
             + url);
     message.setTo(usuario.getEmail());
-    message.setFrom("doar.mais@outlook.com");
+    message.setFrom("doarmaistcc@gmail.com");
 
     try {
       sender.send(message);

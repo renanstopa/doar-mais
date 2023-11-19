@@ -39,7 +39,7 @@ public class NotificadorPropostaConfirmadaCancelada
     UsuarioModel usuario = propostaConfirmadaCanceladaEvent.getUsuarioModel();
 
     message.setTo(usuario.getEmail());
-    message.setFrom("doar.mais@outlook.com");
+    message.setFrom("doarmaistcc@gmail.com");
     message.setSubject("Doar+ - Proposta cancelada");
 
     StringBuilder itens = new StringBuilder();
