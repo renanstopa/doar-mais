@@ -42,7 +42,7 @@ public class ResetSenhaService {
     LocalDateTime validade = LocalDateTime.now(ZoneId.of("America/Sao_Paulo")).plusDays(1);
 
     ResetSenhaModel resetSenhaModel = new ResetSenhaModel();
-    resetSenhaModel.setId(SituacaoModel.TOKEN_NAO_UTILIZADO);
+    resetSenhaModel.setIdSituacao(SituacaoModel.TOKEN_NAO_UTILIZADO);
     resetSenhaModel.setEmailUsuario(email);
     resetSenhaModel.setToken(token);
     resetSenhaModel.setDataValidade(validade);
