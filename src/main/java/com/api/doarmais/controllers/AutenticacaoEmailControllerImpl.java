@@ -34,7 +34,7 @@ public class AutenticacaoEmailControllerImpl implements AutenticacaoEmailControl
     if (autenticacaoEmailModel.getId().equals(SituacaoModel.TOKEN_UTILIZADO))
       throw new LinkAlreadyUsed("Esse link já foi utilizado para autenticar o email");
 
-    autenticacaoEmailModel.setId(SituacaoModel.TOKEN_UTILIZADO);
+    autenticacaoEmailModel.setIdSituacao(SituacaoModel.TOKEN_UTILIZADO);
     autenticacaoEmailService.gravar(autenticacaoEmailModel);
     UsuarioModel usuarioModel =
         usuarioService.buscarUsuarioPorEmail(autenticacaoEmailModel.getEmailUsuario());
