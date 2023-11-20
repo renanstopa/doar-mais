@@ -68,7 +68,7 @@ public class ResetSenhaControllerImpl implements ResetSenhaController {
     if (resetSenhaService.expirou(resetSenhaModel))
       throw new ResetExpired("Seu pedido de alteração de senha já expirou");
 
-    if (!resetSenhaModel.getIdSituacao().equals(SituacaoModel.TOKEN_UTILIZADO))
+    if (resetSenhaModel.getIdSituacao().equals(SituacaoModel.TOKEN_UTILIZADO))
       throw new LinkAlreadyUsed("Esse link já foi utilizado para alterar a senha");
 
     if (!trocarSenhaRequestDto.getNovaSenha().equals(trocarSenhaRequestDto.getConfirmaSenha()))
