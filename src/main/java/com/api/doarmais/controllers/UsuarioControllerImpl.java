@@ -38,7 +38,7 @@ public class UsuarioControllerImpl implements UsuarioController {
     UsuarioModel usuarioModel =
         (UsuarioModel) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     return new ResponseEntity<PerfilUsuarioViewModel>(
-        perfilUsuarioViewService.consultarPerfil(usuarioModel.getId()).get(), HttpStatus.FOUND);
+        perfilUsuarioViewService.consultarPerfil(usuarioModel.getId()).get(), HttpStatus.OK);
   }
 
   public ResponseEntity<UsuarioResponseDto> atualizarDados(
