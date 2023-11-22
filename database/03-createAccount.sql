@@ -19,5 +19,5 @@ insert into usuario values
 
 -- Contas pendentes
 insert into usuario values
-(11, 1, 12, 'Carla', 'carla@email.com', '$2a$10$vsYALfY0kC30Ver/tyy38OBHaLfzhqQj.Ql.lT0JfoItD5Iv1RROy', '13995842635', '48564895714', 'USER', '', ''),
-(12, 1, 12, 'Manuela', 'manuela@email.com', '$2a$10$vsYALfY0kC30Ver/tyy38OBHaLfzhqQj.Ql.lT0JfoItD5Iv1RROy', '13995632547', '48753264852', 'USER', '', '');
+(11, 1, 12, 'Carla', 'carla@email.com', '$2a$10$vsYALfY0kC30Ver/tyy38OBHaLfzhqQj.Ql.lT0JfoItD5Iv1RROy', '13995842635', '48564895714', 'USER', 'comprovante01.jpg', 'comprovantes/b14acfe0-9d1b-4405-8418-b107863cda02'),
+(12, 1, 12, 'Manuela', 'manuela@email.com', '$2a$10$vsYALfY0kC30Ver/tyy38OBHaLfzhqQj.Ql.lT0JfoItD5Iv1RROy', '13995632547', '48753264852', 'USER', 'comprovante02.png', 'comprovantes/8563f646-2b7c-4f69-be82-6a8b49cc6c61');

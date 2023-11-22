@@ -47,9 +47,9 @@ insert into item_anuncio values
 
 -- Doações rápidas
 insert into anuncio values
-(13, 3, 5, 21, now(), 'Roupa', now(), date_add(now(),interval 2 day), '11533040', 'SP', 'Cubatão', 'Jardim Casqueiro', 'Rua Estados Unidos', 530, '', 'Final da rua do Kalabalis', 0),
-(14, 3, 6, 21, now(), 'Notebook', now(), date_add(now(),interval 3 day), '08551040', 'SP', 'Cubatão', 'Centro', 'Praça da Independência', '10', '', '', 0),
-(15, 3, 6, 21, now(), 'Guarda roupa', now(), date_add(now(),interval 3 day), '08551040', 'SP', 'Cubatão', 'Centro', 'Praça da Independência', '10', '', '', 0);
+(13, 3, 5, 21, now(), 'Roupa', now(), date_add(now(),interval 1 day), '11533040', 'SP', 'Santos', 'Jardim Casqueiro', 'Rua Estados Unidos', 530, '', 'Final da rua do Kalabalis', 0),
+(14, 3, 6, 21, now(), 'Notebook', now(), date_add(now(),interval 1 day), '08551040', 'SP', 'Santos', 'Centro', 'Praça da Independência', '10', '', '', 0),
+(15, 3, 6, 21, now(), 'Guarda roupa', now(), date_add(now(),interval 1 day), '08551040', 'SP', 'Santos', 'Centro', 'Praça da Independência', '10', '', '', 0);
 
 insert into item_anuncio values
 (24, 13, 4, 71, 'Blusa branca', 7, 'Blusa branca tamanho M'),
