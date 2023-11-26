@@ -4,7 +4,7 @@ set time_zone='America/Sao_Paulo';
 insert into proposta values
 (1, 4, 2, 31, date_add(now(),interval 1 day)),
 (2, 5, 3, 31, date_add(now(),interval 1 day)),
-(3, 6, 8, 31, date_add(now(),interval 1 day)),
+(3, 6, 8, 31, date_sub(now(),interval 3 day)),
 (11, 6, 9, 31, date_add(now(),interval 1 day));
 
 insert into item_anuncio_proposta values

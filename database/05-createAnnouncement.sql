@@ -24,9 +24,9 @@ insert into item_anuncio values
 -- Pedidos
 insert into anuncio values
 (7, 2, 3, 21, now(), 'Roupa', now(), date_add(now(),interval 2 day), '11020000', 'SP', 'Santos', 'Boqueirão', 'Avenida Affonso Penna', 12, 'Segunda casa', '', 0),
-(8, 2, 3, 21, now(), 'Notebook', now(), date_add(now(),interval 3 day), '11020000', 'SP', 'Santos', 'Boqueirão', 'Avenida Affonso Penna', 12, 'Segunda casa', '', 1),
+(8, 2, 3, 21, date_sub(now(), interval 5 day), 'Notebook', date_sub(now(), interval 5 day), date_sub(now(), interval 2 day), '11020000', 'SP', 'Santos', 'Boqueirão', 'Avenida Affonso Penna', 12, 'Segunda casa', '', 1),
 (9, 2, 9, 21, now(), 'Cesta básica', now(), date_add(now(),interval 3 day), '20220690', 'RJ', 'Rio de Janeiro', 'Gamboa', 'Rua Barão de Gamboa', 98, 'Com numeração uplementar pela Rua da Gamboa 227', '', 0),
-(10, 2, 7, 21, now(), 'Brinquedos', now(), date_add(now(),interval 2 day), '05854020', 'SP', 'São Paulo', 'Parque Maria Helena', 'Rua Analia Dolacio Albino', 333, '', '', 0),
+(10, 2, 4, 21, now(), 'Brinquedos', now(), date_add(now(),interval 2 day), '05854020', 'SP', 'São Paulo', 'Parque Maria Helena', 'Rua Analia Dolacio Albino', 333, '', '', 0),
 (11, 2, 6, 21, now(), 'Vestidos', now(), date_add(now(),interval 20 day), '11065401', 'SP', 'Santos', 'Gonzaga', 'Avenida General Francisco Glicério', 100, 'Casa dos fundos', '', 0),
 (12, 2, 8, 21, now(), 'Periféricos', now(), date_add(now(),interval 5 day), '03350005', 'SP', 'São Paulo', 'Vial Invernada', 'Rua Doutor Gabriel De Resende', 122, '', '', 0);
 
@@ -49,7 +49,7 @@ insert into item_anuncio values
 insert into anuncio values
 (13, 3, 5, 21, now(), 'Roupa', now(), date_add(now(),interval 1 day), '11533040', 'SP', 'Santos', 'Jardim Casqueiro', 'Rua Estados Unidos', 530, '', 'Final da rua do Kalabalis', 0),
 (14, 3, 6, 21, now(), 'Notebook', now(), date_add(now(),interval 1 day), '08551040', 'SP', 'Santos', 'Centro', 'Praça da Independência', '10', '', '', 0),
-(15, 3, 6, 21, now(), 'Guarda roupa', now(), date_add(now(),interval 1 day), '08551040', 'SP', 'Santos', 'Centro', 'Praça da Independência', '10', '', '', 0);
+(15, 3, 4, 21, now(), 'Guarda roupa', now(), date_add(now(),interval 1 day), '08551040', 'SP', 'Santos', 'Centro', 'Praça da Independência', '10', '', '', 0);
 
 insert into item_anuncio values
 (24, 13, 4, 71, 'Blusa branca', 7, 'Blusa branca tamanho M'),
