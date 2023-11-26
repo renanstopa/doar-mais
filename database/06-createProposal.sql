@@ -13,7 +13,7 @@ insert into item_anuncio_proposta values
 
 -- Propostas agendadas
 insert into proposta values
-(3, 6, 8, 31, date_sub(now(),interval 3 day)),
+(3, 6, 8, 32, date_sub(now(),interval 3 day)),
 (4, 3, 4, 32, date_add(now(),interval 1 day)),
 (5, 4, 1, 32, date_add(now(),interval 1 day)),
 (9, 5, 4, 32, date_add(now(),interval 1 day));
