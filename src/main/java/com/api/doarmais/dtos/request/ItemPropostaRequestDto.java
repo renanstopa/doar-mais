@@ -11,6 +11,5 @@ public class ItemPropostaRequestDto {
   private Integer idItem;
 
   @NotNull(message = "Quantidade não pode ser nula")
-  @Min(value = 1, message = "Quantidade deve ser no mínimo 1")
   private Integer quantidade;
 }

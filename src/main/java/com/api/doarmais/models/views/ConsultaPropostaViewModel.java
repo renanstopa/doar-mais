@@ -80,6 +80,7 @@ public class ConsultaPropostaViewModel {
       ItemAnuncioResponseDto response = new ItemAnuncioResponseDto();
       ItemAnuncioModel itemAnuncioModel = itens.getItemAnuncioModel();
       BeanUtils.copyProperties(itemAnuncioModel, response);
+      response.setQuantidade(itens.getQuantidadeSolicitada());
       itemList.add(response);
     }
   }

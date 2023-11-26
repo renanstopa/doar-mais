@@ -7,7 +7,7 @@ insert into anuncio values
 (3, 1, 3, 21, now(), 'Notebook', now(), date_add(now(),interval 3 day), '11050050', 'SP', 'Santos', 'Boqueirão', 'Rua Alberto Baccarat', 10, '', '', 2),
 (4, 1, 4, 21, now(), 'Jogos Xbox One', now(), date_add(now(),interval 10 day), '11025050', 'SP', 'Santos', 'Boqueirão', 'Rua Barão de Cotegipe', 64, 'Casa 2', 'Poste colorido', 1),
 (5, 1, 10, 21, now(), 'Ração cachorro', now(), date_add(now(),interval 5 day), '11075390', 'SP', 'Santos', 'Campo Grande', 'Rua Espírito Santo', 54, '', '', 0),
-(6, 1, 5, 21, now(), 'Itens pet', now(), date_add(now(),interval 5 day), '11065120', 'SP', 'Santos', 'Gonzaga', 'Rua Alagoas', 1056, '', 'Casa abandonada ao lado', 0);
+(6, 1, 5, 21, now(), 'Itens pet', now(), date_add(now(),interval 5 day), '11065120', 'SP', 'Cubatão', 'Jardim Casqueiro', 'Rua Estados Unidos', 530, '', 'Casa abandonada ao lado', 0);
 
 insert into item_anuncio values
 (1, 1, 4, 71, 'Blusa preta', 7, 'Blusa branca tamanho G'),
