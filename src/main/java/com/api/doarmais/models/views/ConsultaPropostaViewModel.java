@@ -2,6 +2,7 @@ package com.api.doarmais.models.views;
 
 import com.api.doarmais.dtos.response.ItemAnuncioResponseDto;
 import com.api.doarmais.models.tabelas.ItemAnuncioModel;
+import com.api.doarmais.models.tabelas.ItemAnuncioPropostaModel;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,10 +75,11 @@ public class ConsultaPropostaViewModel {
 
   @Transient private List<ItemAnuncioResponseDto> itemList = new ArrayList<>();
 
-  public void armazenarItens(List<ItemAnuncioModel> itemAnuncioModelList) {
-    for (ItemAnuncioModel itens : itemAnuncioModelList) {
+  public void armazenarItens(List<ItemAnuncioPropostaModel> itemAnuncioPropostaModel) {
+    for (ItemAnuncioPropostaModel itens : itemAnuncioPropostaModel) {
       ItemAnuncioResponseDto response = new ItemAnuncioResponseDto();
-      BeanUtils.copyProperties(itens, response);
+      ItemAnuncioModel itemAnuncioModel = itens.getItemAnuncioModel();
+      BeanUtils.copyProperties(itemAnuncioModel, response);
       itemList.add(response);
     }
   }

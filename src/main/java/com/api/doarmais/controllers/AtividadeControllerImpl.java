@@ -202,7 +202,7 @@ public class AtividadeControllerImpl implements AtividadeController {
 
   public ResponseEntity<ConsultaPropostaViewModel> consultarPendente(Integer id) {
     ConsultaPropostaViewModel consultaPropostaViewModel = consultaPropostaViewService.consultar(id);
-    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(id);
+    List<ItemAnuncioPropostaModel> listaItens = itemAnuncioPropostaService.buscarPorProposta(id);
     consultaPropostaViewModel.armazenarItens(listaItens);
 
     return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewModel, HttpStatus.OK);
@@ -255,7 +255,7 @@ public class AtividadeControllerImpl implements AtividadeController {
 
   public ResponseEntity<ConsultaPropostaViewModel> consultarAgendado(Integer id) {
     ConsultaPropostaViewModel consultaPropostaViewModel = consultaPropostaViewService.consultar(id);
-    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(id);
+    List<ItemAnuncioPropostaModel> listaItens = itemAnuncioPropostaService.buscarPorProposta(id);
     consultaPropostaViewModel.armazenarItens(listaItens);
 
     UsuarioModel usuarioModel =
@@ -367,7 +367,7 @@ public class AtividadeControllerImpl implements AtividadeController {
 
   public ResponseEntity<ConsultaPropostaViewModel> consultarHistorico(Integer id) {
     ConsultaPropostaViewModel consultaPropostaViewModel = consultaPropostaViewService.consultar(id);
-    List<ItemAnuncioModel> listaItens = itemAnuncioService.buscaPorAnuncio(id);
+    List<ItemAnuncioPropostaModel> listaItens = itemAnuncioPropostaService.buscarPorProposta(id);
     consultaPropostaViewModel.armazenarItens(listaItens);
 
     return new ResponseEntity<ConsultaPropostaViewModel>(consultaPropostaViewModel, HttpStatus.OK);
