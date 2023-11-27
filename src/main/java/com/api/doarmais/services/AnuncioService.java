@@ -85,7 +85,6 @@ public class AnuncioService {
     }
 
     predicate.add(builder.notEqual(root.get("idUsuarioCriador"), filtro.getIdUsuario()));
-    predicate.add(builder.lessThanOrEqualTo(root.get("dataInicioDisponibilidade"), LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))));
     predicate.add(builder.greaterThanOrEqualTo(root.get("dataFimDisponibilidade"), LocalDateTime.now(ZoneId.of("America/Sao_Paulo"))));
 
     query.where(builder.and(predicate.toArray(new Predicate[predicate.size()])));
