@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(value = "brasilapi", url = "https://brasilapi.com.br/api/")
 public interface BrasilApiClient {
 
-  @RequestMapping(method = RequestMethod.GET, value = "cep/v2/{cep}")
+  @RequestMapping(method = RequestMethod.GET, value = "cep/v1/{cep}")
   CepResponseDto infoCep(@PathVariable("cep") String cep);
 
   @RequestMapping(method = RequestMethod.GET, value = "cnpj/v1/{cnpj}")
